@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:2537742724:android:401abc5a859230ef3e3dd1",
+        "mobilesdk_app_id": "1:2537742724:android:acb6d79c4cb345073e3dd1",
         "android_client_info": {
-          "package_name": "com.example.SmartNest"
+          "package_name": "com.example.smartnest"
         }
       },
       "oauth_client": [],
