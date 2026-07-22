@@ -5,27 +5,27 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.*
 import com.example.smartnest.ui.theme.SmartNestTheme
-
+import com.example.smartnestapp.screens.SplashScreen
+import com.example.smartnest.screens.LoginScreen
 import com.google.firebase.database.FirebaseDatabase
+import com.example.smartnest.screens.DashboardScreen
+import com.example.smartnest.screens.RegisterScreen
 
 
 class MainActivity : ComponentActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         // Firebase connection test
         val database = FirebaseDatabase.getInstance()
 
         val reference = database.getReference("test")
+
 
         reference.setValue("Firebase Connected Successfully")
             .addOnSuccessListener {
@@ -48,51 +48,102 @@ class MainActivity : ComponentActivity() {
             }
 
 
+
         enableEdgeToEdge()
+
 
         setContent {
 
+
             SmartNestTheme {
 
-                Scaffold(
-                    modifier = Modifier.fillMaxSize()
-                ) { innerPadding ->
 
-                    Greeting(
-                        name = "Smart Nest",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                var currentScreen by remember {
+
+                    mutableStateOf("splash")
 
                 }
+
+
+
+                when(currentScreen){
+
+
+                    "splash" -> {
+
+
+                        SplashScreen(
+
+                            onNavigateToLogin = {
+
+                                currentScreen = "login"
+
+                            }
+
+                        )
+
+
+                    }
+
+
+
+                    "login" -> {
+
+
+                        LoginScreen(
+
+                            onLoginSuccess = {
+
+
+                                currentScreen = "dashboard"
+
+
+                            },
+
+
+                            navigateToRegister = {
+
+
+                                currentScreen = "register"
+
+
+                            }
+
+                        )
+
+
+                    }
+                    "dashboard" -> {
+
+
+                        DashboardScreen()
+
+
+                    }
+
+                    "register" -> {
+
+
+                        RegisterScreen(
+
+                            navigateToLogin = {
+
+                                currentScreen = "login"
+
+                            }
+
+                        )
+
+
+                    }
+
+
+                }
+
 
             }
 
         }
-    }
-}
-
-
-@Composable
-fun Greeting(
-    name: String,
-    modifier: Modifier = Modifier
-) {
-
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-
-    SmartNestTheme {
-
-        Greeting("Smart Nest")
 
     }
 
