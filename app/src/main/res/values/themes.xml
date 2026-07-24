@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.SmartNest" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.SmartNest" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/orange_primary</item>
+        <item name="colorPrimaryDark">@color/orange_dark</item>
+        <item name="colorAccent">@color/orange_primary</item>
+
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="android:statusBarColor">@color/bg_screen</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <item name="android:windowBackground">@color/bg_screen</item>
+
+    </style>
+
 </resources>
