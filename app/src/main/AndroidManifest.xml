@@ -17,6 +17,22 @@
             android:exported="false" />
 
         <activity
+            android:name=".activities.MyHomesActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.FloorListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.RoomListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.DeviceListActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".activities.RegisterActivity"
             android:exported="false" />
 

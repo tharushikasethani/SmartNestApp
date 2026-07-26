@@ -27,8 +27,6 @@ class DashboardActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        // Personalize greeting with the signed-in user's name if you saved it,
-        // otherwise falls back to the email prefix.
         val displayName = auth.currentUser?.email?.substringBefore("@") ?: "there"
         findViewById<android.widget.TextView>(R.id.txtTitle).text = "$displayName 👋"
 
@@ -41,7 +39,7 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         findViewById<android.widget.LinearLayout>(R.id.cardHome).setOnClickListener {
-            // TODO: navigate to FloorListActivity / Home Details
+            startActivity(Intent(this, MyHomesActivity::class.java))
         }
 
         findViewById<android.widget.LinearLayout>(R.id.actionFloors).setOnClickListener {

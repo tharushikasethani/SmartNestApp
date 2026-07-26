@@ -28,4 +28,7 @@
     <color name="status_off">#D6D6D8</color>
 
     <color name="text_primary_fallback">#1A1A1A</color>
+
+    <color name="status_on_green">#2E9E5B</color>
+    <color name="status_off_gray">#8B8B8D</color>
 </resources>
