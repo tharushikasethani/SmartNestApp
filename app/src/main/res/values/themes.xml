@@ -9,7 +9,8 @@
 
         <item name="colorOnPrimary">@color/white</item>
 
-        <item name="android:statusBarColor">@color/bg_screen</item>
+        <!-- Light status bar with dark icons -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
 
         <item name="android:windowBackground">@color/bg_screen</item>

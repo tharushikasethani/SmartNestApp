@@ -23,7 +23,7 @@
             android:layout_height="48dp"
             android:padding="10dp"
             android:background="@drawable/icon_bg"
-            android:src="@drawable/ic_home"
+            android:src="@drawable/ic_house_family"
             android:contentDescription="icon"/>
 
         <!-- Text -->
