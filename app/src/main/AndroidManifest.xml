@@ -17,6 +17,22 @@
             android:exported="false" />
 
         <activity
+            android:name=".activities.MyHomesActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.FloorListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.RoomListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.DeviceListActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".activities.RegisterActivity"
             android:exported="false" />
 
@@ -26,24 +42,20 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.SmartNest"
             android:windowSoftInputMode="adjustResize">
-        </activity>
-
-        <activity
-            android:name=".activities.SplashActivity"
-            android:exported="true"
-            android:theme="@style/Theme.SmartNest.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activities.DeviceControlActivity" android:exported="false" />
-        <activity android:name=".activities.ScheduleActivity" android:exported="false" />
+        <activity android:name=".activities.AddDeviceActivity" android:exported="false" />
+        <activity android:name=".activities.AddRoomActivity" android:exported="false" />
+        <activity android:name=".activities.AddFloorActivity" android:exported="false" />
+        <activity android:name=".activities.AddHomeActivity" android:exported="false" />
     </application>
 
 </manifest>
