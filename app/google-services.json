@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "2537742724",
+    "firebase_url": "https://smart-home-monitoring-sy-95ea0-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "smart-home-monitoring-sy-95ea0",
+    "storage_bucket": "smart-home-monitoring-sy-95ea0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2537742724:android:acb6d79c4cb345073e3dd1",
+        "android_client_info": {
+          "package_name": "com.example.smartnest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7IH-HSeWyep7vyW5dp5K57MsACjZfNQM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
