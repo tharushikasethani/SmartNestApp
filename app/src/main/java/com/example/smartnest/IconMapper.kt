@@ -90,8 +90,11 @@ object IconMapper {
             "ceiling_fan", "fan" ->
                 R.drawable.ic_fan
 
-            "smart_plug", "plug" ->
+            "smart_plug", "plug", "outlet" ->
                 R.drawable.ic_plug
+
+            "multi_switch" ->
+                R.drawable.ic_switch_multi
 
             "temperature_sensor", "temp_sensor" ->
                 R.drawable.ic_temperature_sensor
@@ -105,7 +108,7 @@ object IconMapper {
             "washing_machine", "washer" ->
                 R.drawable.ic_washing_machine
 
-            "iron" ->
+            "iron", "hazard_appliance" ->
                 R.drawable.ic_iron
 
             "bathroom_heater", "heater", "water_heater" ->

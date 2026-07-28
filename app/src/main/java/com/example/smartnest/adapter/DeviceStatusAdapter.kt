@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smartnest.R
 import com.example.smartnest.model.DeviceStatusItem
@@ -31,15 +32,11 @@ class DeviceStatusAdapter(
         val item = items[position]
         holder.icon.setImageResource(item.iconRes)
         holder.name.text = item.name
-        holder.status.text = item.statusText
+        holder.status.text = item.status.text
         holder.status.setTextColor(
-            holder.itemView.context.getColor(
-                if (item.isActive) R.color.status_on_green else R.color.status_off_gray
-            )
+            ContextCompat.getColor(holder.itemView.context, item.status.textColorRes)
         )
-        holder.dot.setBackgroundResource(
-            if (item.isActive) R.drawable.bg_dot_green else R.drawable.bg_dot_gray
-        )
+        holder.dot.setBackgroundResource(item.status.dotRes)
         holder.itemView.setOnClickListener { onClick(item) }
     }
 

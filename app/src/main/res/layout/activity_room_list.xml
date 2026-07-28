@@ -53,12 +53,28 @@
                 android:layout_marginTop="24dp"
                 android:nestedScrollingEnabled="false"/>
 
+            <!-- Floor Plan button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFloorPlan"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:text="  Floor Plan"
+                android:textAllCaps="false"
+                android:textColor="#F0532D"
+                android:textSize="15sp"
+                app:backgroundTint="#FFF3EF"
+                app:cornerRadius="26dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#F0532D"
+                app:elevation="0dp"/>
+
             <!-- Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAdd"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="12dp"
                 android:text="+ Add Room"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"

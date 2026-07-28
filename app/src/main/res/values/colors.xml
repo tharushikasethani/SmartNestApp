@@ -41,6 +41,7 @@
     <color name="status_off_gray">#8B8B9E</color>
 
     <!-- Pastel tints for stat cards -->
+    <color name="splash_orange">#F0532D</color>
     <color name="tint_orange_bg">#FFF3EF</color>
     <color name="tint_green_bg">#EDF9F2</color>
     <color name="tint_red_bg">#FEF0ED</color>

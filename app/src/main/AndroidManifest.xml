@@ -56,6 +56,15 @@
         <activity android:name=".activities.AddRoomActivity" android:exported="false" />
         <activity android:name=".activities.AddFloorActivity" android:exported="false" />
         <activity android:name=".activities.AddHomeActivity" android:exported="false" />
+        <activity android:name=".activities.DeviceControlActivity" android:exported="false" />
+        <activity android:name=".activities.ScheduleActivity" android:exported="false" />
+        <activity android:name=".activities.SplashActivity" android:exported="false" />
+        <activity android:name=".activities.OutletControlActivity" android:exported="false" />
+        <activity android:name=".activities.MultiSwitchControlActivity" android:exported="false" />
+        <activity android:name=".activities.HazardApplianceControlActivity" android:exported="false" />
+        <activity android:name=".activities.CameraControlActivity" android:exported="false" />
+        <activity android:name=".activities.LiveViewActivity" android:exported="false" />
+        <activity android:name=".activities.FloorPlanActivity" android:exported="false" />
     </application>
 
 </manifest>

@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:thumbTint="#FFFFFF"
-                android:trackTint="#34C759" />
+                android:trackTint="@color/orange_primary" />
         </LinearLayout>
 
         <View android:layout_width="match_parent" android:layout_height="1dp"
@@ -160,7 +160,7 @@
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/bg_pill_blue_solid"
+        android:background="@drawable/bg_pill_orange_solid"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:text="Save Schedule"

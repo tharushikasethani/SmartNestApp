@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F2F2F3"
@@ -15,7 +14,6 @@
         android:paddingEnd="20dp"
         android:paddingBottom="24dp">
 
-        <!-- Top bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,29 +38,30 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:fontFamily="sans-serif-medium"
-                android:text="Device Control"
+                android:text="Hazard Appliance"
                 android:textColor="#1A1A1A"
                 android:textSize="17sp" />
 
-            <FrameLayout
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_circle_white">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="⋮"
-                    android:textColor="#1A1A1A"
-                    android:textSize="18sp" />
-            </FrameLayout>
+            <View android:layout_width="40dp" android:layout_height="40dp" />
         </LinearLayout>
 
-        <!-- Bulb icon -->
+        <TextView
+            android:id="@+id/tvWarningBanner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:background="#FFFF3B30"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"
+            android:text="  ACTIVE — Auto shutoff in progress"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
         <FrameLayout
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/circle_bulb_bg">
             <ImageView
@@ -70,7 +69,7 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_bulb" />
+                android:src="@drawable/ic_iron" />
         </FrameLayout>
 
         <TextView
@@ -80,7 +79,7 @@
             android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal"
             android:fontFamily="sans-serif-medium"
-            android:text="Living Room Light"
+            android:text="Iron"
             android:textColor="#1A1A1A"
             android:textSize="19sp" />
 
@@ -88,22 +87,19 @@
             android:id="@+id/tvDeviceRoom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:layout_gravity="center_horizontal"
-            android:text="Living Room"
+            android:text="Room"
             android:textColor="#8B8B8D"
             android:textSize="13sp" />
 
-        <!-- Info card -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/bg_card_white"
             android:orientation="vertical"
             android:padding="18dp">
 
-            <!-- Status row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,54 +117,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
-                    android:text="ON"
-                    android:textColor="#34C759"
+                    android:text="OFF"
+                    android:textColor="#FF3B30"
                     android:textSize="14sp" />
             </LinearLayout>
 
             <View android:layout_width="match_parent" android:layout_height="1dp"
                 android:layout_marginTop="14dp" android:layout_marginBottom="14dp" android:background="#EFEFEF" />
 
-            <!-- Brightness row -->
-            <LinearLayout
-                android:id="@+id/rowBrightness"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Brightness"
-                    android:textColor="#8B8B8D"
-                    android:textSize="14sp" />
-                <TextView
-                    android:id="@+id/tvBrightnessValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="75%"
-                    android:textColor="#1A1A1A"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <SeekBar
-                android:id="@+id/seekBrightness"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:max="100"
-                android:progress="75"
-                android:progressTint="#0A84FF"
-                android:thumbTint="#0A84FF" />
-
-            <View
-                android:id="@+id/dividerBrightness"
-                android:layout_width="match_parent" android:layout_height="1dp"
-                android:layout_marginTop="10dp" android:layout_marginBottom="14dp" android:background="#EFEFEF" />
-
-            <!-- Power row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -178,47 +134,56 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Power"
+                    android:text="Auto shutoff in"
                     android:textColor="#8B8B8D"
                     android:textSize="14sp" />
                 <TextView
-                    android:id="@+id/tvPowerValue"
+                    android:id="@+id/tvTimerValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
-                    android:text="15 W"
-                    android:textColor="#1A1A1A"
-                    android:textSize="14sp" />
+                    android:text="00:00"
+                    android:textColor="#FF3B30"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <View android:layout_width="match_parent" android:layout_height="1dp"
                 android:layout_marginTop="14dp" android:layout_marginBottom="14dp" android:background="#EFEFEF" />
 
-            <!-- Usage row -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Max runtime"
+                android:textColor="#8B8B8D"
+                android:textSize="13sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-                <TextView
+                <SeekBar
+                    android:id="@+id/seekMaxRuntime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Today's Usage"
-                    android:textColor="#8B8B8D"
-                    android:textSize="14sp" />
+                    android:max="60"
+                    android:progress="30"
+                    android:progressTint="#FF3B30"
+                    android:thumbTint="#FF3B30" />
                 <TextView
-                    android:id="@+id/tvUsageValue"
+                    android:id="@+id/tvRuntimeValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
                     android:fontFamily="sans-serif-medium"
-                    android:text="3.6 kWh • 4h 30m"
+                    android:text="30 min"
                     android:textColor="#1A1A1A"
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- ON / OFF -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -232,10 +197,9 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_pill_green_solid"
-                android:drawablePadding="8dp"
                 android:gravity="center"
                 android:fontFamily="sans-serif-medium"
-                android:text="⏻  ON"
+                android:text="  ON"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp" />
 
@@ -248,42 +212,31 @@
                 android:background="@drawable/bg_pill_red_solid"
                 android:gravity="center"
                 android:fontFamily="sans-serif-medium"
-                android:text="⏻  OFF"
+                android:text="  OFF"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp" />
         </LinearLayout>
 
-        <!-- Schedule / Usage Report -->
-        <LinearLayout
+        <TextView
+            android:id="@+id/btnSchedule"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_pill_outline_gray"
+            android:gravity="center"
+            android:text="  Schedule"
+            android:textColor="#1A1A1A"
+            android:textSize="14sp" />
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/btnSchedule"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_pill_outline_gray"
-                android:gravity="center"
-                android:text="🗓  Schedule"
-                android:textColor="#1A1A1A"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/btnUsageReport"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_pill_outline_gray"
-                android:gravity="center"
-                android:text="📊  Usage Report"
-                android:textColor="#1A1A1A"
-                android:textSize="14sp" />
-        </LinearLayout>
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif"
+            android:text="   This device will automatically turn off when the timer expires. For reliable off-device enforcement, deploy a Firebase Cloud Function or WorkManager task."
+            android:textColor="#8B8B8D"
+            android:textSize="11sp"
+            android:lineSpacingExtra="2dp" />
 
     </LinearLayout>
 </ScrollView>

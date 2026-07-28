@@ -178,6 +178,26 @@ class AddDeviceActivity : AppCompatActivity() {
                 R.drawable.ic_iron
             ),
             SelectableItem(
+                "outlet",
+                "Outlet",
+                R.drawable.ic_plug
+            ),
+            SelectableItem(
+                "multi_switch",
+                "Multi Switch",
+                R.drawable.ic_switch_multi
+            ),
+            SelectableItem(
+                "hazard_appliance",
+                "Hazard Appliance",
+                R.drawable.ic_iron
+            ),
+            SelectableItem(
+                "camera",
+                "Security Camera",
+                R.drawable.ic_camera
+            ),
+            SelectableItem(
                 "bathroom_heater",
                 "Heater",
                 R.drawable.ic_bathroom_heater
