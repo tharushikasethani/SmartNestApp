@@ -81,6 +81,17 @@ class AddFloorActivity : AppCompatActivity() {
     }
 
     private fun loadFloorTypes(rv: RecyclerView) {
+        val defaultItems = listOf(
+            SelectableItem("ground", "Ground Floor", R.drawable.ic_floors),
+            SelectableItem("first", "First Floor", R.drawable.ic_floors),
+            SelectableItem("second", "Second Floor", R.drawable.ic_floors),
+            SelectableItem("third", "Third Floor", R.drawable.ic_floors),
+            SelectableItem("fourth", "Fourth Floor", R.drawable.ic_floors),
+            SelectableItem("basement", "Basement", R.drawable.ic_basement),
+            SelectableItem("attic", "Attic", R.drawable.ic_attic),
+            SelectableItem("garage", "Garage", R.drawable.ic_garage)
+        )
+
         database.getReference("floorTypes")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -88,29 +99,25 @@ class AddFloorActivity : AppCompatActivity() {
                     for (child in snapshot.children) {
                         val id = child.key ?: continue
                         val catalogItem = child.getValue(TypeCatalogItem::class.java) ?: continue
-                        items.add(
-                            SelectableItem(
-                                id = id,
-                                label = catalogItem.label,
-                                iconRes = IconMapper.resolve(catalogItem.icon)
+                        if (catalogItem.label.isNotEmpty()) {
+                            items.add(
+                                SelectableItem(
+                                    id = id,
+                                    label = catalogItem.label,
+                                    iconRes = IconMapper.resolve(catalogItem.icon)
+                                )
                             )
-                        )
+                        }
                     }
 
-                    if (items.isEmpty()) {
-                        items.addAll(listOf(
-                            SelectableItem("ground", "Ground Floor", R.drawable.ic_floors),
-                            SelectableItem("first", "First Floor", R.drawable.ic_floors),
-                            SelectableItem("second", "Second Floor", R.drawable.ic_floors)
-                        ))
-                    }
-
-                    adapter = SelectableGridAdapter(items, selectedIndex = 0) { _, _ -> }
+                    val finalItems = if (items.isNotEmpty()) items else defaultItems
+                    adapter = SelectableGridAdapter(finalItems, showLabel = true, selectedIndex = 0) { _, _ -> }
                     rv.adapter = adapter
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@AddFloorActivity, "Failed to load floor types: ${error.message}", Toast.LENGTH_SHORT).show()
+                    adapter = SelectableGridAdapter(defaultItems, showLabel = true, selectedIndex = 0) { _, _ -> }
+                    rv.adapter = adapter
                 }
             })
     }

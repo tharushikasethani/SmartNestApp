@@ -15,7 +15,6 @@ import com.example.smartnest.model.SelectableItem
 import com.example.smartnest.model.TypeCatalogItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
@@ -48,6 +47,19 @@ class AddHomeActivity : AppCompatActivity() {
     }
 
     private fun loadHomeTypes(rv: RecyclerView) {
+        // We will start with standard defaults so the user always sees something
+        val defaultItems = listOf(
+            SelectableItem("house", "Family House", R.drawable.ic_house_family),
+            SelectableItem("apartment", "Apartment", R.drawable.ic_apartment),
+            SelectableItem("villa", "Villa", R.drawable.ic_villa),
+            SelectableItem("condominium", "Condo", R.drawable.ic_condominium),
+            SelectableItem("townhouse", "Townhouse", R.drawable.ic_townhouse),
+            SelectableItem("bungalow", "Bungalow", R.drawable.ic_cottage),
+            SelectableItem("duplex", "Duplex", R.drawable.ic_duplex),
+            SelectableItem("hostel", "Hostel", R.drawable.ic_hostel),
+            SelectableItem("Other", "Other", R.drawable.ic_others),
+        )
+        
         database.getReference("homeTypes")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -55,28 +67,27 @@ class AddHomeActivity : AppCompatActivity() {
                     for (child in snapshot.children) {
                         val id = child.key ?: continue
                         val catalogItem = child.getValue(TypeCatalogItem::class.java) ?: continue
-                        items.add(
-                            SelectableItem(
-                                id = id,
-                                label = catalogItem.label,
-                                iconRes = IconMapper.resolve(catalogItem.icon)
+                        if (catalogItem.label.isNotEmpty()) {
+                            items.add(
+                                SelectableItem(
+                                    id = id,
+                                    label = catalogItem.label,
+                                    iconRes = IconMapper.resolve(catalogItem.icon)
+                                )
                             )
-                        )
+                        }
                     }
 
-                    if (items.isEmpty()) {
-                        items.addAll(listOf(
-                            SelectableItem("house", "Family House", R.drawable.ic_house_family),
-                            SelectableItem("apartment", "Apartment", R.drawable.ic_apartment)
-                        ))
-                    }
-
-                    adapter = SelectableGridAdapter(items, selectedIndex = 0) { _, _ -> }
+                    // If database provides types, use them. Otherwise use defaults.
+                    val finalItems = if (items.isNotEmpty()) items else defaultItems
+                    
+                    adapter = SelectableGridAdapter(finalItems, selectedIndex = 0) { _, _ -> }
                     rv.adapter = adapter
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@AddHomeActivity, "Failed to load home types: ${error.message}", Toast.LENGTH_SHORT).show()
+                    adapter = SelectableGridAdapter(defaultItems, selectedIndex = 0) { _, _ -> }
+                    rv.adapter = adapter
                 }
             })
     }
@@ -95,7 +106,7 @@ class AddHomeActivity : AppCompatActivity() {
             return
         }
         if (!::adapter.isInitialized) {
-            Toast.makeText(this, "Home types still loading, try again", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Home types still loading...", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -114,7 +125,7 @@ class AddHomeActivity : AppCompatActivity() {
                 finish()
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Failed to save: ${it.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }

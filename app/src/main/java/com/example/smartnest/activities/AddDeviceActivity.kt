@@ -98,6 +98,98 @@ class AddDeviceActivity : AppCompatActivity() {
     }
 
     private fun loadDeviceTypes(rv: RecyclerView) {
+        val defaultItems = listOf(
+
+            SelectableItem(
+                "light",
+                "Light",
+                R.drawable.ic_light
+            ),
+
+            SelectableItem(
+                "blinds",
+                "Blinds",
+                R.drawable.ic_blinds
+            ),
+
+            SelectableItem(
+                "tv",
+                "TV",
+                R.drawable.ic_tv
+            ),
+
+            SelectableItem(
+                "deck_camera",
+                "Deck Camera",
+                R.drawable.ic_camera
+            ),
+
+            SelectableItem(
+                "refrigerator",
+                "Refrigerator",
+                R.drawable.ic_refrigerator
+            ),
+
+            SelectableItem(
+                "kitchen_oven",
+                "Kitchen Oven",
+                R.drawable.ic_oven
+            ),
+
+            SelectableItem(
+                "ceiling_fan",
+                "Ceiling Fan",
+                R.drawable.ic_fan
+            ),
+
+            SelectableItem(
+                "smart_plug",
+                "Smart Plug",
+                R.drawable.ic_plug
+            ),
+
+            SelectableItem(
+                "temperature_sensor",
+                "Air Conditioner",
+                R.drawable.ic_temperature_sensor
+            ),
+
+            SelectableItem(
+                "speaker",
+                "Smart Speaker",
+                R.drawable.ic_speaker
+            ),
+
+            SelectableItem(
+                "door_lock",
+                "Door Lock",
+                R.drawable.ic_lock
+            ),
+
+            SelectableItem(
+                "washing_machine",
+                "Washing Machine",
+                R.drawable.ic_washing_machine
+            ),
+
+            SelectableItem(
+                "iron",
+                "Iron",
+                R.drawable.ic_iron
+            ),
+            SelectableItem(
+                "bathroom_heater",
+                "Heater",
+                R.drawable.ic_bathroom_heater
+            ),
+
+            SelectableItem(
+                "others",
+                "Others",
+                R.drawable.ic_grid
+            )
+        )
+
         database.getReference("deviceTypes")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -105,29 +197,25 @@ class AddDeviceActivity : AppCompatActivity() {
                     for (child in snapshot.children) {
                         val id = child.key ?: continue
                         val catalogItem = child.getValue(TypeCatalogItem::class.java) ?: continue
-                        items.add(
-                            SelectableItem(
-                                id = id,
-                                label = catalogItem.label,
-                                iconRes = IconMapper.resolve(catalogItem.icon)
+                        if (catalogItem.label.isNotEmpty()) {
+                            items.add(
+                                SelectableItem(
+                                    id = id,
+                                    label = catalogItem.label,
+                                    iconRes = IconMapper.resolve(catalogItem.icon)
+                                )
                             )
-                        )
+                        }
                     }
 
-                    if (items.isEmpty()) {
-                        items.addAll(listOf(
-                            SelectableItem("light", "Light", R.drawable.ic_lamp),
-                            SelectableItem("fan", "Fan", R.drawable.ic_fan),
-                            SelectableItem("camera", "Camera", R.drawable.ic_camera)
-                        ))
-                    }
-
-                    adapter = SelectableGridAdapter(items, selectedIndex = 0) { _, _ -> }
+                    val finalItems = if (items.isNotEmpty()) items else defaultItems
+                    adapter = SelectableGridAdapter(finalItems, showLabel = true, selectedIndex = 0) { _, _ -> }
                     rv.adapter = adapter
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@AddDeviceActivity, "Failed to load: ${error.message}", Toast.LENGTH_SHORT).show()
+                    adapter = SelectableGridAdapter(defaultItems, showLabel = true, selectedIndex = 0) { _, _ -> }
+                    rv.adapter = adapter
                 }
             })
     }

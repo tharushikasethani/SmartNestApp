@@ -39,7 +39,7 @@ class AddRoomActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
 
         val rv = findViewById<RecyclerView>(R.id.rvRoomIcons)
-        rv.layoutManager = GridLayoutManager(this, 4)
+        rv.layoutManager = GridLayoutManager(this, 3)
 
         loadRoomTypes(rv)
 
@@ -85,6 +85,74 @@ class AddRoomActivity : AppCompatActivity() {
     }
 
     private fun loadRoomTypes(rv: RecyclerView) {
+        val defaultItems = listOf(
+            SelectableItem(
+                "porch",
+                "Porch",
+                R.drawable.ic_porch
+            ),
+
+            SelectableItem(
+                "living_room",
+                "Living Room",
+                R.drawable.ic_sofa
+            ),
+
+            SelectableItem(
+                "media_room",
+                "Media Room",
+                R.drawable.ic_media_room
+            ),
+
+            SelectableItem(
+                "primary_suite",
+                "Primary Suite",
+                R.drawable.ic_primary_suite
+            ),
+
+            SelectableItem(
+                "bedroom",
+                "Bedroom",
+                R.drawable.ic_bed
+            ),
+
+            SelectableItem(
+                "dining_room",
+                "Dining Room",
+                R.drawable.ic_dining_room
+            ),
+
+            SelectableItem(
+                "kitchen",
+                "Kitchen",
+                R.drawable.ic_kitchen
+            ),
+
+            SelectableItem(
+                "bathroom",
+                "Bathroom",
+                R.drawable.ic_bath
+            ),
+
+            SelectableItem(
+                "laundry",
+                "Laundry",
+                R.drawable.ic_laundry
+            ),
+
+            SelectableItem(
+                "garage",
+                "Garage",
+                R.drawable.ic_garage
+            ),
+
+            SelectableItem(
+                "others",
+                "Others",
+                R.drawable.ic_grid
+            )
+        )
+
         database.getReference("roomTypes")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -92,30 +160,25 @@ class AddRoomActivity : AppCompatActivity() {
                     for (child in snapshot.children) {
                         val id = child.key ?: continue
                         val catalogItem = child.getValue(TypeCatalogItem::class.java) ?: continue
-                        items.add(
-                            SelectableItem(
-                                id = id,
-                                label = catalogItem.label,
-                                iconRes = IconMapper.resolve(catalogItem.icon)
+                        if (catalogItem.label.isNotEmpty()) {
+                            items.add(
+                                SelectableItem(
+                                    id = id,
+                                    label = catalogItem.label,
+                                    iconRes = IconMapper.resolve(catalogItem.icon)
+                                )
                             )
-                        )
+                        }
                     }
 
-                    if (items.isEmpty()) {
-                        items.addAll(listOf(
-                            SelectableItem("sofa", "Living Room", R.drawable.ic_sofa),
-                            SelectableItem("kitchen", "Kitchen", R.drawable.ic_kitchen),
-                            SelectableItem("bed", "Bedroom", R.drawable.ic_bed),
-                            SelectableItem("bath", "Bathroom", R.drawable.ic_bath)
-                        ))
-                    }
-
-                    adapter = SelectableGridAdapter(items, showLabel = true, selectedIndex = 0) { _, _ -> }
+                    val finalItems = if (items.isNotEmpty()) items else defaultItems
+                    adapter = SelectableGridAdapter(finalItems, showLabel = true, selectedIndex = 0) { _, _ -> }
                     rv.adapter = adapter
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@AddRoomActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+                    adapter = SelectableGridAdapter(defaultItems, showLabel = true, selectedIndex = 0) { _, _ -> }
+                    rv.adapter = adapter
                 }
             })
     }
