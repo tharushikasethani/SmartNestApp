@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SmartNest | Hardware Monitoring & Control Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Ambient background with image -->
+  <div class="bg-decor" aria-hidden="true">
+    <div class="bg-image" style="background-image: url('background.jpg');"></div>
+    <div class="blob blob-a"></div>
+    <div class="blob blob-b"></div>
+    <div class="blob blob-c"></div>
+    <div class="grid-overlay"></div>
+    <div class="grid-highlight"></div>
+  </div>
+
+  <!-- ===== Header ===== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand" id="brandHome" role="button" tabindex="0" title="Back to homes">
+        <span class="brand-icon">🏠</span>
+        <div class="brand-text">
+          <h1>SmartNest</h1>
+          <p>Hardware Monitoring &amp; Control Simulator</p>
+        </div>
+      </div>
+
+      <!-- Breadcrumb: shows where you are, doubles as back-navigation -->
+      <nav class="breadcrumb" id="breadcrumb" aria-label="Navigation"></nav>
+
+      <div class="topbar-status">
+        <div class="pulse-dot"></div>
+        <div class="status-copy">
+          <span class="status-label">Realtime link</span>
+          <span class="status-value" id="linkText">simulated · local state</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- App root: screens are rendered into here by script.js -->
+  <main id="app" class="dashboard"></main>
+
+  <!--<footer class="page-footer">
+    <p>SmartNest Hardware Simulator &middot; data flows through <code>homes → floors → devices</code>, mirroring a flat Firebase Realtime Database tree for a direct swap-in later.</p>
+  </footer>-->
+
+<script src="script.js"></script>
+</body>
+</html>
