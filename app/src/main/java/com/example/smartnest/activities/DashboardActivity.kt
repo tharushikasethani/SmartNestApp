@@ -1,6 +1,5 @@
 package com.example.smartnest.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +34,7 @@ class DashboardActivity : AppCompatActivity() {
         val rvActivity = findViewById<RecyclerView>(R.id.rvActivity)
         rvActivity.layoutManager = LinearLayoutManager(this)
         rvActivity.adapter = ActivityAdapter(recentActivity)
+
 
         findViewById<FrameLayout>(R.id.btnMenu).setOnClickListener {
             // TODO: open a drawer or settings menu
