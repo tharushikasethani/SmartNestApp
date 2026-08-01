@@ -12,8 +12,8 @@
 
     <!-- Icon Container -->
     <FrameLayout
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
         android:background="@drawable/bg_icon_circle_orange">
         <ImageView
             android:id="@+id/ivActivityIcon"
@@ -21,7 +21,7 @@
             android:layout_height="20dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_alert"
-            app:tint="#F0532D" />
+            app:tint="@color/orange_primary" />
     </FrameLayout>
 
     <!-- Text Content -->
@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Living Room Light turned ON"
-            android:textColor="#1A1A2E"
+            android:textColor="@color/text_primary"
             android:textSize="13sp" />
 
         <TextView
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:text="10:30 AM"
-            android:textColor="#8B8B9E"
+            android:textColor="@color/text_secondary"
             android:textSize="11sp" />
     </LinearLayout>
 
@@ -55,6 +55,6 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:src="@drawable/ic_chevron_right"
-        app:tint="#C8C8D8" />
+        app:tint="@color/text_tertiary" />
 
 </LinearLayout>

@@ -47,8 +47,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Good Morning ✨"
-                            android:textColor="#8B8B9E"
+                            android:textColor="@color/text_secondary"
                             android:textSize="13sp"
+                            android:fontFamily="sans-serif-medium"
                             android:letterSpacing="0.02" />
 
                         <TextView
@@ -58,7 +59,7 @@
                             android:layout_marginTop="3dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="Randuni 👋"
-                            android:textColor="#1A1A2E"
+                            android:textColor="@color/text_primary"
                             android:textSize="24sp" />
                     </LinearLayout>
 
@@ -67,14 +68,14 @@
                         android:layout_width="44dp"
                         android:layout_height="44dp"
                         android:layout_marginEnd="10dp"
-                        android:background="@drawable/bg_circle_white_light"
-                        android:elevation="3dp">
+                        android:background="@drawable/bg_icon_circle_orange"
+                        android:elevation="1dp">
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_bell"
-                            app:tint="#5A5A7A" />
+                            app:tint="@color/orange_primary" />
                     </FrameLayout>
 
                     <!-- Menu Button -->
@@ -82,23 +83,23 @@
                         android:id="@+id/btnMenu"
                         android:layout_width="44dp"
                         android:layout_height="44dp"
-                        android:background="@drawable/bg_circle_white_light"
-                        android:elevation="3dp">
+                        android:background="@drawable/bg_icon_circle_orange"
+                        android:elevation="1dp">
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_menu"
-                            app:tint="#5A5A7A" />
+                            app:tint="@color/orange_primary" />
                     </FrameLayout>
                 </LinearLayout>
 
-                <!-- ── HERO HOME CARD ── -->
+                <!-- ── HERO HOME CARD (white) ── -->
                 <LinearLayout
                     android:id="@+id/cardHome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginTop="26dp"
                     android:background="@drawable/bg_hero_card_light"
                     android:elevation="6dp"
                     android:orientation="vertical"
@@ -112,15 +113,15 @@
 
                         <!-- House Icon Circle -->
                         <FrameLayout
-                            android:layout_width="54dp"
-                            android:layout_height="54dp"
-                            android:background="@drawable/bg_icon_white_circle">
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:background="@drawable/bg_icon_circle_orange">
                             <ImageView
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_house_family"
-                                app:tint="#FFFFFF" />
+                                app:tint="@color/orange_primary" />
                         </FrameLayout>
 
                         <LinearLayout
@@ -136,7 +137,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="sans-serif-medium"
                                 android:text="Family House"
-                                android:textColor="#FFFFFF"
+                                android:textColor="@color/text_primary"
                                 android:textSize="17sp" />
 
                             <TextView
@@ -145,7 +146,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="3dp"
                                 android:text="2 Floors  •  18 Devices"
-                                android:textColor="#DDFFFFFF"
+                                android:textColor="@color/text_secondary"
                                 android:textSize="12sp" />
                         </LinearLayout>
 
@@ -154,12 +155,12 @@
                             android:id="@+id/tvViewHome"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_icon_white_circle"
+                            android:background="@drawable/bg_pill_orange_solid"
                             android:fontFamily="sans-serif-medium"
-                            android:paddingLeft="14dp"
-                            android:paddingTop="8dp"
-                            android:paddingRight="14dp"
-                            android:paddingBottom="8dp"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="9dp"
+                            android:paddingRight="16dp"
+                            android:paddingBottom="9dp"
                             android:text="View ›"
                             android:textColor="#FFFFFF"
                             android:textSize="12sp" />
@@ -171,8 +172,7 @@
                         android:layout_height="1dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="4dp"
-                        android:alpha="0.25"
-                        android:background="#FFFFFF" />
+                        android:background="@color/divider" />
 
                     <!-- Status Row -->
                     <LinearLayout
@@ -193,14 +193,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="System Online"
-                            android:textColor="#DDFFFFFF"
+                            android:textColor="@color/text_secondary"
                             android:textSize="12sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Last sync: just now"
-                            android:textColor="#AAFFFFFF"
+                            android:textColor="@color/text_tertiary"
                             android:textSize="11sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -218,8 +218,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="6dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_stat_card_orange"
-                        android:elevation="3dp"
+                        android:background="@drawable/bg_card_white"
+                        android:elevation="2dp"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingTop="18dp"
@@ -234,7 +234,7 @@
                                 android:layout_height="20dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_plug"
-                                app:tint="#F0532D" />
+                                app:tint="@color/orange_primary" />
                         </FrameLayout>
 
                         <TextView
@@ -244,7 +244,7 @@
                             android:layout_marginTop="8dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="18"
-                            android:textColor="#1A1A2E"
+                            android:textColor="@color/text_primary"
                             android:textSize="22sp" />
 
                         <TextView
@@ -252,7 +252,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="Devices"
-                            android:textColor="#8B8B9E"
+                            android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
                     </LinearLayout>
 
@@ -263,8 +263,8 @@
                         android:layout_marginStart="6dp"
                         android:layout_marginEnd="6dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_stat_card_green"
-                        android:elevation="3dp"
+                        android:background="@drawable/bg_card_white"
+                        android:elevation="2dp"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingTop="18dp"
@@ -279,7 +279,7 @@
                                 android:layout_height="20dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_power"
-                                app:tint="#2E9E5B" />
+                                app:tint="@color/status_on_green" />
                         </FrameLayout>
 
                         <TextView
@@ -297,7 +297,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="Online"
-                            android:textColor="#8B8B9E"
+                            android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
                     </LinearLayout>
 
@@ -307,8 +307,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_stat_card_red"
-                        android:elevation="3dp"
+                        android:background="@drawable/bg_card_white"
+                        android:elevation="2dp"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingTop="18dp"
@@ -323,7 +323,7 @@
                                 android:layout_height="20dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_warning_small"
-                                app:tint="#D9491F" />
+                                app:tint="@color/orange_dark" />
                         </FrameLayout>
 
                         <TextView
@@ -341,7 +341,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="Offline"
-                            android:textColor="#8B8B9E"
+                            android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -360,14 +360,14 @@
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
                         android:text="Quick Actions"
-                        android:textColor="#1A1A2E"
+                        android:textColor="@color/text_primary"
                         android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="See all"
-                        android:textColor="#F0532D"
+                        android:textColor="@color/orange_primary"
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -386,7 +386,7 @@
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_action_tile_active_light"
-                        android:elevation="3dp"
+                        android:elevation="2dp"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingTop="18dp"
@@ -401,7 +401,7 @@
                                 android:layout_height="22dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_floors"
-                                app:tint="#F0532D" />
+                                app:tint="@color/orange_primary" />
                         </FrameLayout>
 
                         <TextView
@@ -410,7 +410,7 @@
                             android:layout_marginTop="10dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="Floors"
-                            android:textColor="#F0532D"
+                            android:textColor="@color/orange_primary"
                             android:textSize="11sp" />
                     </LinearLayout>
 
@@ -423,7 +423,7 @@
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_action_tile_light"
-                        android:elevation="3dp"
+                        android:elevation="2dp"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingTop="18dp"
@@ -432,13 +432,13 @@
                         <FrameLayout
                             android:layout_width="42dp"
                             android:layout_height="42dp"
-                            android:background="@drawable/bg_icon_circle_blue">
+                            android:background="@drawable/bg_icon_circle_orange">
                             <ImageView
                                 android:layout_width="22dp"
                                 android:layout_height="22dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_camera"
-                                app:tint="#5A5A9E" />
+                                app:tint="@color/orange_primary" />
                         </FrameLayout>
 
                         <TextView
@@ -447,7 +447,7 @@
                             android:layout_marginTop="10dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="Cameras"
-                            android:textColor="#5A5A7A"
+                            android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
                     </LinearLayout>
 
@@ -460,7 +460,7 @@
                         android:layout_marginEnd="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_action_tile_light"
-                        android:elevation="3dp"
+                        android:elevation="2dp"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingTop="18dp"
@@ -469,13 +469,13 @@
                         <FrameLayout
                             android:layout_width="42dp"
                             android:layout_height="42dp"
-                            android:background="@drawable/bg_icon_circle_blue">
+                            android:background="@drawable/bg_icon_circle_orange">
                             <ImageView
                                 android:layout_width="22dp"
                                 android:layout_height="22dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_scenes"
-                                app:tint="#5A5A9E" />
+                                app:tint="@color/orange_primary" />
                         </FrameLayout>
 
                         <TextView
@@ -484,7 +484,7 @@
                             android:layout_marginTop="10dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="Scenes"
-                            android:textColor="#5A5A7A"
+                            android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
                     </LinearLayout>
 
@@ -496,7 +496,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_action_tile_light"
-                        android:elevation="3dp"
+                        android:elevation="2dp"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingTop="18dp"
@@ -505,13 +505,13 @@
                         <FrameLayout
                             android:layout_width="42dp"
                             android:layout_height="42dp"
-                            android:background="@drawable/bg_icon_circle_blue">
+                            android:background="@drawable/bg_icon_circle_orange">
                             <ImageView
                                 android:layout_width="22dp"
                                 android:layout_height="22dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_reports"
-                                app:tint="#5A5A9E" />
+                                app:tint="@color/orange_primary" />
                         </FrameLayout>
 
                         <TextView
@@ -520,7 +520,7 @@
                             android:layout_marginTop="10dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="Reports"
-                            android:textColor="#5A5A7A"
+                            android:textColor="@color/text_secondary"
                             android:textSize="11sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -539,14 +539,14 @@
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
                         android:text="Recent Activity"
-                        android:textColor="#1A1A2E"
+                        android:textColor="@color/text_primary"
                         android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="View all"
-                        android:textColor="#F0532D"
+                        android:textColor="@color/orange_primary"
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -566,7 +566,7 @@
             </LinearLayout>
         </ScrollView>
 
-        <!-- ── PREMIUM LIGHT BOTTOM NAV ── -->
+        <!-- ── BOTTOM NAV (white) ── -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -610,7 +610,7 @@
                     android:layout_marginTop="4dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="Home"
-                    android:textColor="#F0532D"
+                    android:textColor="@color/orange_primary"
                     android:textSize="10sp" />
             </LinearLayout>
 
@@ -629,14 +629,14 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:src="@drawable/ic_reports"
-                    app:tint="#B0B0C8" />
+                    app:tint="@color/text_tertiary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="Reports"
-                    android:textColor="#B0B0C8"
+                    android:textColor="@color/text_tertiary"
                     android:textSize="10sp" />
             </LinearLayout>
 
@@ -655,14 +655,14 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:src="@drawable/ic_alert"
-                    app:tint="#B0B0C8" />
+                    app:tint="@color/text_tertiary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="Alerts"
-                    android:textColor="#B0B0C8"
+                    android:textColor="@color/text_tertiary"
                     android:textSize="10sp" />
             </LinearLayout>
 
@@ -681,14 +681,14 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:src="@drawable/ic_settings"
-                    app:tint="#B0B0C8" />
+                    app:tint="@color/text_tertiary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="Settings"
-                    android:textColor="#B0B0C8"
+                    android:textColor="@color/text_tertiary"
                     android:textSize="10sp" />
             </LinearLayout>
 

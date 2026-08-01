@@ -1,6 +1,7 @@
 package com.example.smartnest.activities
 
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
@@ -41,6 +42,7 @@ class DeviceControlActivity : AppCompatActivity() {
 
         val ivIcon = findViewById<ImageView>(R.id.ivDeviceIcon)
         ivIcon.setImageResource(IconMapper.resolve(deviceType))
+        val blinkAnim = AnimationUtils.loadAnimation(this, R.anim.blink)
 
         val tvStatus = findViewById<TextView>(R.id.tvStatusValue)
         val tvBrightness = findViewById<TextView>(R.id.tvBrightnessValue)
@@ -77,6 +79,12 @@ class DeviceControlActivity : AppCompatActivity() {
             tvStatus.setTextColor(
                 if (on) 0xFF34C759.toInt() else 0xFFFF3B30.toInt()
             )
+            if (on && isLight) {
+                ivIcon.startAnimation(blinkAnim)
+            } else {
+                ivIcon.clearAnimation()
+                ivIcon.alpha = 1.0f
+            }
             deviceRef?.child("status")?.setValue(if (on) "ON" else "OFF")
         }
 
@@ -106,19 +114,19 @@ class DeviceControlActivity : AppCompatActivity() {
             }
         })
 
-        findViewById<TextView>(R.id.btnOn).setOnClickListener { updateState(true) }
-        findViewById<TextView>(R.id.btnOff).setOnClickListener { updateState(false) }
+        findViewById<android.view.View>(R.id.btnOn).setOnClickListener { updateState(true) }
+        findViewById<android.view.View>(R.id.btnOff).setOnClickListener { updateState(false) }
 
         findViewById<android.widget.FrameLayout>(R.id.btnBack).setOnClickListener { finish() }
 
-        findViewById<TextView>(R.id.btnSchedule).setOnClickListener {
+        findViewById<android.view.View>(R.id.btnSchedule).setOnClickListener {
             val intent = android.content.Intent(this, ScheduleActivity::class.java)
             intent.putExtra("device_name", deviceName)
             intent.putExtra("device_id", deviceId ?: "")
             startActivity(intent)
         }
 
-        findViewById<TextView>(R.id.btnUsageReport).setOnClickListener {
+        findViewById<android.view.View>(R.id.btnUsageReport).setOnClickListener {
         }
 
         loadState()

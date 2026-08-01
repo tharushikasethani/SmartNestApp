@@ -35,7 +35,7 @@ class RoomListActivity : AppCompatActivity() {
         floorName = intent.getStringExtra("floorName") ?: "My Rooms"
 
         findViewById<android.widget.TextView>(R.id.txtTitle)?.text = floorName
-        findViewById<android.widget.ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<android.widget.FrameLayout>(R.id.btnBack).setOnClickListener { finish() }
 
         val rv = findViewById<RecyclerView>(R.id.rvList)
         rv.layoutManager = LinearLayoutManager(this)

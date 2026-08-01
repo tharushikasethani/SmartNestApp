@@ -40,7 +40,7 @@ class DeviceListActivity : AppCompatActivity() {
         val roomName = intent.getStringExtra("roomName") ?: "My Devices"
 
         findViewById<android.widget.TextView>(R.id.txtTitle)?.text = roomName
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<android.widget.FrameLayout>(R.id.btnBack).setOnClickListener { finish() }
 
         val rv = findViewById<RecyclerView>(R.id.rvList)
         rv.layoutManager = GridLayoutManager(this, 2)

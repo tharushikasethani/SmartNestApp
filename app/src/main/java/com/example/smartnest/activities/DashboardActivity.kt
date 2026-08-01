@@ -44,16 +44,16 @@ class DashboardActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         // Set username from Firebase auth
-        val displayName = auth.currentUser?.email?.substringBefore("@") ?: "there"
+        val displayName = auth.currentUser?.email?.substringBefore("@") ?: "Alex"
         val nameCapitalized = displayName.replaceFirstChar { it.uppercase() }
-        findViewById<android.widget.TextView>(R.id.txtTitle).text = "$nameCapitalized"
+        findViewById<android.widget.TextView>(R.id.txtTitle).text = "Hi, $nameCapitalized"
 
         // Smart time-of-day greeting
         val greetingText = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
-            in 5..11  -> "Good Morning"
-            in 12..16 -> "Good Afternoon"
-            in 17..20 -> "Good Evening"
-            else      -> "Good Night"
+            in 5..11  -> "Good morning ✨"
+            in 12..16 -> "Good afternoon ☀️"
+            in 17..20 -> "Good evening 🌙"
+            else      -> "Good night 😴"
         }
         findViewById<android.widget.TextView>(R.id.txtWelcome).text = greetingText
 

@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0532D">
+    android:background="@drawable/bg_screen_warm">
+
+    <!-- Subtle decorative blobs -->
+    <View
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="-100dp"
+        android:layout_marginEnd="-100dp"
+        android:background="@drawable/bg_blob_soft" />
+
+    <View
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_gravity="bottom|start"
+        android:layout_marginBottom="-100dp"
+        android:layout_marginStart="-80dp"
+        android:background="@drawable/bg_blob_soft" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -11,30 +29,41 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
+        <!-- Logo -->
+        <FrameLayout
             android:id="@+id/ivLogo"
             android:layout_width="96dp"
             android:layout_height="96dp"
-            android:src="@drawable/ic_logo" />
+            android:background="@drawable/bg_icon_circle_orange">
 
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_home"
+                app:tint="@color/orange_primary"
+                android:contentDescription="SmartNest Logo" />
+        </FrameLayout>
+
+        <!-- App Name -->
         <TextView
             android:id="@+id/tvAppName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="sans-serif-medium"
             android:text="SmartNest"
-            android:textColor="#FFFFFF"
-            android:textSize="26sp" />
+            android:textColor="@color/text_primary"
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/tvTagline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             android:text="Your smart home, simplified"
-            android:textColor="#FFE8E0"
-            android:textSize="13sp" />
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <ProgressBar
@@ -42,6 +71,5 @@
         android:layout_height="28dp"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="48dp"
-        android:indeterminateTint="#FFFFFF" />
-
+        android:indeterminateTint="@color/orange_primary" />
 </FrameLayout>

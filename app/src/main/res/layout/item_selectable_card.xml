@@ -6,25 +6,32 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="#FFFFFF"
     app:strokeWidth="1dp"
-    app:strokeColor="#ECECEC">
+    app:strokeColor="@color/divider">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp">
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp">
 
-        <ImageView
-            android:id="@+id/ivIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_lamp"
-            app:tint="#F0532D" />
+        <FrameLayout
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:background="@drawable/bg_icon_circle_orange">
+            <ImageView
+                android:id="@+id/ivIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_lamp"
+                app:tint="@color/orange_primary" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tvLabel"
@@ -33,7 +40,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-medium"
             android:text="Light"
-            android:textColor="#1A1A1A"
+            android:textColor="@color/text_primary"
             android:textSize="12sp" />
 
     </LinearLayout>

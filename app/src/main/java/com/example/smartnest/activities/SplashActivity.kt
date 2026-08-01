@@ -15,7 +15,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val logo = findViewById<android.widget.ImageView>(R.id.ivLogo)
+        val logo = findViewById<android.view.View>(R.id.ivLogo)
         val appName = findViewById<android.widget.TextView>(R.id.tvAppName)
         val tagline = findViewById<android.widget.TextView>(R.id.tvTagline)
 
