@@ -1,126 +1,24 @@
-/* =========================================================
-   SmartNest — Hardware Simulator  ·  script.js
 
-   NAVIGATION:  Homes → Floors → Floor Plan (full-width)
-   INTERACTION: tap a device icon on the plan → modal popup
-
-   DATA mirrors Firebase Realtime Database:
-     homes/  floors/  devices/
-
-   Firebase swap points marked with  ← FIREBASE
-   ========================================================= */
+   import {
+    ref,
+    onValue,
+    update
+} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
 
 (function () {
   "use strict";
 
-  /* ============================================================
-     1. DATA
-     ============================================================ */
+  const homes = {};
+  const floors = {};
+  const devices = {};
 
-  const homes = {
-    home001: {
-      id: "home001",
-      name: "Green Valley Residence",
-      address: "No. 24, Park Road, Colombo",
-      icon: "🏡",
-      image: "images/home001.jpg",
-      tone: ["#1a2f5e", "#0d1b35"],
-      floorIds: ["floor001", "floor002"],
-    },
-    home002: {
-      id: "home002",
-      name: "Lake View Apartment",
-      address: "Unit 12B, Marine Drive",
-      icon: "🏢",
-      image: "images/home002.jpg",
-      tone: ["#0d3322", "#061a14"],
-      floorIds: ["floor003"],
-    },
-  };
+  const USER_ID = "rlLqUU2AqcUjBjq03u4h8z8w1eK2";
+  const DEFAULT_VIEWBOX = "0 0 860 570";
+  const ROOM_PALETTE = ["#dbeafe", "#dcfce7", "#fef3c7", "#ffe4e6", "#ede9fe", "#cffafe"];
+  const HOME_IMAGES = ["images/home001.jpg", "images/home002.jpg", "images/image3.jpg"];
+  const FLOOR_IMAGES = ["images/floor1.jpg", "images/floor2.jpg", "images/floor2_2.jpg", "images/floor3.jpg"];
+  let firebaseBasePath = USER_ID;
 
-  const floors = {
-    floor001: {
-      id: "floor001", homeId: "home001", name: "Ground Floor", image: "images/floor1.jpg",
-      viewBox: "0 0 860 570",
-      rooms: [
-        { id: "media", label: "Media Room", color: "#aecbf2", labelColor: "#2a4f8e", x: 10, y: 10, w: 200, h: 340 },
-        { id: "deck", label: "Deck", color: "#cdc3ef", labelColor: "#5a4a9e", x: 210, y: 10, w: 450, h: 100 },
-        { id: "living", label: "Living Room", color: "#b7e6c0", labelColor: "#2e6b42", x: 210, y: 110, w: 450, h: 240 },
-        { id: "kitchen", label: "Kitchen", color: "#f7dd9b", labelColor: "#8b6a1c", x: 660, y: 10, w: 190, h: 340 },
-        // { id: "suite",   label: "Primary Suite", color: "#a6ded2", labelColor: "#1c7262", x: 660, y: 10,  w: 190, h: 340 },
-        { id: "bedroom", label: "Bedroom", color: "#f3bcd4", labelColor: "#933c63", x: 10, y: 350, w: 220, h: 210 },
-        { id: "porch", label: "Porch", color: "#dcd9a6", labelColor: "#706b21", x: 230, y: 350, w: 130, h: 210 },
-        { id: "dining", label: "Dining Room", color: "#a9d8ee", labelColor: "#1f5f82", x: 360, y: 350, w: 190, h: 210 },
-        { id: "laundry", label: "Laundry", color: "#a8c8ef", labelColor: "#25477f", x: 550, y: 350, w: 130, h: 210 },
-        { id: "bathroom", label: "Bathroom", color: "#a7e2cf", labelColor: "#1c7560", x: 680, y: 350, w: 170, h: 210 },
-      ],
-    },
-    floor002: {
-      id: "floor002", homeId: "home001", name: "First Floor", image: "images/floor2.jpg",
-      viewBox: "0 0 860 500",
-      rooms: [
-        { id: "bedroom2", label: "Master Bedroom", color: "#f3bcd4", labelColor: "#933c63", x: 20, y: 20, w: 440, h: 320 },
-        { id: "bathroom2", label: "Bathroom", color: "#a7e2cf", labelColor: "#1c7560", x: 490, y: 20, w: 350, h: 320 },
-        { id: "landing", label: "Landing", color: "#dde8f5", labelColor: "#4b6b9e", x: 20, y: 370, w: 820, h: 110 },
-      ],
-    },
-    floor003: {
-      id: "floor003", homeId: "home002", name: "Main Floor", image: "images/floor3.jpg",
-      viewBox: "0 0 800 480",
-      rooms: [
-        { id: "living2", label: "Living Room", color: "#b7e6c0", labelColor: "#2e6b42", x: 30, y: 30, w: 350, h: 420 },
-        { id: "kitchen2", label: "Kitchen", color: "#f7dd9b", labelColor: "#8b6a1c", x: 410, y: 30, w: 360, h: 420 },
-      ],
-    },
-  };
-
-  const devices = {
-    /* ----- Ground Floor ----- */
-    tv001: { homeId: "home001", floorId: "floor001", room: "media", type: "switch", name: "Media Room TV", icon: "📺", on: false, pos: { x: 40, y: 80 } },
-    lamp001: { homeId: "home001", floorId: "floor001", room: "media", type: "switch", name: "Media Room Lamp", icon: "💡", on: false, pos: { x: 120, y: 150 } },
-
-    camera001: { homeId: "home001", floorId: "floor001", room: "deck", type: "switch", name: "Deck Camera", icon: "📷", on: false, pos: { x: 490, y: 80 } },
-
-    light001: { homeId: "home001", floorId: "floor001", room: "living", type: "switch", name: "Living Room Light", icon: "💡", on: false, pos: { x: 400, y: 185 } },
-    speaker01: { homeId: "home001", floorId: "floor001", room: "living", type: "switch", name: "Living Room Speaker", icon: "🔊", on: false, pos: { x: 250, y: 310 } },
-    sensor001: { homeId: "home001", floorId: "floor001", room: "living", type: "temp", name: "AC", image: "images/devices/AC.png", value: 26, pos: { x: 460, y: 320 } },
-
-    fridge001: { homeId: "home001", floorId: "floor001", room: "kitchen", type: "switch", name: "Refrigerator", image: "images/devices/refrigerator.png", on: false, pos: { x: 700, y: 40 } },
-    oven001: { homeId: "home001", floorId: "floor001", room: "kitchen", type: "switch", name: "Kitchen Oven", icon: "🍳", on: false, pos: { x: 820, y: 130 } },
-    fan001: { homeId: "home001", floorId: "floor001", room: "kitchen", type: "switch", name: "Ceiling Fan", image: "images/devices/ceiling_fan.png", on: false, pos: { x: 750, y: 220 } },
-    plug001: { homeId: "home001", floorId: "floor001", room: "kitchen", type: "switch", name: "Smart Plug", image: "images/devices/smart_plug.png", on: false, watts: 0, pos: { x: 810, y: 295 } },
-    blinds001: { homeId: "home001", floorId: "floor001", room: "kitchen", type: "switch", name: "Blinds", icon: "🪟", on: false, pos: { x: 825, y: 70 } },
-
-    light003: { homeId: "home001", floorId: "floor001", room: "bedroom", type: "switch", name: "Bedroom Light", icon: "💡", on: false, pos: { x: 135, y: 480 } },
-    blinds004: { homeId: "home001", floorId: "floor001", room: "bedroom", type: "switch", name: "Bedroom Blinds", icon: "🪟", on: false, pos: { x: 30, y: 535 } },
-    plug002: { homeId: "home001", floorId: "floor001", room: "bedroom", type: "switch", name: "Bedroom Plug", image: "images/devices/smart_plug.png", on: false, watts: 0, pos: { x: 30, y: 390 } },
-
-    door001: { homeId: "home001", floorId: "floor001", room: "porch", type: "lock", name: "Door Lock", icon: "🔒", on: false, pos: { x: 290, y: 525 } },
-    speaker04: { homeId: "home001", floorId: "floor001", room: "porch", type: "switch", name: "Porch Speaker", icon: "🔊", on: false, pos: { x: 325, y: 525 } },
-
-    camera002: { homeId: "home001", floorId: "floor001", room: "porch", type: "switch", name: "porch Camera", image: "images/devices/camera.png", on: false, pos: { x: 300, y: 350 } },
-    light004: { homeId: "home001", floorId: "floor001", room: "dining", type: "switch", name: "Dining Light", icon: "💡", on: false, pos: { x: 470, y: 410 } },
-    fan002: { homeId: "home001", floorId: "floor001", room: "dining", type: "switch", name: "Dining Fan", image: "images/devices/ceiling_fan.png", on: false, pos: { x: 420, y: 520 } },
-
-    washer001: { homeId: "home001", floorId: "floor001", room: "laundry", type: "switch", name: "Washing Machine", image: "images/devices/washing_machine.png", on: false, watts: 0, pos: { x: 615, y: 400 } },
-    plug003: { homeId: "home001", floorId: "floor001", room: "laundry", type: "switch", name: "Iron", image: "images/devicesiron.png", on: false, watts: 0, pos: { x: 615, y: 520 } },
-
-    //motion001:{ homeId:"home001", floorId:"floor001", room:"bathroom",type:"motion", name:"Bathroom Motion",      icon:"🚪", motion:false, pos:{x:730, y:390} },
-    sensor002: { homeId: "home001", floorId: "floor001", room: "bathroom", type: "switch", name: "Bathroom Heater", image: "images/devices/Heater.png", value: 24, pos: { x: 800, y: 520 } },
-
-    /* ----- First Floor ----- */
-    fan003: { homeId: "home001", floorId: "floor002", room: "bedroom2", type: "switch", name: "Bedroom Fan", image: "images/devices/ceiling_fan.png", on: false, pos: { x: 240, y: 180 } },
-    sensor003: { homeId: "home001", floorId: "floor002", room: "bedroom2", type: "temp", name: "Bedroom Temperature", icon: "🌡️", value: 26, pos: { x: 410, y: 100 } },
-    motion002: { homeId: "home001", floorId: "floor002", room: "bathroom2", type: "motion", name: "Bathroom Motion", icon: "🚪", motion: false, pos: { x: 660, y: 180 } },
-
-    /* ----- Apartment ----- */
-    lightA: { homeId: "home002", floorId: "floor003", room: "living2", type: "switch", name: "Living Room Light", icon: "💡", on: false, pos: { x: 205, y: 240 } },
-    plugA: { homeId: "home002", floorId: "floor003", room: "kitchen2", type: "switch", name: "Kitchen Smart Plug", icon: "⚡", on: false, watts: 0, pos: { x: 590, y: 240 } },
-  };
-
-  /* ============================================================
-     2. NAVIGATION STATE
-     ============================================================ */
 
   const state = { screen: "homes", homeId: null, floorId: null };
   const app = document.getElementById("app");
@@ -161,19 +59,105 @@
       .map(id => ({ id, ...devices[id] }));
   }
 
-  /* ← FIREBASE: replace body with firebase.database().ref(`devices/${id}`).update(patch) */
   function setDeviceState(id, patch) {
-    if (!devices[id]) return;
-    Object.assign(devices[id], patch);
-    // Auto-calc wattage for smart plugs / washer
-    if (["plug001", "plug002", "plug003", "plugA", "washer001"].includes(id)) {
-      devices[id].watts = devices[id].on ? randomBetween(25, 110) : 0;
+    const device = devices[id];
+    if (!device) return;
+
+    const payload = {};
+    if (Object.prototype.hasOwnProperty.call(patch, "on")) {
+      payload.status = patch.on ? "ON" : "OFF";
     }
-    // Refresh the open modal if it shows this device
-    const modal = document.getElementById("deviceModal");
-    if (modal && modal.dataset.deviceId === id) openDeviceModal(id);
-    // Refresh plan icon dot
-    updatePlanIconDot(id);
+    if (Object.prototype.hasOwnProperty.call(patch, "motion")) {
+      payload.motion = !!patch.motion;
+    }
+    if (Object.prototype.hasOwnProperty.call(patch, "value")) {
+      payload.temperature = patch.value;
+    }
+
+    if (Object.keys(payload).length === 0) return;
+    update(ref(window.db, device.firebasePath), payload);
+  }
+
+  function buildFirebasePath(...parts) {
+    return parts.filter(Boolean).join("/");
+  }
+
+  function extractUserRecord(snapshotData) {
+    if (!snapshotData) return null;
+    if (snapshotData.homes) {
+      return { record: snapshotData, basePath: "" };
+    }
+    if (snapshotData[USER_ID]?.homes) {
+      return { record: snapshotData[USER_ID], basePath: USER_ID };
+    }
+    if (snapshotData.users?.[USER_ID]?.homes) {
+      return { record: snapshotData.users[USER_ID], basePath: buildFirebasePath("users", USER_ID) };
+    }
+    return null;
+  }
+
+  function getHomeImage(index) {
+    return HOME_IMAGES[index % HOME_IMAGES.length];
+  }
+
+  function getFloorImage(index) {
+    return FLOOR_IMAGES[index % FLOOR_IMAGES.length];
+  }
+
+  function roomLayoutColor(index) {
+    return ROOM_PALETTE[index % ROOM_PALETTE.length];
+  }
+
+  function layoutRooms(roomEntries) {
+    const count = roomEntries.length;
+    if (!count) return [];
+
+    const viewBoxWidth = 860;
+    const viewBoxHeight = 570;
+    const cols = Math.ceil(Math.sqrt(count));
+    const rows = Math.ceil(count / cols);
+    const paddingX = 48;
+    const paddingY = 48;
+    const gapX = 22;
+    const gapY = 22;
+    const roomWidth = Math.floor((viewBoxWidth - paddingX * 2 - gapX * (cols - 1)) / cols);
+    const roomHeight = Math.floor((viewBoxHeight - paddingY * 2 - gapY * (rows - 1)) / rows);
+
+    return roomEntries.map(([roomId, room], index) => {
+      const column = index % cols;
+      const row = Math.floor(index / cols);
+      return {
+        id: roomId,
+        label: room.name || "Room",
+        icon: room.icon || "room",
+        color: roomLayoutColor(index),
+        labelColor: "#000",
+        x: Math.round(paddingX + column * (roomWidth + gapX)),
+        y: Math.round(paddingY + row * (roomHeight + gapY)),
+        w: roomWidth,
+        h: roomHeight
+      };
+    });
+  }
+
+  function devicePositionsInRoom(room, deviceCount) {
+    if (!room || !deviceCount) return [];
+
+    const columns = Math.min(3, deviceCount);
+    const rows = Math.ceil(deviceCount / columns);
+    const innerWidth = Math.max(1, room.w - 72);
+    const innerHeight = Math.max(1, room.h - 72);
+    const stepX = innerWidth / columns;
+    const stepY = innerHeight / rows;
+
+    return Array.from({ length: deviceCount }, (_, index) => {
+      const column = index % columns;
+      const row = Math.floor(index / columns);
+      return {
+        x: Math.round(room.x + 36 + stepX / 2 + column * stepX),
+        y: Math.round(room.y + 36 + stepY / 2 + row * stepY)
+      };
+    });
   }
 
   /* ============================================================
@@ -233,6 +217,17 @@
       card.addEventListener("click", open);
       card.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") open(); });
     });
+  }
+
+  function renderStatusScreen(title, message, hint = "") {
+    app.innerHTML = `
+    <section class="screen">
+      <div class="screen-head">
+        <h2>${title}</h2>
+        <p>${message}</p>
+      </div>
+      ${hint ? `<div class="plan-panel" style="padding:18px 20px;color:var(--ink-soft);font-size:13px;line-height:1.6">${hint}</div>` : ""}
+    </section>`;
   }
 
   /* ============================================================
@@ -455,8 +450,7 @@
     const simTemp = document.getElementById("modalSimTemp");
     if (simTemp) {
       simTemp.addEventListener("click", () => {
-        devices[id].value = randomBetween(18, 34);
-        openDeviceModal(id); // refresh modal
+        setDeviceState(id, { value: randomBetween(18, 34) });
       });
     }
     const simMotion = document.getElementById("modalSimMotion");
@@ -535,45 +529,189 @@
   (function linkPulse() {
     const el = document.getElementById("linkText");
     if (!el) return;
-    const msgs = ["simulated · local state", "syncing device tree", "simulated · local state", "heartbeat OK"];
+    const msgs = ["firebase · live sync", "syncing device tree", "firebase · live sync", "heartbeat OK"];
     let i = 0;
     setInterval(() => { i = (i + 1) % msgs.length; el.textContent = msgs[i]; }, 3500);
   })();
 
+  function loadFirebaseData() {
+    if (!window.db) {
+      renderStatusScreen(
+        "Firebase not ready",
+        "The database connection has not been initialized yet.",
+        "Check that firebase.js is loading before script.js and that the browser console shows the Firebase connection message."
+      );
+      return;
+    }
+
+    renderStatusScreen(
+      "Loading data",
+      "Connecting to your Firebase Realtime Database...",
+      "If this stays here, the selected database path does not contain the expected user tree or the read is blocked by rules."
+    );
+
+    const dbRef = ref(window.db);
+
+    onValue(dbRef, (snapshot) => {
+      const extracted = extractUserRecord(snapshot.val());
+      if (!extracted) {
+        renderStatusScreen(
+          "No SmartNest data found",
+          "Firebase connected, but the app could not find the expected user record.",
+          `Expected either a root user node named <strong>${USER_ID}</strong> or <strong>users/${USER_ID}</strong> with nested homes/floors/rooms/devices.`
+        );
+        return;
+      }
+      firebaseBasePath = extracted.basePath;
+      convertFirebaseData(extracted.record);
+    });
+  }
+
+  function convertFirebaseData(data) {
+    const openModalId = document.getElementById("deviceModal")?.dataset.deviceId || null;
+
+    Object.keys(homes).forEach(k => delete homes[k]);
+    Object.keys(floors).forEach(k => delete floors[k]);
+    Object.keys(devices).forEach(k => delete devices[k]);
+
+    const homeEntries = Object.entries(data.homes || {});
+    if (!homeEntries.length) {
+      render();
+      return;
+    }
+
+    homeEntries.forEach(([homeId, home], homeIndex) => {
+      const floorEntries = Object.entries(home.floors || {});
+
+      homes[homeId] = {
+        id: homeId,
+        name: home.name || "Home",
+        address: home.address || "No address set",
+        icon: home.type === "house" ? "🏠" : "🏡",
+        image: home.image || getHomeImage(homeIndex),
+        tone: home.tone || ["#7c3aed", "#f97316"],
+        floorIds: []
+      };
+
+      floorEntries.forEach(([floorId, floor], floorIndex) => {
+        const roomEntries = Object.entries(floor.rooms || {});
+        const roomLayouts = layoutRooms(roomEntries);
+
+        homes[homeId].floorIds.push(floorId);
+
+        floors[floorId] = {
+          id: floorId,
+          homeId,
+          name: floor.name || "Floor",
+          image: floor.image || getFloorImage(floorIndex),
+          viewBox: DEFAULT_VIEWBOX,
+          rooms: roomLayouts
+        };
+
+        roomEntries.forEach(([roomId, room], roomIndex) => {
+          const roomLayout = roomLayouts[roomIndex] || roomLayouts[0];
+          const deviceEntries = Object.entries(room.devices || {});
+          const positions = devicePositionsInRoom(roomLayout, deviceEntries.length);
+
+          deviceEntries.forEach(([deviceId, device], deviceIndex) => {
+            const type = convertType(device.deviceType);
+            const fallbackValue = Number.isFinite(device.temperature)
+              ? device.temperature
+              : Number.isFinite(device.value)
+                ? device.value
+                : randomBetween(18, 28);
+
+            devices[deviceId] = {
+              id: deviceId,
+              homeId,
+              floorId,
+              room: roomId,
+              firebasePath: buildFirebasePath(firebaseBasePath, "homes", homeId, "floors", floorId, "rooms", roomId, "devices", deviceId),
+              name: device.deviceName || "Device",
+              type,
+              on: device.status === "ON",
+              motion: !!device.motion,
+              value: type === "temp" ? fallbackValue : undefined,
+              icon: getIcon(device.deviceType),
+              pos: positions[deviceIndex] || { x: 120 + deviceIndex * 72, y: 120 + roomIndex * 72 }
+            };
+          });
+        });
+      });
+    });
+
+    if (state.screen === "floorplan" && state.floorId && !floors[state.floorId]) {
+      goHomes();
+      return;
+    }
+
+    render();
+
+    if (openModalId && devices[openModalId]) {
+      openDeviceModal(openModalId);
+    }
+  }
+function convertType(type){
+
+    switch(type){
+
+        case "temperature_sensor":
+            return "temp";
+
+        case "motion_sensor":
+            return "motion";
+
+        default:
+            return "switch";
+
+    }
+
+}
+function getIcon(type) {
+
+    switch(type){
+
+        case "light":
+            return "💡";
+
+        case "speaker":
+            return "🔊";
+
+        case "tv":
+            return "📺";
+
+        case "deck_camera":
+            return "📷";
+
+        case "ceiling_fan":
+            return "🌀";
+
+        case "temperature_sensor":
+            return "🌡️";
+
+        case "refrigerator":
+            return "🧊";
+
+        case "smart_plug":
+            return "🔌";
+
+        case "kitchen_oven":
+            return "🍳";
+
+        case "blinds":
+            return "🪟";
+
+        default:
+            return "⚙️";
+
+    }
+
+}
   /* ============================================================
      BOOT
      ============================================================ */
 
-  render();
+loadFirebaseData();
 
 })();
 
-/*
- * ============================================================
- * HOW TO CONNECT TO FIREBASE REALTIME DATABASE
- * ============================================================
- *
- * 1) Add Firebase SDK (e.g. in index.html before script.js):
- *    <script type="module">
- *      import { initializeApp }        from "https://www.gstatic.com/firebasejs/10.x/firebase-app.js";
- *      import { getDatabase, ref, onValue, update }
- *                                      from "https://www.gstatic.com/firebasejs/10.x/firebase-database.js";
- *      const fbApp = initializeApp({ apiKey:"...", databaseURL:"..." });
- *      window._db = getDatabase(fbApp);
- *    </script>
- *
- * 2) Replace the static homes/floors/devices objects with listeners:
- *      onValue(ref(_db,"homes"),   s=>{ Object.assign(homes,   s.val()); render(); });
- *      onValue(ref(_db,"floors"),  s=>{ Object.assign(floors,  s.val()); render(); });
- *      onValue(ref(_db,"devices"), s=>{ Object.assign(devices, s.val());
- *                                        if(state.screen==="floorplan") renderFloorPlanScreen(); });
- *
- * 3) Replace setDeviceState body:
- *      function setDeviceState(id, patch){
- *        update(ref(_db, "devices/" + id), patch);
- *      }
- *    The onValue listener will re-render automatically.
- *
- * 4) Everything else stays the same.
- * ============================================================
- */

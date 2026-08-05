@@ -43,7 +43,7 @@
         <div class="pulse-dot"></div>
         <div class="status-copy">
           <span class="status-label">Realtime link</span>
-          <span class="status-value" id="linkText">simulated · local state</span>
+          <span class="status-value" id="linkText">firebase · connecting</span>
         </div>
       </div>
     </div>
@@ -56,7 +56,8 @@
     <p>SmartNest Hardware Simulator &middot; data flows through <code>homes → floors → devices</code>, mirroring a flat Firebase Realtime Database tree for a direct swap-in later.</p>
   </footer>-->
 
-  <script src="script.js"></script>
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 
 </html>
