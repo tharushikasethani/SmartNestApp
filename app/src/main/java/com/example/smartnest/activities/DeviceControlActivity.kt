@@ -43,6 +43,7 @@ class DeviceControlActivity : AppCompatActivity() {
         val ivIcon = findViewById<ImageView>(R.id.ivDeviceIcon)
         ivIcon.setImageResource(IconMapper.resolve(deviceType))
         val blinkAnim = AnimationUtils.loadAnimation(this, R.anim.blink)
+        val fanRotateAnim = AnimationUtils.loadAnimation(this, R.anim.fan_rotate)
 
         val tvStatus = findViewById<TextView>(R.id.tvStatusValue)
         val tvBrightness = findViewById<TextView>(R.id.tvBrightnessValue)
@@ -51,6 +52,7 @@ class DeviceControlActivity : AppCompatActivity() {
         val dividerBrightness = findViewById<android.view.View>(R.id.dividerBrightness)
 
         val isLight = deviceType == "light" || deviceType == "lamp"
+        val isFan = deviceType == "fan" || deviceType == "ceiling_fan"
         if (!isLight) {
             rowBrightness.visibility = android.view.View.GONE
             dividerBrightness.visibility = android.view.View.GONE
@@ -79,11 +81,14 @@ class DeviceControlActivity : AppCompatActivity() {
             tvStatus.setTextColor(
                 if (on) 0xFF34C759.toInt() else 0xFFFF3B30.toInt()
             )
-            if (on && isLight) {
+            if (on && isFan) {
+                ivIcon.startAnimation(fanRotateAnim)
+            } else if (on && isLight) {
                 ivIcon.startAnimation(blinkAnim)
             } else {
                 ivIcon.clearAnimation()
                 ivIcon.alpha = 1.0f
+                ivIcon.rotation = 0f
             }
             deviceRef?.child("status")?.setValue(if (on) "ON" else "OFF")
         }

@@ -53,4 +53,9 @@
     <color name="tint_green_bg">#EDF9F2</color>
     <color name="tint_red_bg">#FEF0ED</color>
     <color name="tint_blue_bg">#F1F1F5</color>
+
+    <!-- Hazard / danger accents -->
+    <color name="hazard_red">#FF3B30</color>
+    <color name="hazard_red_dark">#E0292A</color>
+    <color name="hazard_red_soft">#FEF0ED</color>
 </resources>

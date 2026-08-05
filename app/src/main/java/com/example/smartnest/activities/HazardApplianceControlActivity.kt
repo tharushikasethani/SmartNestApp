@@ -111,9 +111,9 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
             override fun onStopTrackingTouch(bar: SeekBar?) {}
         })
 
-        findViewById<TextView>(R.id.btnOn).setOnClickListener { updateState(true) }
-        findViewById<TextView>(R.id.btnOff).setOnClickListener { updateState(false) }
-        findViewById<TextView>(R.id.btnSchedule).setOnClickListener { openSchedule() }
+        findViewById<android.view.View>(R.id.btnOn).setOnClickListener { updateState(true) }
+        findViewById<android.view.View>(R.id.btnOff).setOnClickListener { updateState(false) }
+        findViewById<android.view.View>(R.id.btnSchedule).setOnClickListener { openSchedule() }
 
         getDeviceRef()?.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

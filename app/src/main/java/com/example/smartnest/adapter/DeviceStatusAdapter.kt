@@ -3,11 +3,13 @@ package com.example.smartnest.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smartnest.R
+import com.example.smartnest.model.DeviceStatus
 import com.example.smartnest.model.DeviceStatusItem
 
 class DeviceStatusAdapter(
@@ -38,6 +40,16 @@ class DeviceStatusAdapter(
         )
         holder.dot.setBackgroundResource(item.status.dotRes)
         holder.itemView.setOnClickListener { onClick(item) }
+
+        val isFan = item.deviceType == "fan" || item.deviceType == "ceiling_fan"
+        if (isFan && item.status == DeviceStatus.ON) {
+            holder.icon.startAnimation(
+                AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fan_rotate)
+            )
+        } else {
+            holder.icon.clearAnimation()
+            holder.icon.rotation = 0f
+        }
     }
 
     override fun getItemCount() = items.size
