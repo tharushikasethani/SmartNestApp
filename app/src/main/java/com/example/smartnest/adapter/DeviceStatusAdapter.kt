@@ -3,10 +3,13 @@ package com.example.smartnest.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smartnest.R
+import com.example.smartnest.model.DeviceStatus
 import com.example.smartnest.model.DeviceStatusItem
 
 class DeviceStatusAdapter(
@@ -31,16 +34,22 @@ class DeviceStatusAdapter(
         val item = items[position]
         holder.icon.setImageResource(item.iconRes)
         holder.name.text = item.name
-        holder.status.text = item.statusText
+        holder.status.text = item.status.text
         holder.status.setTextColor(
-            holder.itemView.context.getColor(
-                if (item.isActive) R.color.status_on_green else R.color.status_off_gray
-            )
+            ContextCompat.getColor(holder.itemView.context, item.status.textColorRes)
         )
-        holder.dot.setBackgroundResource(
-            if (item.isActive) R.drawable.bg_dot_green else R.drawable.bg_dot_gray
-        )
+        holder.dot.setBackgroundResource(item.status.dotRes)
         holder.itemView.setOnClickListener { onClick(item) }
+
+        val isFan = item.deviceType == "fan" || item.deviceType == "ceiling_fan"
+        if (isFan && item.status == DeviceStatus.ON) {
+            holder.icon.startAnimation(
+                AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fan_rotate)
+            )
+        } else {
+            holder.icon.clearAnimation()
+            holder.icon.rotation = 0f
+        }
     }
 
     override fun getItemCount() = items.size

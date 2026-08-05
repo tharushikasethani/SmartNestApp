@@ -24,6 +24,7 @@ class RoomListActivity : AppCompatActivity() {
     private lateinit var adapter: ListRowAdapter
     private var homeId: String? = null
     private var floorId: String? = null
+    private var floorName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +32,10 @@ class RoomListActivity : AppCompatActivity() {
 
         homeId = intent.getStringExtra("homeId")
         floorId = intent.getStringExtra("floorId")
-        val floorName = intent.getStringExtra("floorName") ?: "My Rooms"
+        floorName = intent.getStringExtra("floorName") ?: "My Rooms"
 
         findViewById<android.widget.TextView>(R.id.txtTitle)?.text = floorName
-        findViewById<android.widget.ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<android.widget.FrameLayout>(R.id.btnBack).setOnClickListener { finish() }
 
         val rv = findViewById<RecyclerView>(R.id.rvList)
         rv.layoutManager = LinearLayoutManager(this)
@@ -47,6 +48,14 @@ class RoomListActivity : AppCompatActivity() {
             startActivity(intent)
         }
         rv.adapter = adapter
+
+        findViewById<android.view.View>(R.id.btnFloorPlan).setOnClickListener {
+            val intent = Intent(this, FloorPlanActivity::class.java)
+            intent.putExtra("homeId", homeId)
+            intent.putExtra("floorId", floorId)
+            intent.putExtra("floorName", floorName)
+            startActivity(intent)
+        }
 
         findViewById<android.view.View>(R.id.btnAdd).setOnClickListener {
             val intent = Intent(this, AddRoomActivity::class.java)

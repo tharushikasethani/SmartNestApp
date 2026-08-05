@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SmartNest | Hardware Monitoring & Control Simulator</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartNest | Hardware Monitoring & Control Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
   <!-- Ambient background with image -->
@@ -39,7 +43,7 @@
         <div class="pulse-dot"></div>
         <div class="status-copy">
           <span class="status-label">Realtime link</span>
-          <span class="status-value" id="linkText">simulated · local state</span>
+          <span class="status-value" id="linkText">firebase · connecting</span>
         </div>
       </div>
     </div>
@@ -52,6 +56,8 @@
     <p>SmartNest Hardware Simulator &middot; data flows through <code>homes → floors → devices</code>, mirroring a flat Firebase Realtime Database tree for a direct swap-in later.</p>
   </footer>-->
 
-<script src="script.js"></script>
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
+
 </html>

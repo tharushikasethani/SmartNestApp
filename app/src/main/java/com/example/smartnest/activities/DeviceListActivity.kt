@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smartnest.IconMapper
 import com.example.smartnest.R
 import com.example.smartnest.adapter.DeviceStatusAdapter
+import com.example.smartnest.model.DeviceStatus
 import com.example.smartnest.model.DeviceStatusItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -39,12 +40,37 @@ class DeviceListActivity : AppCompatActivity() {
         val roomName = intent.getStringExtra("roomName") ?: "My Devices"
 
         findViewById<android.widget.TextView>(R.id.txtTitle)?.text = roomName
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<android.widget.FrameLayout>(R.id.btnBack).setOnClickListener { finish() }
 
         val rv = findViewById<RecyclerView>(R.id.rvList)
         rv.layoutManager = GridLayoutManager(this, 2)
         adapter = DeviceStatusAdapter(devicesList) { device ->
-            Toast.makeText(this, "Open ${device.name} control", Toast.LENGTH_SHORT).show()
+            val targetClass = when (device.deviceType) {
+                "light", "lamp", "blinds", "tv", "ceiling_fan", "speaker", "refrigerator",
+                "kitchen_oven", "washing_machine", "bathroom_heater", "temperature_sensor" ->
+                    DeviceControlActivity::class.java
+                "outlet", "smart_plug" ->
+                    OutletControlActivity::class.java
+                "multi_switch" ->
+                    MultiSwitchControlActivity::class.java
+                "hazard_appliance", "iron" ->
+                    HazardApplianceControlActivity::class.java
+                "camera", "deck_camera" ->
+                    CameraControlActivity::class.java
+                else ->
+                    DeviceControlActivity::class.java
+            }
+            val intent = Intent(this, targetClass).apply {
+                putExtra("device_id", device.id)
+                putExtra("device_name", device.name)
+                putExtra("device_type", device.deviceType)
+                putExtra("device_status", device.status.text)
+                putExtra("homeId", homeId)
+                putExtra("floorId", floorId)
+                putExtra("roomId", roomId)
+                putExtra("roomName", roomName)
+            }
+            startActivity(intent)
         }
         rv.adapter = adapter
 
@@ -79,15 +105,16 @@ class DeviceListActivity : AppCompatActivity() {
                         val id = deviceSnapshot.key ?: ""
                         val name = deviceSnapshot.child("deviceName").getValue(String::class.java) ?: "Unnamed Device"
                         val type = deviceSnapshot.child("deviceType").getValue(String::class.java) ?: "light"
-                        val status = deviceSnapshot.child("status").getValue(String::class.java) ?: "OFF"
-                        
+                        val statusStr = deviceSnapshot.child("status").getValue(String::class.java) ?: "OFF"
+                        val devStatus = try { DeviceStatus.valueOf(statusStr) } catch (_: Exception) { DeviceStatus.OFF }
+
                         devicesList.add(
                             DeviceStatusItem(
                                 id = id,
                                 name = name,
                                 iconRes = IconMapper.resolve(type),
-                                statusText = status,
-                                isActive = status == "ON"
+                                status = devStatus,
+                                deviceType = type
                             )
                         )
                     }

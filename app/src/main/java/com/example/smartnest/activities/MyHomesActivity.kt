@@ -27,7 +27,7 @@ class MyHomesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_homes)
 
-        findViewById<android.widget.ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<android.widget.FrameLayout>(R.id.btnBack).setOnClickListener { finish() }
 
         val rv = findViewById<RecyclerView>(R.id.rvList)
         rv.layoutManager = LinearLayoutManager(this)

@@ -5,36 +5,42 @@
     android:id="@+id/cardRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
-    app:cardCornerRadius="16dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="24dp"
     app:cardElevation="0dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="#ECECEC">
+    app:cardBackgroundColor="#F8F9FD"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp">
+        android:paddingVertical="20dp"
+        android:paddingHorizontal="16dp">
 
-        <ImageView
-            android:id="@+id/ivIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_lamp"
-            app:tint="#F0532D" />
+        <FrameLayout
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="@drawable/bg_icon_white_circle">
+            <ImageView
+                android:id="@+id/ivIcon"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_lamp"
+                app:tint="@color/orange_primary" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tvLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="sans-serif-medium"
-            android:text="Light"
-            android:textColor="#1A1A1A"
-            android:textSize="12sp" />
+            android:text="Room Name"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
