@@ -1,13 +1,14 @@
 package com.example.smartnest.adapter
 
-import android.view.LayoutInflater
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.smartnest.DeviceImageMapper
 import com.example.smartnest.R
 import com.example.smartnest.model.Device
 
@@ -21,7 +22,7 @@ class DeviceAdapter(
         val ivIcon: ImageView = view.findViewById(R.id.ivDeviceIcon)
         val tvName: TextView = view.findViewById(R.id.tvDeviceName)
         val tvSubtitle: TextView = view.findViewById(R.id.tvDeviceSubtitle)
-        val tvStatus: TextView = view.findViewById(R.id.tvDeviceStatus)
+        val tvStatus: TextView? = view.findViewById(R.id.tvDeviceStatus)
         val togglePill: FrameLayout = view.findViewById(R.id.togglePill)
         val toggleDot: ImageView = view.findViewById(R.id.toggleDot)
     }
@@ -35,16 +36,26 @@ class DeviceAdapter(
     override fun onBindViewHolder(holder: DeviceViewHolder, position: Int) {
         val device = devices[position]
 
-        holder.ivIcon.setImageResource(device.iconRes)
+        val imageRes = if (device.iconRes != 0 && device.iconRes != R.drawable.ic_grid) {
+            device.iconRes
+        } else {
+            DeviceImageMapper.resolve(device.type)
+        }
+        holder.ivIcon.setImageResource(imageRes)
+        holder.ivIcon.colorFilter = null
+
         holder.tvName.text = device.name
-        holder.tvSubtitle.text = device.subtitle
-        holder.tvStatus.text = device.statusLabel
+        holder.tvSubtitle.text = if (device.subtitle.isNotBlank()) device.subtitle else "Main Room"
+
+        if (holder.tvStatus != null) {
+            holder.tvStatus.text = device.statusLabel
+            holder.tvStatus.setBackgroundResource(
+                if (device.isOn) R.drawable.bg_status_pill_on else R.drawable.bg_status_pill_off
+            )
+        }
 
         holder.togglePill.setBackgroundResource(
             if (device.isOn) R.drawable.bg_toggle_pill else R.drawable.bg_toggle_pill_off
-        )
-        holder.tvStatus.setBackgroundResource(
-            if (device.isOn) R.drawable.bg_status_pill_on else R.drawable.bg_status_pill_off
         )
 
         val params = holder.toggleDot.layoutParams as FrameLayout.LayoutParams

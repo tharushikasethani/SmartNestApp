@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.smartnest.DeviceImageMapper
 import com.example.smartnest.IconMapper
 import com.example.smartnest.R
 import com.example.smartnest.adapter.DeviceStatusAdapter
@@ -29,6 +30,7 @@ class DeviceListActivity : AppCompatActivity() {
     private var homeId: String? = null
     private var floorId: String? = null
     private var roomId: String? = null
+    private var roomName: String = "My Devices"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,7 @@ class DeviceListActivity : AppCompatActivity() {
         homeId = intent.getStringExtra("homeId")
         floorId = intent.getStringExtra("floorId")
         roomId = intent.getStringExtra("roomId")
-        val roomName = intent.getStringExtra("roomName") ?: "My Devices"
+        roomName = intent.getStringExtra("roomName") ?: "My Devices"
 
         findViewById<android.widget.TextView>(R.id.txtTitle)?.text = roomName
         findViewById<android.widget.FrameLayout>(R.id.btnBack).setOnClickListener { finish() }
@@ -112,9 +114,10 @@ class DeviceListActivity : AppCompatActivity() {
                             DeviceStatusItem(
                                 id = id,
                                 name = name,
-                                iconRes = IconMapper.resolve(type),
+                                iconRes = DeviceImageMapper.resolve(type),
                                 status = devStatus,
-                                deviceType = type
+                                deviceType = type,
+                                subtitle = roomName
                             )
                         )
                     }

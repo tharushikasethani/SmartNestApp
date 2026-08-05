@@ -30,7 +30,8 @@ data class DeviceStatusItem(
     val name: String,
     val iconRes: Int,
     val status: DeviceStatus = DeviceStatus.OFF,
-    val deviceType: String = "light"
+    val deviceType: String = "light",
+    val subtitle: String = ""
 ) {
     val statusText: String get() = status.text
     val isActive: Boolean get() = status == DeviceStatus.ON

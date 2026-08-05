@@ -5,5 +5,6 @@ data class Device(
     val subtitle: String,
     val statusLabel: String,
     val iconRes: Int,
-    var isOn: Boolean
+    var isOn: Boolean,
+    val type: String = "other"
 )
