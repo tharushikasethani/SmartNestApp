@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Fan blades -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M12,11C10,9 8,5 9,3C10,1 13,3 14,5C15,7 14,9 13,11Z" />
+
+    <path
+        android:fillColor="#000000"
+        android:pathData="M13,12C15,10 19,9 21,10C23,11 21,14 19,15C17,16 15,15 13,14Z" />
+
+    <path
+        android:fillColor="#000000"
+        android:pathData="M12,13C14,15 15,19 14,21C13,23 10,21 9,19C8,17 9,15 10,13Z" />
+
+    <path
+        android:fillColor="#000000"
+        android:pathData="M11,12C9,14 5,15 3,14C1,13 3,10 5,9C7,8 9,9 11,10Z" />
+
+    <!-- Center -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M12,9.5A2.5,2.5 0,1 0,12 14.5A2.5,2.5 0,1 0,12 9.5" />
+
+</vector>

@@ -61,14 +61,14 @@ class MyHomesActivity : AppCompatActivity() {
                         // Fetching floor/device count if available, or static for now
                         val floorsCount = homeSnapshot.child("floors").childrenCount
                         val subtitle = if (address.isNotEmpty()) address else "$floorsCount Floors"
+                        val bgRes = when(type) {
+                            "apartment" -> R.drawable.apartment // your drawable name
+                            "villa" -> R.drawable.villa
+                            else -> R.drawable.home1 // default
+                        }
 
                         homesList.add(
-                            ListRowItem(
-                                id = id,
-                                title = name,
-                                subtitle = subtitle,
-                                iconRes = IconMapper.resolve(type)
-                            )
+                            ListRowItem(id, name, subtitle, IconMapper.resolve(type), bgRes)
                         )
                     }
                     adapter.notifyDataSetChanged()

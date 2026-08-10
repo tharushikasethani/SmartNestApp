@@ -6,7 +6,7 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.smartnest.IconMapper
+import com.example.smartnest.DeviceImageMapper
 import com.example.smartnest.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -37,11 +37,15 @@ class DeviceControlActivity : AppCompatActivity() {
 
         isOn = initialStatus == "ON"
 
-        findViewById<TextView>(R.id.tvDeviceName).text = deviceName
-        findViewById<TextView>(R.id.tvDeviceRoom).text = roomName
+        findViewById<TextView>(R.id.tvDeviceName)?.text = deviceName
+        findViewById<TextView>(R.id.tvDeviceRoom)?.text = roomName
 
         val ivIcon = findViewById<ImageView>(R.id.ivDeviceIcon)
-        ivIcon.setImageResource(IconMapper.resolve(deviceType))
+        if (ivIcon != null) {
+            ivIcon.setImageResource(DeviceImageMapper.resolve(deviceType))
+            ivIcon.imageTintList = null // Clear tint for realistic images
+        }
+        
         val blinkAnim = AnimationUtils.loadAnimation(this, R.anim.blink)
         val fanRotateAnim = AnimationUtils.loadAnimation(this, R.anim.fan_rotate)
 
@@ -53,8 +57,11 @@ class DeviceControlActivity : AppCompatActivity() {
 
         val isLight = deviceType == "light" || deviceType == "lamp"
         val isFan = deviceType == "fan" || deviceType == "ceiling_fan"
-        if (!isLight) {
+        
+        if (rowBrightness != null && !isLight) {
             rowBrightness.visibility = android.view.View.GONE
+        }
+        if (dividerBrightness != null && !isLight) {
             dividerBrightness.visibility = android.view.View.GONE
         }
 
@@ -77,18 +84,18 @@ class DeviceControlActivity : AppCompatActivity() {
 
         fun updateState(on: Boolean) {
             isOn = on
-            tvStatus.text = if (on) "ON" else "OFF"
-            tvStatus.setTextColor(
+            tvStatus?.text = if (on) "ON" else "OFF"
+            val imageRes = DeviceImageMapper.resolve(deviceType, on)
+            findViewById<ImageView>(R.id.ivDeviceIcon).setImageResource(imageRes)
+            tvStatus?.setTextColor(
                 if (on) 0xFF34C759.toInt() else 0xFFFF3B30.toInt()
             )
             if (on && isFan) {
-                ivIcon.startAnimation(fanRotateAnim)
-            } else if (on && isLight) {
-                ivIcon.startAnimation(blinkAnim)
+                ivIcon?.startAnimation(fanRotateAnim)
             } else {
-                ivIcon.clearAnimation()
-                ivIcon.alpha = 1.0f
-                ivIcon.rotation = 0f
+                ivIcon?.clearAnimation()
+                ivIcon?.alpha = 1.0f
+                ivIcon?.rotation = 0f
             }
             deviceRef?.child("status")?.setValue(if (on) "ON" else "OFF")
         }
@@ -101,17 +108,17 @@ class DeviceControlActivity : AppCompatActivity() {
             if (isLight) {
                 deviceRef?.child("brightness")?.get()?.addOnSuccessListener {
                     val brightness = it.getValue(Int::class.java) ?: 75
-                    seekBar.progress = brightness
-                    tvBrightness.text = "$brightness%"
+                    seekBar?.progress = brightness
+                    tvBrightness?.text = "$brightness%"
                 }
             }
         }
 
         updateState(isOn)
 
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(bar: SeekBar?, progress: Int, fromUser: Boolean) {
-                tvBrightness.text = "$progress%"
+                tvBrightness?.text = "$progress%"
             }
             override fun onStartTrackingTouch(bar: SeekBar?) {}
             override fun onStopTrackingTouch(bar: SeekBar?) {
@@ -119,19 +126,16 @@ class DeviceControlActivity : AppCompatActivity() {
             }
         })
 
-        findViewById<android.view.View>(R.id.btnOn).setOnClickListener { updateState(true) }
-        findViewById<android.view.View>(R.id.btnOff).setOnClickListener { updateState(false) }
+        findViewById<android.view.View>(R.id.btnOn)?.setOnClickListener { updateState(true) }
+        findViewById<android.view.View>(R.id.btnOff)?.setOnClickListener { updateState(false) }
 
-        findViewById<android.widget.FrameLayout>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<android.widget.FrameLayout>(R.id.btnBack)?.setOnClickListener { finish() }
 
-        findViewById<android.view.View>(R.id.btnSchedule).setOnClickListener {
+        findViewById<android.view.View>(R.id.btnSchedule)?.setOnClickListener {
             val intent = android.content.Intent(this, ScheduleActivity::class.java)
             intent.putExtra("device_name", deviceName)
             intent.putExtra("device_id", deviceId ?: "")
             startActivity(intent)
-        }
-
-        findViewById<android.view.View>(R.id.btnUsageReport).setOnClickListener {
         }
 
         loadState()

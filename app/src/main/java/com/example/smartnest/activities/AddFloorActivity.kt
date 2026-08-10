@@ -34,7 +34,7 @@ class AddFloorActivity : AppCompatActivity() {
         homeId = intent.getStringExtra("homeId")
         val etFloorName = findViewById<EditText>(R.id.etFloorName)
 
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<android.view.View>(R.id.btnBack).setOnClickListener { finish() }
 
         val rv = findViewById<RecyclerView>(R.id.rvFloorTypes)
         rv.layoutManager = GridLayoutManager(this, 3)

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Iron body -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M3,17h18v2H3z" />
+
+    <path
+        android:fillColor="#000000"
+        android:pathData="M4,16C4.5,11.2 7.2,7 11.5,5.2L14,4.2L18.5,16H4z" />
+
+    <!-- Handle -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M9,8.5C9,6.6 10.5,5 12.4,5H15v2h-2.6C11.6,7 11,7.6 11,8.5V10H9V8.5z" />
+
+    <!-- Soleplate -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M3,16h18v2H3z" />
+
+    <!-- Indicator -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M6,13h2v2H6z" />
+
+</vector>

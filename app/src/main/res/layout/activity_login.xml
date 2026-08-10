@@ -36,7 +36,8 @@
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:paddingStart="24dp"
-            android:paddingEnd="24dp">
+            android:paddingEnd="24dp"
+            android:background="@drawable/bg_glass_dark">
 
             <!-- App Logo Badge -->
             <FrameLayout
@@ -61,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Welcome back"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/orange_primary"
                 android:textSize="28sp"
                 android:fontFamily="sans-serif-medium" />
 
@@ -70,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:text="Log in to control your smart home"
-                android:textColor="@color/text_secondary"
+                android:textColor="@color/orange_primary"
                 android:textSize="14sp" />
 
             <!-- White Form Card -->
@@ -88,7 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Email"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/orange_primary"
                     android:textSize="13sp"
                     android:fontFamily="sans-serif-medium" />
 
@@ -103,45 +104,44 @@
                     android:inputType="textEmailAddress"
                     android:paddingStart="18dp"
                     android:paddingEnd="18dp"
-                    android:textColor="@color/text_primary"
-                    android:textColorHint="@color/text_tertiary"
+                    android:textColor="@color/orange_primary"
+                    android:textColorHint="@color/orange_primary"
                     android:textSize="15sp" />
 
+                <!-- Password Label -->
                 <!-- Password Label -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Password"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/orange_primary"
                     android:textSize="13sp"
                     android:fontFamily="sans-serif-medium" />
 
                 <!-- Password Field With Eye Toggle -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_edittext"
                     app:endIconMode="password_toggle"
-                    app:endIconTint="@color/text_tertiary"
+                    app:endIconTint="#FFFFFF"
                     app:boxBackgroundMode="none"
-                    app:boxStrokeColor="@android:color/transparent"
                     app:boxStrokeWidth="0dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPassword"
                         android:layout_width="match_parent"
                         android:layout_height="54dp"
-                        android:background="@android:color/transparent"
+                        android:background="@drawable/bg_edittext"
                         android:inputType="textPassword"
                         android:paddingStart="18dp"
                         android:paddingEnd="18dp"
-                        android:textColor="@color/text_primary"
-                        android:textColorHint="@color/text_tertiary"
+                        android:textColor="@color/white"
+                        android:textColorHint="@drawable/password_hint_color"
                         android:textSize="15sp" />
-                </com.google.android.material.textfield.TextInputLayout>
 
+                </com.google.android.material.textfield.TextInputLayout>
                 <!-- Forgot Password -->
                 <TextView
                     android:layout_width="wrap_content"
@@ -149,12 +149,12 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="12dp"
                     android:text="Forgot password?"
-                    android:textColor="@color/orange_primary"
+                    android:textColor="@color/white"
                     android:textSize="13sp"
                     android:fontFamily="sans-serif-medium" />
 
                 <!-- Login Button -->
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnLogin"
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
@@ -179,7 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Don't have an account? "
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/orange_primary"
                     android:textSize="14sp" />
 
                 <TextView

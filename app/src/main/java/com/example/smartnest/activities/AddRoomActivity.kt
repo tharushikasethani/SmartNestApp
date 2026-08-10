@@ -36,7 +36,7 @@ class AddRoomActivity : AppCompatActivity() {
         floorId = intent.getStringExtra("floorId")
         
         etRoomName = findViewById(R.id.etRoomName)
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<android.view.View>(R.id.btnBack).setOnClickListener { finish() }
 
         val rv = findViewById<RecyclerView>(R.id.rvRoomIcons)
         rv.layoutManager = GridLayoutManager(this, 3)

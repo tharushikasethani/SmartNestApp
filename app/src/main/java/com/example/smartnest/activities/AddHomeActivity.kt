@@ -34,7 +34,7 @@ class AddHomeActivity : AppCompatActivity() {
         etHomeName = findViewById(R.id.etHomeName)
         etHomeAddress = findViewById(R.id.etHomeAddress)
 
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<android.view.View>(R.id.btnBack).setOnClickListener { finish() }
 
         val rv = findViewById<RecyclerView>(R.id.rvHomeTypes)
         rv.layoutManager = GridLayoutManager(this, 3)

@@ -1,48 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F8F9FD">
+    android:layout_height="match_parent">
+
+
+    <!-- ================================================= -->
+    <!-- DECORATIVE BACKGROUND                             -->
+    <!-- ================================================= -->
+
+    <View
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="-90dp"
+        android:layout_marginEnd="-90dp"
+        android:background="@drawable/bg_blob_soft" />
+
+    <View
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_gravity="bottom|start"
+        android:layout_marginBottom="-90dp"
+        android:layout_marginStart="-80dp"
+        android:background="@drawable/bg_blob_soft" />
+
+
+    <!-- ================================================= -->
+    <!-- SCROLL CONTENT                                    -->
+    <!-- ================================================= -->
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="100dp">
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:paddingBottom="105dp"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="24dp"
-            android:paddingTop="50dp">
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="40dp"
+            android:paddingBottom="25dp">
 
-            <!-- Top Header -->
-            <RelativeLayout
+
+            <!-- ================================================= -->
+            <!-- HEADER                                             -->
+            <!-- ================================================= -->
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_card_white"
+                android:padding="10dp">
 
+                <!-- Back Button -->
                 <FrameLayout
                     android:id="@+id/btnBack"
                     android:layout_width="44dp"
                     android:layout_height="44dp"
-                    android:background="@drawable/bg_icon_circle_orange">
+                    android:background="@drawable/bg_icon_circle_orange"
+                    android:clickable="true"
+                    android:focusable="true">
+
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
+                        android:contentDescription="Back"
                         android:src="@drawable/ic_back"
                         app:tint="@color/orange_primary" />
+
                 </FrameLayout>
 
+
+                <!-- Header Text -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@id/btnBack"
-                    android:layout_centerVertical="true"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -50,193 +97,328 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-black"
                         android:text="Schedule"
-                        android:textColor="@color/text_primary"
-                        android:textSize="26sp" />
+                        android:textColor="@color/orange_primary"
+                        android:textSize="24sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
                         android:text="Set automations for your device"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
+                        android:textColor="@color/orange_primary"
+                        android:textSize="12sp" />
+
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_calendar"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:tint="@color/text_primary" />
-            </RelativeLayout>
 
-            <!-- Configuration Card -->
-            <androidx.cardview.widget.CardView
+                <!-- Calendar Icon -->
+                <FrameLayout
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_icon_circle_orange">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Calendar"
+                        android:src="@drawable/ic_calendar"
+                        app:tint="@color/orange_primary" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+
+            <!-- ================================================= -->
+            <!-- SCHEDULE CARD                                      -->
+            <!-- ================================================= -->
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                app:cardCornerRadius="32dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/white">
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_card_white_large"
+                android:elevation="6dp"
+                android:orientation="vertical"
+                android:padding="18dp">
 
+
+                <!-- Schedule Title -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <!-- Title & Switch -->
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/tvScheduleTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="Device Schedule"
-                            android:textColor="@color/text_primary"
-                            android:textSize="18sp" />
+                    <FrameLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_icon_circle_orange">
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
-                            android:id="@+id/switchEnabled"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:checked="true"
-                            app:thumbTint="@color/white"
-                            app:trackTint="@color/orange_primary" />
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="24dp"
-                        android:background="@color/divider" />
-
-                    <!-- Start Time Row -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Starts at"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="13sp"
-                        android:fontFamily="sans-serif-medium" />
-
-                    <LinearLayout
-                        android:id="@+id/rowStartTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/bg_card_white"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-                        <TextView
-                            android:id="@+id/tvStartTime"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-bold"
-                            android:text="06:00 PM"
-                            android:textColor="@color/text_primary"
-                            android:textSize="20sp" />
                         <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/ic_clock"
-                            app:tint="@color/text_secondary" />
-                    </LinearLayout>
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="Schedule"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/orange_primary" />
 
-                    <Space android:layout_width="match_parent" android:layout_height="20dp" />
+                    </FrameLayout>
 
-                    <!-- End Time Row -->
+
                     <TextView
+                        android:id="@+id/tvScheduleTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Device Schedule"
+                        android:textColor="@color/orange_primary"
+                        android:textSize="17sp" />
+
+
+                    <!-- Enable Switch -->
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switchEnabled"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ends at"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="13sp"
-                        android:fontFamily="sans-serif-medium" />
-
-                    <LinearLayout
-                        android:id="@+id/rowEndTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/bg_card_white"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-                        <TextView
-                            android:id="@+id/tvEndTime"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="sans-serif-bold"
-                            android:text="11:00 PM"
-                            android:textColor="@color/text_primary"
-                            android:textSize="20sp" />
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:src="@drawable/ic_clock"
-                            app:tint="@color/text_secondary" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="24dp"
-                        android:background="@color/divider" />
-
-                    <!-- Repeat Selection -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Repeat on"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="13sp"
-                        android:fontFamily="sans-serif-medium" />
-
-                    <LinearLayout
-                        android:id="@+id/rowDays"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:gravity="center"
-                        android:orientation="horizontal" />
+                        android:checked="true"
+                        app:thumbTint="@color/white"
+                        app:trackTint="@color/orange_primary" />
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/divider" />
+
+
+                <!-- ================================================= -->
+                <!-- START TIME                                          -->
+                <!-- ================================================= -->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Starts at"
+                    android:textColor="@color/orange_primary"
+                    android:textSize="13sp" />
+
+
+                <LinearLayout
+                    android:id="@+id/rowStartTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/bg_card_white_large1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
+
+                    <FrameLayout
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:background="@drawable/bg_icon_circle_orange">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="Start time"
+                            android:src="@drawable/ic_clock"
+                            app:tint="@color/orange_primary" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/tvStartTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="06:00 PM"
+                        android:textColor="@color/orange_primary"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="@color/text_secondary" />
+
+                </LinearLayout>
+
+
+                <!-- ================================================= -->
+                <!-- END TIME                                            -->
+                <!-- ================================================= -->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Ends at"
+                    android:textColor="@color/orange_primary"
+                    android:textSize="13sp" />
+
+
+                <LinearLayout
+                    android:id="@+id/rowEndTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/bg_card_white_large1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
+
+                    <FrameLayout
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:background="@drawable/bg_icon_circle_orange">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="End time"
+                            android:src="@drawable/ic_clock"
+                            app:tint="@color/orange_primary" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/tvEndTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="11:00 PM"
+                        android:textColor="@color/orange_primary"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="@color/text_secondary" />
+
+                </LinearLayout>
+
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/divider" />
+
+
+                <!-- ================================================= -->
+                <!-- REPEAT DAYS                                         -->
+                <!-- ================================================= -->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Repeat on"
+                    android:textColor="@color/orange_primary"
+                    android:textSize="13sp" />
+
+
+                <LinearLayout
+                    android:id="@+id/rowDays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:orientation="horizontal" />
+
+            </LinearLayout>
+
+
+            <!-- ================================================= -->
+            <!-- INFO CARD                                           -->
+            <!-- ================================================= -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_edittext"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="14dp">
+
+                <FrameLayout
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_icon_circle_orange">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_clock"
+                        app:tint="@color/orange_primary" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="2dp"
+                    android:text="Your device will automatically follow this schedule when it is enabled."
+                    android:textColor="@color/orange_primary"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Bottom Save Button -->
+
+    <!-- ================================================= -->
+    <!-- BOTTOM SAVE AREA                                  -->
+    <!-- ================================================= -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@drawable/bg_nav_light"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="20dp">
+        android:elevation="10dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="16dp">
 
-        <com.google.android.material.button.MaterialButton
+        <TextView
             android:id="@+id/btnSaveSchedule"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_button_primary"
+            android:gravity="center"
             android:text="Save Schedule"
-            android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="17sp"
-            android:fontFamily="sans-serif-bold"
-            app:backgroundTint="@color/orange_primary"
-            app:cornerRadius="32dp"
-            app:elevation="8dp" />
+            android:fontFamily="sans-serif-medium"
+            android:textSize="15sp" />
+
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -79,6 +79,10 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(Intent(this, MyHomesActivity::class.java))
         }
 
+        findViewById<android.widget.Button>(R.id.btnViewMyHome).setOnClickListener {
+            startActivity(Intent(this, MyHomesActivity::class.java))
+        }
+
         // Bottom nav click handlers
         findViewById<LinearLayout>(R.id.navReports).setOnClickListener {
             // TODO: startActivity(Intent(this, ReportsActivity::class.java))

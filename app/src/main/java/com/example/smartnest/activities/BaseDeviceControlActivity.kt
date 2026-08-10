@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.smartnest.DeviceImageMapper
 import com.example.smartnest.IconMapper
 import com.example.smartnest.R
 import com.google.firebase.auth.FirebaseAuth
@@ -57,7 +58,8 @@ abstract class BaseDeviceControlActivity : AppCompatActivity() {
 
     protected fun setupCommonHeader(title: String) {
         val ivIcon = findViewById<ImageView>(R.id.ivDeviceIcon)
-        ivIcon?.setImageResource(IconMapper.resolve(deviceType))
+        ivIcon?.setImageResource(DeviceImageMapper.resolve(deviceType))
+        ivIcon?.imageTintList = null // Clear tint for realistic images
 
         findViewById<TextView>(R.id.tvDeviceName)?.text = deviceName
         findViewById<TextView>(R.id.tvDeviceRoom)?.text = roomName

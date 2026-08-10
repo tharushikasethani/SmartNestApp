@@ -146,6 +146,7 @@
                             android:textSize="14sp"/>
 
                         <Button
+                            android:id="@+id/btnViewMyHome"
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
                             android:text="View My Home"

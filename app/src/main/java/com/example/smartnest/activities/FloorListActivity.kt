@@ -69,12 +69,21 @@ class FloorListActivity : AppCompatActivity() {
                         
                         val roomsCount = floorSnapshot.child("rooms").childrenCount
 
+                        // Inside loadFloors() loop:
+                        val bgRes = when(type.lowercase().trim()) {
+                            "ground floor", "ground" -> R.drawable.groundfloor
+                            "first floor", "first"   -> R.drawable.firstfloor
+                            "second floor", "second" -> R.drawable.secondfloor
+                            else -> R.drawable.home1
+                        }
+
                         floorsList.add(
                             ListRowItem(
                                 id = id,
                                 title = name,
                                 subtitle = "$roomsCount Rooms",
-                                iconRes = IconMapper.resolve(type)
+                                iconRes = IconMapper.resolve(type),
+                                backgroundRes = bgRes
                             )
                         )
                     }

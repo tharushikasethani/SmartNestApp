@@ -49,13 +49,6 @@ class RoomListActivity : AppCompatActivity() {
         }
         rv.adapter = adapter
 
-        findViewById<android.view.View>(R.id.btnFloorPlan).setOnClickListener {
-            val intent = Intent(this, FloorPlanActivity::class.java)
-            intent.putExtra("homeId", homeId)
-            intent.putExtra("floorId", floorId)
-            intent.putExtra("floorName", floorName)
-            startActivity(intent)
-        }
 
         findViewById<android.view.View>(R.id.btnAdd).setOnClickListener {
             val intent = Intent(this, AddRoomActivity::class.java)
@@ -87,13 +80,25 @@ class RoomListActivity : AppCompatActivity() {
                         val iconKey = roomSnapshot.child("icon").getValue(String::class.java) ?: "sofa"
                         
                         val devicesCount = roomSnapshot.child("devices").childrenCount
+                        val bgRes = when(iconKey.lowercase()) {
+                            "kitchen" -> R.drawable.ic_kitchen_bg // if you have a kitchen background
+                            "bedroom", "bed" -> R.drawable.bedroom
+                            "living_room", "sofa" -> R.drawable.living_room
+                            "bathroom" -> R.drawable.bathroom
+                            "porch" -> R.drawable.porch
+                            "Media Room" -> R.drawable.media_room
+                            "Dining Room" -> R.drawable.dining_room
+                            "Laundary" -> R.drawable.laundry
+                            else -> R.drawable.home1 // fallback
+                        }
 
                         roomsList.add(
                             ListRowItem(
                                 id = id,
                                 title = name,
                                 subtitle = "$devicesCount Devices",
-                                iconRes = IconMapper.resolve(iconKey)
+                                iconRes = IconMapper.resolve(iconKey),
+                                backgroundRes = bgRes
                             )
                         )
                     }

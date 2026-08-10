@@ -17,19 +17,22 @@
         android:gravity="center"
         android:orientation="vertical"
         android:paddingVertical="20dp"
-        android:paddingHorizontal="16dp">
+        android:paddingHorizontal="16dp"
+        android:background="@drawable/bg_glass_dark">
 
         <FrameLayout
             android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:background="@drawable/bg_icon_white_circle">
+            android:layout_height="53dp"
+            android:background="@drawable/bg_icon_circle_orange">
+
             <ImageView
                 android:id="@+id/ivIcon"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_lamp"
-                app:tint="@color/orange_primary" />
+                app:tint="@color/orange_primary"
+                />
         </FrameLayout>
 
         <TextView
@@ -39,7 +42,7 @@
             android:layout_marginTop="12dp"
             android:fontFamily="sans-serif-medium"
             android:text="Room Name"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/orange_primary"
             android:textSize="14sp" />
 
     </LinearLayout>

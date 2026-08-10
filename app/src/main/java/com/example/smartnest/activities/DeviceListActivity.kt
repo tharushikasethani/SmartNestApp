@@ -74,6 +74,26 @@ class DeviceListActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+        
+        adapter.onToggleClick = { item, _ ->
+            val newStatus = if (item.status == DeviceStatus.ON) "OFF" else "ON"
+            val uid = auth.currentUser?.uid
+            if (uid != null && homeId != null && floorId != null && roomId != null) {
+                database.getReference("users")
+                    .child(uid)
+                    .child("homes")
+                    .child(homeId!!)
+                    .child("floors")
+                    .child(floorId!!)
+                    .child("rooms")
+                    .child(roomId!!)
+                    .child("devices")
+                    .child(item.id)
+                    .child("status")
+                    .setValue(newStatus)
+            }
+        }
+
         rv.adapter = adapter
 
         findViewById<android.view.View>(R.id.btnAdd).setOnClickListener {
