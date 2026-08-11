@@ -2,7 +2,6 @@ package com.example.smartnest.activities
 
 import android.os.Bundle
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +30,20 @@ class AddDeviceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Make activity edge-to-edge to remove the bottom navigation bar background
+        window.apply {
+            clearFlags(android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            addFlags(android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            statusBarColor = android.graphics.Color.TRANSPARENT
+            navigationBarColor = android.graphics.Color.TRANSPARENT
+            decorView.systemUiVisibility =
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+
         setContentView(R.layout.activity_add_device)
 
         homeId = intent.getStringExtra("homeId")
@@ -38,7 +51,7 @@ class AddDeviceActivity : AppCompatActivity() {
         roomId = intent.getStringExtra("roomId")
 
         val etDeviceName = findViewById<EditText>(R.id.etDeviceName)
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<android.widget.FrameLayout>(R.id.btnBack).setOnClickListener { finish() }
 
         val rv = findViewById<RecyclerView>(R.id.rvDeviceTypes)
         rv.layoutManager = GridLayoutManager(this, 3)
@@ -109,13 +122,13 @@ class AddDeviceActivity : AppCompatActivity() {
             SelectableItem(
                 "blinds",
                 "Blinds",
-                R.drawable.ic_blinds
+                R.drawable.ic_blinds1
             ),
 
             SelectableItem(
                 "tv",
                 "TV",
-                R.drawable.ic_tv
+                R.drawable.ic_tv1
             ),
 
             SelectableItem(
@@ -127,70 +140,70 @@ class AddDeviceActivity : AppCompatActivity() {
             SelectableItem(
                 "refrigerator",
                 "Refrigerator",
-                R.drawable.ic_refrigerator
+                R.drawable.ic_refrigerator1
             ),
 
             SelectableItem(
                 "kitchen_oven",
                 "Kitchen Oven",
-                R.drawable.ic_oven
+                R.drawable.ic_oven11
             ),
 
             SelectableItem(
                 "ceiling_fan",
                 "Ceiling Fan",
-                R.drawable.ic_fan
+                R.drawable.ic_fan1
             ),
 
             SelectableItem(
                 "smart_plug",
                 "Smart Plug",
-                R.drawable.ic_plug
+                R.drawable.ic_plug1
             ),
 
             SelectableItem(
                 "temperature_sensor",
                 "Air Conditioner",
-                R.drawable.ic_temperature_sensor
+                R.drawable.ic_temperature_sensor1
             ),
 
             SelectableItem(
                 "speaker",
                 "Smart Speaker",
-                R.drawable.ic_speaker
+                R.drawable.ic_speaker1
             ),
 
             SelectableItem(
                 "door_lock",
                 "Door Lock",
-                R.drawable.ic_lock
+                R.drawable.ic_lock1
             ),
 
             SelectableItem(
                 "washing_machine",
                 "Washing Machine",
-                R.drawable.ic_washing_machine
+                R.drawable.ic_washing_machine1
             ),
 
             SelectableItem(
                 "iron",
                 "Iron",
-                R.drawable.ic_iron
+                R.drawable.ic_iron1
             ),
             SelectableItem(
                 "outlet",
                 "Outlet",
-                R.drawable.ic_plug
+                R.drawable.ic_plug1
             ),
             SelectableItem(
                 "multi_switch",
                 "Multi Switch",
-                R.drawable.ic_switch_multi
+                R.drawable.ic_switch_multi1
             ),
             SelectableItem(
                 "hazard_appliance",
                 "Hazard Appliance",
-                R.drawable.ic_iron
+                R.drawable.ic_iron1
             ),
             SelectableItem(
                 "camera",
@@ -200,7 +213,7 @@ class AddDeviceActivity : AppCompatActivity() {
             SelectableItem(
                 "bathroom_heater",
                 "Heater",
-                R.drawable.ic_bathroom_heater
+                R.drawable.ic_bathroom_heater1
             ),
 
             SelectableItem(

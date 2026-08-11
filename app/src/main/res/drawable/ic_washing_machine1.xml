@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Washing machine body -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M4,2h16c0.55,0 1,0.45 1,1v18c0,0.55 -0.45,1 -1,1H4c-0.55,0 -1,-0.45 -1,-1V3c0,-0.55 0.45,-1 1,-1z" />
+
+    <!-- Top control panel -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M4,4h16v4H4z" />
+
+    <!-- Control buttons -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M6,5h2v2H6z" />
+
+    <path
+        android:fillColor="#000000"
+        android:pathData="M10,5h2v2h-2z" />
+
+    <path
+        android:fillColor="#000000"
+        android:pathData="M14,5h4v1h-4z" />
+
+    <!-- Washing drum -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,10A5,5 0,1 0,12 20A5,5 0,1 0,12 10" />
+
+    <!-- Drum center -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M12,12A3,3 0,1 0,12 18A3,3 0,1 0,12 12" />
+
+</vector>

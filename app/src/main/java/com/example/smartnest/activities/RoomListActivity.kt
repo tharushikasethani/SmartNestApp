@@ -28,6 +28,20 @@ class RoomListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Make activity edge-to-edge to remove the bottom navigation bar background
+        window.apply {
+            clearFlags(android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            addFlags(android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            statusBarColor = android.graphics.Color.TRANSPARENT
+            navigationBarColor = android.graphics.Color.TRANSPARENT
+            decorView.systemUiVisibility =
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+
         setContentView(R.layout.activity_room_list)
 
         homeId = intent.getStringExtra("homeId")
@@ -49,13 +63,6 @@ class RoomListActivity : AppCompatActivity() {
         }
         rv.adapter = adapter
 
-        findViewById<android.view.View>(R.id.btnFloorPlan).setOnClickListener {
-            val intent = Intent(this, FloorPlanActivity::class.java)
-            intent.putExtra("homeId", homeId)
-            intent.putExtra("floorId", floorId)
-            intent.putExtra("floorName", floorName)
-            startActivity(intent)
-        }
 
         findViewById<android.view.View>(R.id.btnAdd).setOnClickListener {
             val intent = Intent(this, AddRoomActivity::class.java)
@@ -87,13 +94,25 @@ class RoomListActivity : AppCompatActivity() {
                         val iconKey = roomSnapshot.child("icon").getValue(String::class.java) ?: "sofa"
                         
                         val devicesCount = roomSnapshot.child("devices").childrenCount
+                        val bgRes = when(iconKey.lowercase()) {
+                            "Kitchen","kitchen" -> R.drawable.ic_kitchen_bg // if you have a kitchen background
+                            "bedroom", "Bedroom" -> R.drawable.bedroom
+                            "living_room", "sofa","Living Room" -> R.drawable.living_room
+                            "bathroom","Bathroom" -> R.drawable.bathroom
+                            "porch","Porch" -> R.drawable.porch
+                            "Media Room","media_room" -> R.drawable.media_room
+                            "Dining Room","dining_room" -> R.drawable.dining_room
+                            "Laundary","laundry" -> R.drawable.laundry
+                            else -> R.drawable.home1 // fallback
+                        }
 
                         roomsList.add(
                             ListRowItem(
                                 id = id,
                                 title = name,
                                 subtitle = "$devicesCount Devices",
-                                iconRes = IconMapper.resolve(iconKey)
+                                iconRes = IconMapper.resolve(iconKey),
+                                backgroundRes = bgRes
                             )
                         )
                     }

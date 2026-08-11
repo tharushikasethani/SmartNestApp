@@ -73,46 +73,46 @@ object IconMapper {
                 R.drawable.ic_light
 
             "blinds" ->
-                R.drawable.ic_blinds
+                R.drawable.ic_blinds1
 
             "tv" ->
-                R.drawable.ic_tv
+                R.drawable.ic_tv1
 
             "deck_camera", "camera" ->
                 R.drawable.ic_camera
 
             "refrigerator", "fridge" ->
-                R.drawable.ic_refrigerator
+                R.drawable.ic_refrigerator1
 
-            "kitchen_oven", "oven" ->
-                R.drawable.ic_oven
+            "kitchen_oven", "oven","Kitchen Oven" ->
+                R.drawable.ic_oven11
 
             "ceiling_fan", "fan" ->
-                R.drawable.ic_fan
+                R.drawable.ic_fan1
 
             "smart_plug", "plug", "outlet" ->
-                R.drawable.ic_plug
+                R.drawable.ic_plug1
 
             "multi_switch" ->
-                R.drawable.ic_switch_multi
+                R.drawable.ic_switch_multi1
 
             "temperature_sensor", "temp_sensor" ->
                 R.drawable.ic_temperature_sensor
 
-            "speaker" ->
-                R.drawable.ic_speaker
+            "speaker","Smart Speaker","smart_speaker" ->
+                R.drawable.ic_speaker1
 
             "door_lock", "lock" ->
-                R.drawable.ic_lock
+                R.drawable.ic_lock1
 
-            "washing_machine", "washer" ->
-                R.drawable.ic_washing_machine
+            "washing_machine", "washer","Washing Machine" ->
+                R.drawable.ic_washing_machine1
 
             "iron", "hazard_appliance" ->
-                R.drawable.ic_iron
+                R.drawable.ic_iron1
 
-            "bathroom_heater", "heater", "water_heater" ->
-                R.drawable.ic_bathroom_heater
+            "bathroom_heater", "heater", "water_heater","Heater" ->
+                R.drawable.ic_bathroom_heater1
 
             // ==========================
             // Floors

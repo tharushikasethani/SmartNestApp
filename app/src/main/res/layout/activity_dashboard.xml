@@ -8,7 +8,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/bg_glass_light"
+        >
 
         <!-- ── Scrollable Content ── -->
         <ScrollView
@@ -17,8 +19,8 @@
             android:layout_weight="1"
             android:clipToPadding="false"
             android:overScrollMode="never"
-            android:paddingBottom="20dp"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            android:paddingBottom="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -27,6 +29,7 @@
                 android:paddingStart="20dp"
                 android:paddingTop="48dp"
                 android:paddingEnd="20dp"
+
                 android:paddingBottom="8dp">
 
                 <!-- ── TOP BAR ── -->
@@ -47,7 +50,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Good Morning ✨"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/orange_primary"
                             android:textSize="13sp"
                             android:fontFamily="sans-serif-medium"
                             android:letterSpacing="0.02" />
@@ -59,7 +62,7 @@
                             android:layout_marginTop="3dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="Randuni 👋"
-                            android:textColor="@color/text_primary"
+                            android:textColor="@color/orange_primary"
                             android:textSize="24sp" />
                     </LinearLayout>
 
@@ -94,116 +97,64 @@
                     </FrameLayout>
                 </LinearLayout>
 
-                <!-- ── HERO HOME CARD (white) ── -->
-                <LinearLayout
+                <FrameLayout
                     android:id="@+id/cardHome"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="26dp"
-                    android:background="@drawable/bg_hero_card_light"
-                    android:elevation="6dp"
-                    android:orientation="vertical"
-                    android:padding="20dp">
+                    android:layout_height="220dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/bg_card_radius"
+                    android:clipToOutline="true">
 
-                    <LinearLayout
+                    <!-- Background Image -->
+                    <ImageView
+                        android:id="@+id/imgHome"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/home_banner" />
 
-                        <!-- House Icon Circle -->
-                        <FrameLayout
-                            android:layout_width="56dp"
-                            android:layout_height="56dp"
-                            android:background="@drawable/bg_icon_circle_orange">
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_house_family"
-                                app:tint="@color/orange_primary" />
-                        </FrameLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tvHomeName"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif-medium"
-                                android:text="Family House"
-                                android:textColor="@color/text_primary"
-                                android:textSize="17sp" />
-
-                            <TextView
-                                android:id="@+id/tvHomeMeta"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="3dp"
-                                android:text="2 Floors  •  18 Devices"
-                                android:textColor="@color/text_secondary"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <!-- View Button -->
-                        <TextView
-                            android:id="@+id/tvViewHome"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_pill_orange_solid"
-                            android:fontFamily="sans-serif-medium"
-                            android:paddingLeft="16dp"
-                            android:paddingTop="9dp"
-                            android:paddingRight="16dp"
-                            android:paddingBottom="9dp"
-                            android:text="View ›"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <!-- Divider -->
+                    <!-- Dark Gradient -->
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="4dp"
-                        android:background="@color/divider" />
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_image_overlay"/>
 
-                    <!-- Status Row -->
+                    <!-- Content -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <View
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginEnd="6dp"
-                            android:background="@drawable/bg_dot_green" />
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:orientation="vertical"
+                        android:padding="20dp">
 
                         <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="System Online"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
-
-                        <TextView
+                            android:id="@+id/tvHomeName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Last sync: just now"
-                            android:textColor="@color/text_tertiary"
-                            android:textSize="11sp" />
+                            android:text="Family House"
+                            android:textColor="@android:color/white"
+                            android:textSize="24sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/tvHomeMeta"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="2 Floors • 18 Devices"
+                            android:textColor="#E0E0E0"
+                            android:textSize="14sp"/>
+
+                        <Button
+                            android:id="@+id/btnViewMyHome"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:text="View My Home"
+                            android:textColor="@android:color/white"
+                            android:backgroundTint="#74797C"/>
                     </LinearLayout>
-                </LinearLayout>
+
+                </FrameLayout>
 
                 <!-- ── STATS ROW ── -->
                 <LinearLayout
@@ -223,7 +174,8 @@
                         android:gravity="center"
                         android:orientation="vertical"
                         android:paddingTop="18dp"
-                        android:paddingBottom="18dp">
+                        android:paddingBottom="18dp"
+                        >
 
                         <FrameLayout
                             android:layout_width="38dp"
@@ -244,7 +196,7 @@
                             android:layout_marginTop="8dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="18"
-                            android:textColor="@color/text_primary"
+                            android:textColor="@color/orange_primary"
                             android:textSize="22sp" />
 
                         <TextView
@@ -252,7 +204,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="Devices"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/orange_primary"
                             android:textSize="11sp" />
                     </LinearLayout>
 
@@ -273,13 +225,13 @@
                         <FrameLayout
                             android:layout_width="38dp"
                             android:layout_height="38dp"
-                            android:background="@drawable/bg_icon_circle_green">
+                            android:background="@drawable/bg_icon_circle_orange">
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_power"
-                                app:tint="@color/status_on_green" />
+                                app:tint="@color/orange_primary" />
                         </FrameLayout>
 
                         <TextView
@@ -289,7 +241,7 @@
                             android:layout_marginTop="8dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="15"
-                            android:textColor="#1E7A45"
+                            android:textColor="@color/orange_primary"
                             android:textSize="22sp" />
 
                         <TextView
@@ -297,15 +249,17 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="Online"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/orange_primary"
                             android:textSize="11sp" />
                     </LinearLayout>
 
                     <!-- Offline -->
+                    <!-- Online -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_card_white"
                         android:elevation="2dp"
@@ -317,13 +271,13 @@
                         <FrameLayout
                             android:layout_width="38dp"
                             android:layout_height="38dp"
-                            android:background="@drawable/bg_icon_circle_red">
+                            android:background="@drawable/bg_icon_circle_orange">
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_warning_small"
-                                app:tint="@color/orange_dark" />
+                                app:tint="@color/orange_primary" />
                         </FrameLayout>
 
                         <TextView
@@ -332,8 +286,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:fontFamily="sans-serif-medium"
-                            android:text="3"
-                            android:textColor="#C03A18"
+                            android:text="15"
+                            android:textColor="@color/orange_primary"
                             android:textSize="22sp" />
 
                         <TextView
@@ -341,9 +295,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="Offline"
-                            android:textColor="@color/text_secondary"
+                            android:textColor="@color/orange_primary"
                             android:textSize="11sp" />
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <!-- ── QUICK ACTIONS HEADER ── -->
@@ -360,7 +315,7 @@
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
                         android:text="Quick Actions"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/orange_primary"
                         android:textSize="17sp" />
 
                     <TextView
@@ -371,159 +326,14 @@
                         android:textSize="13sp" />
                 </LinearLayout>
 
-                <!-- ── QUICK ACTION TILES ── -->
-                <LinearLayout
+                <!-- ── QUICK DEVICES LIST ── -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvQuickDevices"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
-
-                    <!-- Floors (Active) -->
-                    <LinearLayout
-                        android:id="@+id/actionFloors"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_action_tile_active_light"
-                        android:elevation="2dp"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:paddingTop="18dp"
-                        android:paddingBottom="14dp">
-
-                        <FrameLayout
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
-                            android:background="@drawable/bg_icon_circle_orange">
-                            <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_floors"
-                                app:tint="@color/orange_primary" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="Floors"
-                            android:textColor="@color/orange_primary"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-
-                    <!-- Cameras -->
-                    <LinearLayout
-                        android:id="@+id/actionCameras"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_action_tile_light"
-                        android:elevation="2dp"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:paddingTop="18dp"
-                        android:paddingBottom="14dp">
-
-                        <FrameLayout
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
-                            android:background="@drawable/bg_icon_circle_orange">
-                            <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_camera"
-                                app:tint="@color/orange_primary" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="Cameras"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-
-                    <!-- Scenes -->
-                    <LinearLayout
-                        android:id="@+id/actionScenes"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_action_tile_light"
-                        android:elevation="2dp"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:paddingTop="18dp"
-                        android:paddingBottom="14dp">
-
-                        <FrameLayout
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
-                            android:background="@drawable/bg_icon_circle_orange">
-                            <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_scenes"
-                                app:tint="@color/orange_primary" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="Scenes"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-
-                    <!-- Reports -->
-                    <LinearLayout
-                        android:id="@+id/actionReports"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_action_tile_light"
-                        android:elevation="2dp"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:paddingTop="18dp"
-                        android:paddingBottom="14dp">
-
-                        <FrameLayout
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
-                            android:background="@drawable/bg_icon_circle_orange">
-                            <ImageView
-                                android:layout_width="22dp"
-                                android:layout_height="22dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_reports"
-                                app:tint="@color/orange_primary" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="Reports"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:clipToPadding="false"
+                    android:scrollbars="none" />
 
                 <!-- ── RECENT ACTIVITY HEADER ── -->
                 <LinearLayout
@@ -533,35 +343,9 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="Recent Activity"
-                        android:textColor="@color/text_primary"
-                        android:textSize="17sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="View all"
-                        android:textColor="@color/orange_primary"
-                        android:textSize="13sp" />
                 </LinearLayout>
 
-                <!-- ── ACTIVITY LIST ── -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvActivity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
 
             </LinearLayout>
         </ScrollView>
@@ -569,15 +353,17 @@
         <!-- ── BOTTOM NAV (white) ── -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="40dp"
             android:background="@drawable/bg_nav_light"
-            android:elevation="16dp"
-            android:gravity="center_vertical"
+            android:elevation="12dp"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:paddingStart="8dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="16dp">
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp">
+
 
             <!-- Home (Active) -->
             <LinearLayout
@@ -586,32 +372,21 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp">
+                android:orientation="vertical">
 
                 <FrameLayout
-                    android:layout_width="52dp"
-                    android:layout_height="36dp"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:background="@drawable/bg_nav_active_light">
                     <ImageView
                         android:id="@+id/ivNavHome"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_home_nav"
                         app:tint="#FFFFFF" />
                 </FrameLayout>
 
-                <TextView
-                    android:id="@+id/tvNavHome"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Home"
-                    android:textColor="@color/orange_primary"
-                    android:textSize="10sp" />
             </LinearLayout>
 
             <!-- Reports -->
@@ -625,19 +400,19 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp">
 
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_reports"
-                    app:tint="@color/text_tertiary" />
+                <FrameLayout
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/bg_nav_normal">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_reports"
+                        app:tint="#FFFFFF"
+                        android:layout_gravity="center"/>
+                </FrameLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Reports"
-                    android:textColor="@color/text_tertiary"
-                    android:textSize="10sp" />
+
             </LinearLayout>
 
             <!-- Alerts -->
@@ -651,19 +426,18 @@
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp">
 
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_alert"
-                    app:tint="@color/text_tertiary" />
+                <FrameLayout
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/bg_nav_normal">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_alert"
+                        app:tint="#FFFFFF"
+                        android:layout_gravity="center"/>
+                </FrameLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Alerts"
-                    android:textColor="@color/text_tertiary"
-                    android:textSize="10sp" />
             </LinearLayout>
 
             <!-- Settings -->
@@ -676,20 +450,17 @@
                 android:orientation="vertical"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp">
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_settings"
-                    app:tint="@color/text_tertiary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Settings"
-                    android:textColor="@color/text_tertiary"
-                    android:textSize="10sp" />
+                <FrameLayout
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/bg_nav_normal">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_settings"
+                        app:tint="#FFFFFF"
+                        android:layout_gravity="center"/>
+                </FrameLayout>
             </LinearLayout>
 
         </LinearLayout>

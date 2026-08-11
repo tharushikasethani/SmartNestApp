@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.smartnest.DeviceImageMapper
 import com.example.smartnest.IconMapper
 import com.example.smartnest.R
 import com.google.firebase.auth.FirebaseAuth
@@ -27,6 +28,20 @@ abstract class BaseDeviceControlActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Make activity edge-to-edge to remove the bottom navigation bar background
+        window.apply {
+            clearFlags(android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            addFlags(android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            statusBarColor = android.graphics.Color.TRANSPARENT
+            navigationBarColor = android.graphics.Color.TRANSPARENT
+            decorView.systemUiVisibility =
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+
         parseExtras()
     }
 
@@ -57,7 +72,8 @@ abstract class BaseDeviceControlActivity : AppCompatActivity() {
 
     protected fun setupCommonHeader(title: String) {
         val ivIcon = findViewById<ImageView>(R.id.ivDeviceIcon)
-        ivIcon?.setImageResource(IconMapper.resolve(deviceType))
+        ivIcon?.setImageResource(DeviceImageMapper.resolve(deviceType))
+        ivIcon?.imageTintList = null // Clear tint for realistic images
 
         findViewById<TextView>(R.id.tvDeviceName)?.text = deviceName
         findViewById<TextView>(R.id.tvDeviceRoom)?.text = roomName
@@ -66,9 +82,13 @@ abstract class BaseDeviceControlActivity : AppCompatActivity() {
     }
 
     protected fun openSchedule() {
-        val intent = Intent(this, ScheduleActivity::class.java)
-        intent.putExtra("device_name", deviceName)
-        intent.putExtra("device_id", deviceId ?: "")
+        val intent = Intent(this, ScheduleActivity::class.java).apply {
+            putExtra("device_name", deviceName)
+            putExtra("device_id", deviceId ?: "")
+            putExtra("homeId", homeId)
+            putExtra("floorId", floorId)
+            putExtra("roomId", roomId)
+        }
         startActivity(intent)
     }
 }

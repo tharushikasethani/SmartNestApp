@@ -1,7 +1,7 @@
 package com.example.smartnest.activities
 
-import android.app.TimePickerDialog
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -9,103 +9,186 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.smartnest.R
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
 class ScheduleActivity : AppCompatActivity() {
 
+    private val auth = FirebaseAuth.getInstance()
+    private val database = FirebaseDatabase.getInstance()
+    private var deviceRef: DatabaseReference? = null
+
     private val dayLabels = listOf("M", "T", "W", "T", "F", "S", "S")
-    private val selectedDays = mutableSetOf(0, 1, 2, 3, 4) // Mon–Fri selected by default
+    private val selectedDays = mutableSetOf<Int>()
     private val dayViews = mutableListOf<TextView>()
+    
+    private lateinit var tvStart: TextView
+    private lateinit var tvEnd: TextView
+    private lateinit var switchEnabled: com.google.android.material.switchmaterial.SwitchMaterial
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Make activity edge-to-edge to remove the bottom navigation bar background
+        window.apply {
+            clearFlags(android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            addFlags(android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            statusBarColor = android.graphics.Color.TRANSPARENT
+            navigationBarColor = android.graphics.Color.TRANSPARENT
+            decorView.systemUiVisibility =
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+
         setContentView(R.layout.activity_schedule)
 
         val deviceName = intent.getStringExtra("device_name") ?: "Device"
-        findViewById<TextView>(R.id.tvScheduleTitle).text = "$deviceName Schedule"
+        val deviceId = intent.getStringExtra("device_id")
+        val homeId = intent.getStringExtra("homeId")
+        val floorId = intent.getStringExtra("floorId")
+        val roomId = intent.getStringExtra("roomId")
+        val uid = auth.currentUser?.uid
 
+        findViewById<TextView>(R.id.tvScheduleTitle).text = "$deviceName Schedule"
         findViewById<FrameLayout>(R.id.btnBack).setOnClickListener { finish() }
 
-        val tvStart = findViewById<TextView>(R.id.tvStartTime)
-        val tvEnd = findViewById<TextView>(R.id.tvEndTime)
+        tvStart = findViewById(R.id.tvStartTime)
+        tvEnd = findViewById(R.id.tvEndTime)
+        switchEnabled = findViewById(R.id.switchEnabled)
 
         findViewById<LinearLayout>(R.id.rowStartTime).setOnClickListener {
-            showTimePicker { time -> tvStart.text = time }
+            showTimePicker("Select Start Time") { time -> tvStart.text = time }
         }
         findViewById<LinearLayout>(R.id.rowEndTime).setOnClickListener {
-            showTimePicker { time -> tvEnd.text = time }
+            showTimePicker("Select End Time") { time -> tvEnd.text = time }
         }
 
         buildDayPills()
 
-        findViewById<TextView>(R.id.btnSaveSchedule).setOnClickListener {
-            val days = selectedDays.sorted().joinToString(",") { dayLabels[it] }
-            // TODO: persist start/end time + selectedDays to Firebase under
-            // devices/{deviceId}/schedule
-            Toast.makeText(
-                this,
-                "Saved: ${tvStart.text}–${tvEnd.text} on $days",
-                Toast.LENGTH_SHORT
-            ).show()
-            finish()
+        if (!uid.isNullOrEmpty() && !homeId.isNullOrEmpty() && !floorId.isNullOrEmpty() && !roomId.isNullOrEmpty() && !deviceId.isNullOrEmpty()) {
+            deviceRef = database.getReference("users")
+                .child(uid).child("homes").child(homeId)
+                .child("floors").child(floorId).child("rooms")
+                .child(roomId).child("devices").child(deviceId)
+            
+            loadSchedule()
+        } else {
+            // Default selection if no device info
+            selectedDays.addAll(listOf(0, 1, 2, 3, 4))
+            updateDayPillsUI()
         }
+
+        findViewById<TextView>(R.id.btnSaveSchedule).setOnClickListener {
+            saveSchedule()
+        }
+    }
+
+    private fun loadSchedule() {
+        deviceRef?.child("schedule")?.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    tvStart.text = snapshot.child("startTime").getValue(String::class.java) ?: "06:00 PM"
+                    tvEnd.text = snapshot.child("endTime").getValue(String::class.java) ?: "11:00 PM"
+                    switchEnabled.isChecked = snapshot.child("enabled").getValue(Boolean::class.java) ?: true
+                    
+                    val days = snapshot.child("days").getValue(String::class.java) ?: ""
+                    selectedDays.clear()
+                    if (days.isNotEmpty()) {
+                        days.split(",").forEach { 
+                            it.trim().toIntOrNull()?.let { idx -> selectedDays.add(idx) } 
+                        }
+                    }
+                } else {
+                    selectedDays.addAll(listOf(0, 1, 2, 3, 4))
+                }
+                updateDayPillsUI()
+            }
+            override fun onCancelled(error: DatabaseError) {
+                selectedDays.addAll(listOf(0, 1, 2, 3, 4))
+                updateDayPillsUI()
+            }
+        })
+    }
+
+    private fun saveSchedule() {
+        if (deviceRef == null) {
+            Toast.makeText(this, "Cannot save: Device info missing", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val scheduleData = mapOf(
+            "startTime" to tvStart.text.toString(),
+            "endTime" to tvEnd.text.toString(),
+            "enabled" to switchEnabled.isChecked,
+            "days" to selectedDays.sorted().joinToString(",")
+        )
+
+        deviceRef?.child("schedule")?.setValue(scheduleData)
+            ?.addOnSuccessListener {
+                Toast.makeText(this, "Schedule saved successfully", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            ?.addOnFailureListener {
+                Toast.makeText(this, "Failed to save: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun buildDayPills() {
         val container = findViewById<LinearLayout>(R.id.rowDays)
-        val sizePx = (36 * resources.displayMetrics.density).toInt()
-        val marginPx = (6 * resources.displayMetrics.density).toInt()
+        container.removeAllViews()
+        dayViews.clear()
+
+        val density = resources.displayMetrics.density
+        val sizePx = (36 * density).toInt()
+        val marginPx = (6 * density).toInt()
 
         dayLabels.forEachIndexed { index, label ->
             val pill = TextView(this).apply {
                 text = label
                 textSize = 14f
-                gravity = android.view.Gravity.CENTER
-                setTextColor(
-                    ContextCompat.getColor(
-                        context,
-                        if (index in selectedDays) android.R.color.white else R.color.text_primary_fallback
-                    )
-                )
-                background = ContextCompat.getDrawable(
-                    context,
-                    if (index in selectedDays) R.drawable.bg_day_circle_selected else R.drawable.bg_day_circle_unselected
-                )
+                gravity = Gravity.CENTER
+                background = ContextCompat.getDrawable(context, R.drawable.bg_day_circle_unselected)
             }
-            val params = LinearLayout.LayoutParams(sizePx, sizePx)
-            params.marginEnd = marginPx
+            val params = LinearLayout.LayoutParams(sizePx, sizePx).apply { marginEnd = marginPx }
             pill.layoutParams = params
-
             pill.setOnClickListener {
                 if (index in selectedDays) selectedDays.remove(index) else selectedDays.add(index)
-                pill.setBackgroundResource(
-                    if (index in selectedDays) R.drawable.bg_day_circle_selected else R.drawable.bg_day_circle_unselected
-                )
-                pill.setTextColor(
-                    ContextCompat.getColor(
-                        this,
-                        if (index in selectedDays) android.R.color.white else R.color.text_primary_fallback
-                    )
-                )
+                updateDayPillsUI()
             }
-
             dayViews.add(pill)
             container.addView(pill)
         }
     }
 
-    private fun showTimePicker(onPicked: (String) -> Unit) {
-        val cal = java.util.Calendar.getInstance()
-        TimePickerDialog(
-            this,
-            { _, hour, minute ->
-                val amPm = if (hour < 12) "AM" else "PM"
-                val hour12 = if (hour % 12 == 0) 12 else hour % 12
-                val formatted = String.format("%02d:%02d %s", hour12, minute, amPm)
-                onPicked(formatted)
-            },
-            cal.get(java.util.Calendar.HOUR_OF_DAY),
-            cal.get(java.util.Calendar.MINUTE),
-            false
-        ).show()
+    private fun updateDayPillsUI() {
+        dayViews.forEachIndexed { index, textView ->
+            val isSelected = index in selectedDays
+            textView.setTextColor(ContextCompat.getColor(this, if (isSelected) android.R.color.white else R.color.text_primary))
+            textView.setBackgroundResource(if (isSelected) R.drawable.bg_day_circle_selected else R.drawable.bg_day_circle_unselected)
+        }
+    }
+
+    private fun showTimePicker(title: String, onPicked: (String) -> Unit) {
+        val picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setHour(12)
+            .setMinute(0)
+            .setTitleText(title)
+            .setTheme(R.style.ThemeOverlay_SmartNest_TimePicker)
+            .build()
+
+        picker.addOnPositiveButtonClickListener {
+            val hour = picker.hour
+            val minute = picker.minute
+            val amPm = if (hour < 12) "AM" else "PM"
+            val hour12 = if (hour % 12 == 0) 12 else hour % 12
+            onPicked(String.format("%02d:%02d %s", hour12, minute, amPm))
+        }
+
+        picker.show(supportFragmentManager, "time_picker")
     }
 }

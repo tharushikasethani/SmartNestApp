@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Refrigerator body -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M6,2h12c0.55,0 1,0.45 1,1v18c0,0.55 -0.45,1 -1,1H6c-0.55,0 -1,-0.45 -1,-1V3c0,-0.55 0.45,-1 1,-1z" />
+
+    <!-- Freezer/Fridge separation -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M6,9h12v1H6z" />
+
+    <!-- Top handle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M14.5,4h1v4h-1z" />
+
+    <!-- Bottom handle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M14.5,11h1v7h-1z" />
+
+    <!-- Feet -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M7,21h2v1H7z" />
+
+    <path
+        android:fillColor="#000000"
+        android:pathData="M15,21h2v1h-2z" />
+
+</vector>

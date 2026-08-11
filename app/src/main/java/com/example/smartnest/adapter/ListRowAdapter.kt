@@ -18,6 +18,7 @@ class ListRowAdapter(
         val icon: ImageView = view.findViewById(R.id.ivRowIcon)
         val title: TextView = view.findViewById(R.id.tvRowTitle)
         val subtitle: TextView = view.findViewById(R.id.tvRowSubtitle)
+        val backgroundImage: ImageView = view.findViewById(R.id.ivHomeImage) // Find the background
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RowViewHolder {
@@ -31,6 +32,10 @@ class ListRowAdapter(
         holder.icon.setImageResource(item.iconRes)
         holder.title.text = item.title
         holder.subtitle.text = item.subtitle
+
+        // Set the dynamic background image here
+        holder.backgroundImage.setImageResource(item.backgroundRes)
+
         holder.itemView.setOnClickListener { onClick(item) }
     }
 

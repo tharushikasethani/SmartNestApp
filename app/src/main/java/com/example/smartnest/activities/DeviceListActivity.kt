@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.smartnest.DeviceImageMapper
 import com.example.smartnest.IconMapper
 import com.example.smartnest.R
 import com.example.smartnest.adapter.DeviceStatusAdapter
@@ -29,15 +30,30 @@ class DeviceListActivity : AppCompatActivity() {
     private var homeId: String? = null
     private var floorId: String? = null
     private var roomId: String? = null
+    private var roomName: String = "My Devices"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Make activity edge-to-edge to remove the bottom navigation bar background
+        window.apply {
+            clearFlags(android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            addFlags(android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            statusBarColor = android.graphics.Color.TRANSPARENT
+            navigationBarColor = android.graphics.Color.TRANSPARENT
+            decorView.systemUiVisibility =
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                android.view.View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or
+                android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+
         setContentView(R.layout.activity_device_list)
 
         homeId = intent.getStringExtra("homeId")
         floorId = intent.getStringExtra("floorId")
         roomId = intent.getStringExtra("roomId")
-        val roomName = intent.getStringExtra("roomName") ?: "My Devices"
+        roomName = intent.getStringExtra("roomName") ?: "My Devices"
 
         findViewById<android.widget.TextView>(R.id.txtTitle)?.text = roomName
         findViewById<android.widget.FrameLayout>(R.id.btnBack).setOnClickListener { finish() }
@@ -72,6 +88,26 @@ class DeviceListActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
+        
+        adapter.onToggleClick = { item, _ ->
+            val newStatus = if (item.status == DeviceStatus.ON) "OFF" else "ON"
+            val uid = auth.currentUser?.uid
+            if (uid != null && homeId != null && floorId != null && roomId != null) {
+                database.getReference("users")
+                    .child(uid)
+                    .child("homes")
+                    .child(homeId!!)
+                    .child("floors")
+                    .child(floorId!!)
+                    .child("rooms")
+                    .child(roomId!!)
+                    .child("devices")
+                    .child(item.id)
+                    .child("status")
+                    .setValue(newStatus)
+            }
+        }
+
         rv.adapter = adapter
 
         findViewById<android.view.View>(R.id.btnAdd).setOnClickListener {
@@ -112,9 +148,10 @@ class DeviceListActivity : AppCompatActivity() {
                             DeviceStatusItem(
                                 id = id,
                                 name = name,
-                                iconRes = IconMapper.resolve(type),
+                                iconRes = DeviceImageMapper.resolve(type),
                                 status = devStatus,
-                                deviceType = type
+                                deviceType = type,
+                                subtitle = roomName
                             )
                         )
                     }

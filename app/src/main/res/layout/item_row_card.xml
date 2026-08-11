@@ -1,80 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:id="@+id/homeCard"
+
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="160dp"
+
     android:layout_margin="8dp"
+
     app:cardCornerRadius="18dp"
     app:cardElevation="3dp"
-    app:cardBackgroundColor="#FFFFFF"
-    app:strokeWidth="1dp"
-    app:strokeColor="@color/divider">
+    app:strokeWidth="0dp">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="14dp">
+        android:layout_height="match_parent">
 
-        <!-- Icon -->
-        <FrameLayout
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:background="@drawable/bg_icon_circle_orange">
-            <ImageView
-                android:id="@+id/ivRowIcon"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_house_family"
-                app:tint="@color/orange_primary"
-                android:contentDescription="icon"/>
-        </FrameLayout>
+        <!-- ===================================== -->
+        <!-- HOME IMAGE                            -->
+        <!-- ===================================== -->
 
-        <!-- Text -->
+        <ImageView
+            android:id="@+id/ivHomeImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/home1"
+            android:contentDescription="Home image" />
+
+
+        <!-- ===================================== -->
+        <!-- BOTTOM GRADIENT                       -->
+        <!-- ===================================== -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bg_home_bottom_gradient" />
+
+
+        <!-- ===================================== -->
+        <!-- TEMPERATURE BADGE                     -->
+        <!-- ===================================== -->
+
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="16dp"
-            android:orientation="vertical">
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+
+            android:background="@drawable/bg_home_badge"
+
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+
+            android:paddingStart="9dp"
+            android:paddingEnd="9dp">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+
+                android:src="@drawable/ic_thermo"
+                app:tint="@android:color/white"
+
+                android:contentDescription="Temperature" />
+
+            <TextView
+                android:id="@+id/tvHomeTemperature"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="4dp"
+
+                android:text="20°C"
+                android:textColor="@android:color/white"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <!-- ===================================== -->
+        <!-- HOME STATUS                           -->
+        <!-- ===================================== -->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="44dp"
+
+            android:background="@drawable/bg_home_badge"
+
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <View
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+
+                android:background="@drawable/bg_status_dot" />
+
+            <TextView
+                android:id="@+id/tvRowSubtitle"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="5dp"
+
+                android:text="Online"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+
+        <!-- ===================================== -->
+        <!-- BOTTOM CONTENT                        -->
+        <!-- ===================================== -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+
+            android:layout_gravity="bottom"
+
+            android:gravity="center_vertical"
+
+            android:orientation="horizontal"
+
+            android:paddingStart="12dp"
+            android:paddingEnd="10dp">
+
+
+            <!-- ================================= -->
+            <!-- HOME NAME                         -->
+            <!-- ================================= -->
 
             <TextView
                 android:id="@+id/tvRowTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Title"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/tvRowSubtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Subtitle"
-                android:textColor="@color/text_secondary"
-                android:textSize="13sp"
-                android:layout_marginTop="2dp"/>
+                android:background="@drawable/bg_back_button"
+
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+
+                android:text="Family House"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+
+                android:ellipsize="end"
+                android:maxLines="1" />
+
+
+            <!-- ================================= -->
+            <!-- HOME ACTION BUTTON                -->
+            <!-- ================================= -->
+
+            <FrameLayout
+                android:id="@+id/btnHomeAction"
+
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+
+                android:layout_marginEnd="6dp"
+
+                android:background="@drawable/bg_home_action">
+
+                <ImageView
+                    android:id="@+id/ivRowIcon"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+
+                    android:layout_gravity="center"
+
+                    android:src="@drawable/ic_home"
+
+                    app:tint="@android:color/white"
+
+                    android:contentDescription="Home" />
+
+            </FrameLayout>
+
+
+            <!-- ================================= -->
+            <!-- OPEN HOME BUTTON                  -->
+            <!-- ================================= -->
+
+            <FrameLayout
+                android:id="@+id/btnOpenHome"
+
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+
+                android:background="@drawable/bg_home_action">
+
+                <ImageView
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+
+                    android:layout_gravity="center"
+
+                    android:src="@drawable/ic_chevron_right"
+
+                    app:tint="@android:color/white"
+
+                    android:contentDescription="Open home" />
+
+            </FrameLayout>
 
         </LinearLayout>
 
-        <!-- Arrow -->
-        <FrameLayout
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/bg_icon_circle_orange">
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_chevron_right"
-                app:tint="@color/orange_primary"
-                android:contentDescription="arrow"/>
-        </FrameLayout>
-
-    </LinearLayout>
+    </FrameLayout>
 
 </com.google.android.material.card.MaterialCardView>

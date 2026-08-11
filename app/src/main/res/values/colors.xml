@@ -6,8 +6,8 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
 
-    <!-- Brand accent (used sparingly) -->
-    <color name="orange_primary">#F0532D</color>
+    <!-- Brand Warm Orange Accent (matching Dashboard) -->
+    <color name="orange_primary">#FFFFFF</color>
     <color name="orange_dark">#D93E17</color>
     <color name="orange_light">#FFF1EB</color>
     <color name="orange_soft">#FFF6F2</color>
@@ -18,29 +18,29 @@
     <color name="orange_mid">#F0532D</color>
     <color name="orange_end">#E0350F</color>
 
-    <!-- Backgrounds: white / very light gray -->
-    <color name="bg_screen">#F7F7FA</color>
-    <color name="bg_dark">#F7F7FA</color>
+    <!-- Backgrounds -->
+    <color name="bg_screen">#F8F9FD</color>
+    <color name="bg_dark">#F8F9FD</color>
     <color name="bg_card">#FFFFFF</color>
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
-    <!-- Text colors: neutral gray scale -->
+    <!-- Text colors: clean neutral dark charcoal & gray scale -->
     <color name="text_primary">#1C1C1E</color>
-    <color name="text_secondary">#8A8A8E</color>
-    <color name="text_tertiary">#C7C7CC</color>
+    <color name="text_secondary">#6E6E73</color>
+    <color name="text_tertiary">#8E8E93</color>
 
     <!-- Legacy / shared -->
     <color name="card_bg">#FFFFFF</color>
     <color name="chip_unselected_bg">#FFFFFF</color>
-    <color name="divider">#F0F0F2</color>
+    <color name="divider">#8A8A8E</color>
 
     <color name="nav_bar_bg">#FFFFFF</color>
     <color name="toggle_off">#E5E5EA</color>
 
     <color name="status_on">#F0532D</color>
-    <color name="status_off">#C7C7CC</color>
+    <color name="status_off">#8E8E93</color>
 
     <color name="text_primary_fallback">#1C1C1E</color>
 
