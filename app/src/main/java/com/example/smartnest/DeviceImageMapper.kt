@@ -23,7 +23,7 @@ object DeviceImageMapper {
             key.contains("fan") -> R.drawable.ic_fan
 
             // Air Conditioner
-            key.contains("ac") || key.contains("air") ->
+            key.contains("ac") || key.contains("air") || key.contains("temperature_sensor") || key.contains("air_conditioner") ->
                 R.drawable.ic_ac
 
             // Refrigerator
@@ -31,7 +31,7 @@ object DeviceImageMapper {
                 R.drawable.ic_refrigerator
 
             // Washing Machine
-            key.contains("washer") || key.contains("washing") ->
+            key.contains("washer") || key.contains("washing_machine") ->
                 R.drawable.ic_washing_machine
 
             // Iron
