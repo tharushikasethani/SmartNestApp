@@ -87,16 +87,50 @@ class DashboardActivity : AppCompatActivity() {
 
         // Bottom nav click handlers
         findViewById<LinearLayout>(R.id.navReports).setOnClickListener {
-            // TODO: startActivity(Intent(this, ReportsActivity::class.java))
-            Toast.makeText(this, "Reports coming soon", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, ReportsActivity::class.java))
         }
         findViewById<LinearLayout>(R.id.navAlerts).setOnClickListener {
-            // TODO: startActivity(Intent(this, AlertsActivity::class.java))
-            Toast.makeText(this, "Alerts coming soon", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, AlertsActivity::class.java))
         }
         findViewById<LinearLayout>(R.id.navSettings).setOnClickListener {
             // TODO: startActivity(Intent(this, SettingsActivity::class.java))
             Toast.makeText(this, "Settings coming soon", Toast.LENGTH_SHORT).show()
         }
+
+        listenForSafetyAlerts()
+    }
+
+    private fun listenForSafetyAlerts() {
+        val uid = auth.currentUser?.uid ?: return
+        val alertsRef = com.google.firebase.database.FirebaseDatabase.getInstance()
+            .getReference("users").child(uid).child("alerts")
+
+        // Only listen for new alerts (after current time)
+        val query = alertsRef.orderByChild("timestamp").startAt(System.currentTimeMillis().toDouble())
+
+        query.addChildEventListener(object : com.google.firebase.database.ChildEventListener {
+            override fun onChildAdded(snapshot: com.google.firebase.database.DataSnapshot, previousChildName: String?) {
+                val alert = snapshot.getValue(com.example.smartnest.model.Alert::class.java)
+                if (alert != null && alert.type == "SAFETY_CUTOFF" && !alert.read) {
+                    showSafetyCutoffDialog(alert)
+                }
+            }
+
+            override fun onChildChanged(snapshot: com.google.firebase.database.DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(snapshot: com.google.firebase.database.DataSnapshot) {}
+            override fun onChildMoved(snapshot: com.google.firebase.database.DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: com.google.firebase.database.DatabaseError) {}
+        })
+    }
+
+    private fun showSafetyCutoffDialog(alert: com.example.smartnest.model.Alert) {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("⚠️ Safety Cutoff")
+            .setMessage(alert.message)
+            .setPositiveButton("View Alerts") { _, _ ->
+                startActivity(Intent(this, AlertsActivity::class.java))
+            }
+            .setNegativeButton("Dismiss", null)
+            .show()
     }
 }

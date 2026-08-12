@@ -6,6 +6,7 @@ import android.os.CountDownTimer
 import android.widget.SeekBar
 import android.widget.TextView
 import com.example.smartnest.R
+import com.example.smartnest.util.UsageTracker
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -51,6 +52,7 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
         findViewById<android.view.View>(R.id.btnOn).setOnClickListener { updateState(true) }
         findViewById<android.view.View>(R.id.btnOff).setOnClickListener { updateState(false) }
         findViewById<android.view.View>(R.id.btnSchedule).setOnClickListener { openSchedule() }
+        findViewById<android.view.View>(R.id.btnUsageReport).setOnClickListener { openReport() }
 
         observeDeviceData()
     }
@@ -72,11 +74,13 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
         warningBanner.visibility = android.view.View.GONE
     }
 
-    private fun forceOff() {
+    private fun forceOff(reason: String = "SAFETY_CUTOFF") {
         isOn = false
         tvStatus.text = "OFF"
         tvStatus.setTextColor(0xFFFF3B30.toInt())
-        getDeviceRef()?.child("status")?.setValue("OFF")
+        getDeviceRef()?.let {
+            UsageTracker.turnOff(it, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid, reason)
+        }
         stopTimer()
     }
 
@@ -113,13 +117,13 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
                 .setMessage("This device is a fire-risk appliance. It will auto-turn-off after $maxRuntimeMinutes minutes. Continue?")
                 .setPositiveButton("Enable") { _, _ ->
                     isOn = true
-                    getDeviceRef()?.child("status")?.setValue("ON")
+                    getDeviceRef()?.let { UsageTracker.turnOn(it, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid) }
                     startTimer()
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
         } else if (!on && isOn) {
-            forceOff()
+            forceOff("MANUAL_OFF")
         }
     }
 
@@ -129,6 +133,14 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
                 if (!snapshot.exists()) return
 
                 val dbStatus = snapshot.child("status").getValue(String::class.java) ?: "OFF"
+                val lastOnTimestamp = snapshot.child("last_on_timestamp").getValue(Long::class.java)
+
+                // Passive tracking check
+                UsageTracker.checkAndRecordZombieUsage(
+                    getDeviceRef()!!, dbStatus, lastOnTimestamp,
+                    deviceId!!, deviceName, deviceType, auth.currentUser!!.uid
+                )
+
                 isOn = dbStatus == "ON"
                 tvStatus.text = dbStatus
                 tvStatus.setTextColor(if (isOn) 0xFF34C759.toInt() else 0xFFFF3B30.toInt())
