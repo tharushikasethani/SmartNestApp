@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.smartnest.DeviceImageMapper
 import com.example.smartnest.R
@@ -64,6 +65,7 @@ class DeviceStatusAdapter(
 
         if (holder.status != null) {
             holder.status.text = item.status.text
+            holder.status.setTextColor(ContextCompat.getColor(holder.itemView.context, item.status.textColorRes))
         }
 
         if (holder.dot != null) {

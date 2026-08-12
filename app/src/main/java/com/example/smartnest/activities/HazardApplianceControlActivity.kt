@@ -5,14 +5,17 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.example.smartnest.R
+import com.example.smartnest.model.DeviceStatus
+import com.example.smartnest.utils.ScheduleValidator
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 class HazardApplianceControlActivity : BaseDeviceControlActivity() {
 
-    private var isOn = false
+    private var currentStatus: DeviceStatus = DeviceStatus.OFF
     private var maxRuntimeMinutes = 30
     private var remainingSeconds = 0
     private var timerActive = false
@@ -23,6 +26,9 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
     private lateinit var tvRuntimeLabel: TextView
     private lateinit var seekBar: SeekBar
     private lateinit var warningBanner: TextView
+    private var cardSchedule: android.view.View? = null
+    private var tvScheduleTime: TextView? = null
+    private var tvScheduleDays: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +40,10 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
         tvRuntimeLabel = findViewById(R.id.tvRuntimeValue)
         seekBar = findViewById(R.id.seekMaxRuntime)
         warningBanner = findViewById(R.id.tvWarningBanner)
+        
+        cardSchedule = findViewById(R.id.cardCurrentSchedule)
+        tvScheduleTime = findViewById(R.id.tvActiveScheduleTime)
+        tvScheduleDays = findViewById(R.id.tvActiveScheduleDays)
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(bar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -73,9 +83,9 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
     }
 
     private fun forceOff() {
-        isOn = false
+        currentStatus = DeviceStatus.OFF
         tvStatus.text = "OFF"
-        tvStatus.setTextColor(0xFFFF3B30.toInt())
+        tvStatus.setTextColor(ContextCompat.getColor(this, R.color.status_off_gray))
         getDeviceRef()?.child("status")?.setValue("OFF")
         stopTimer()
     }
@@ -97,8 +107,6 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 remainingSeconds = (millisUntilFinished / 1000).toInt()
                 updateTimerDisplay()
-                // Avoid excessive database writes, only update locally. 
-                // Reliable shutoff should happen on the device/cloud side.
             }
             override fun onFinish() {
                 forceOff()
@@ -107,18 +115,18 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
     }
 
     private fun updateState(on: Boolean) {
-        if (on && !isOn) {
+        if (on && currentStatus != DeviceStatus.ON) {
             AlertDialog.Builder(this)
                 .setTitle("Confirm Enable")
                 .setMessage("This device is a fire-risk appliance. It will auto-turn-off after $maxRuntimeMinutes minutes. Continue?")
                 .setPositiveButton("Enable") { _, _ ->
-                    isOn = true
+                    currentStatus = DeviceStatus.ON
                     getDeviceRef()?.child("status")?.setValue("ON")
                     startTimer()
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
-        } else if (!on && isOn) {
+        } else if (!on && currentStatus == DeviceStatus.ON) {
             forceOff()
         }
     }
@@ -128,10 +136,11 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) return
 
-                val dbStatus = snapshot.child("status").getValue(String::class.java) ?: "OFF"
-                isOn = dbStatus == "ON"
-                tvStatus.text = dbStatus
-                tvStatus.setTextColor(if (isOn) 0xFF34C759.toInt() else 0xFFFF3B30.toInt())
+                val statusStr = snapshot.child("status").getValue(String::class.java) ?: "OFF"
+                currentStatus = try { DeviceStatus.valueOf(statusStr) } catch (_: Exception) { DeviceStatus.OFF }
+                
+                tvStatus.text = currentStatus.text
+                tvStatus.setTextColor(ContextCompat.getColor(this@HazardApplianceControlActivity, currentStatus.textColorRes))
 
                 maxRuntimeMinutes = snapshot.child("maxRuntimeMinutes").getValue(Int::class.java) ?: 30
                 seekBar.progress = maxRuntimeMinutes
@@ -140,7 +149,7 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
                 val dbTimerActive = snapshot.child("timerActive").getValue(Boolean::class.java) ?: false
                 val dbRemaining = snapshot.child("remainingSeconds").getValue(Int::class.java) ?: 0
 
-                if (isOn && dbTimerActive) {
+                if (currentStatus == DeviceStatus.ON && dbTimerActive) {
                     warningBanner.visibility = android.view.View.VISIBLE
                     if (!timerActive || Math.abs(dbRemaining - remainingSeconds) > 5) {
                         remainingSeconds = dbRemaining
@@ -153,6 +162,38 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
                     warningBanner.visibility = android.view.View.GONE
                     remainingSeconds = 0
                     updateTimerDisplay()
+                }
+
+                // Handle Schedule Display
+                val schedule = snapshot.child("schedule")
+                if (schedule.exists() && (schedule.child("enabled").getValue(Boolean::class.java) ?: false)) {
+                    val start = schedule.child("startTime").getValue(String::class.java) ?: ""
+                    val end = schedule.child("endTime").getValue(String::class.java) ?: ""
+                    val daysRaw = schedule.child("days").getValue(String::class.java) ?: ""
+
+                    if (start.isNotEmpty() && end.isNotEmpty()) {
+                        cardSchedule?.visibility = android.view.View.VISIBLE
+                        tvScheduleTime?.text = "$start - $end"
+
+                        val dayLabels = listOf("M", "T", "W", "T", "F", "S", "S")
+                        val daysText = daysRaw.split(",")
+                            .filter { it.isNotEmpty() }
+                            .mapNotNull { it.trim().toIntOrNull() }
+                            .sorted()
+                            .joinToString(", ") { dayLabels[it] }
+
+                        tvScheduleDays?.text = if (daysText.isNotEmpty()) daysText else "Once"
+
+                        // AUTOMATION: Check if device should be forced ON/OFF
+                        val shouldBeOn = ScheduleValidator.isDeviceShouldBeOn(start, end, daysRaw)
+                        if (shouldBeOn && currentStatus == DeviceStatus.OFF) {
+                            getDeviceRef()?.child("status")?.setValue("ON")
+                        }
+                    } else {
+                        cardSchedule?.visibility = android.view.View.GONE
+                    }
+                } else {
+                    cardSchedule?.visibility = android.view.View.GONE
                 }
             }
 

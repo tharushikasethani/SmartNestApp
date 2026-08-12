@@ -2,11 +2,16 @@ package com.example.smartnest.activities
 
 import android.os.Bundle
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.example.smartnest.R
+import com.example.smartnest.model.DeviceStatus
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class OutletControlActivity : BaseDeviceControlActivity() {
 
-    private var isOn = false
+    private var currentStatus: DeviceStatus = DeviceStatus.OFF
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,21 +20,27 @@ class OutletControlActivity : BaseDeviceControlActivity() {
 
         val tvStatus = findViewById<TextView>(R.id.tvStatusValue)
 
-        fun updateState(on: Boolean) {
-            isOn = on
-            tvStatus.text = if (on) "ON" else "OFF"
-            tvStatus.setTextColor(if (on) 0xFF34C759.toInt() else 0xFFFF3B30.toInt())
-            getDeviceRef()?.child("status")?.setValue(if (on) "ON" else "OFF")
+        fun updateUIState(status: DeviceStatus) {
+            currentStatus = status
+            tvStatus?.text = status.text
+            tvStatus?.setTextColor(ContextCompat.getColor(this, status.textColorRes))
         }
 
-        findViewById<TextView>(R.id.btnOn).setOnClickListener { updateState(true) }
-        findViewById<TextView>(R.id.btnOff).setOnClickListener { updateState(false) }
+        findViewById<TextView>(R.id.btnOn).setOnClickListener {
+            getDeviceRef()?.child("status")?.setValue("ON")
+        }
+        findViewById<TextView>(R.id.btnOff).setOnClickListener {
+            getDeviceRef()?.child("status")?.setValue("OFF")
+        }
         findViewById<TextView>(R.id.btnSchedule).setOnClickListener { openSchedule() }
 
-        val initial = intent.getStringExtra("device_status") ?: "OFF"
-        updateState(initial == "ON")
-        getDeviceRef()?.child("status")?.get()?.addOnSuccessListener {
-            updateState(it.getValue(String::class.java) == "ON")
-        }
+        getDeviceRef()?.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val statusStr = snapshot.child("status").getValue(String::class.java) ?: "OFF"
+                val status = try { DeviceStatus.valueOf(statusStr) } catch (_: Exception) { DeviceStatus.OFF }
+                updateUIState(status)
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 }
