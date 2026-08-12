@@ -352,13 +352,70 @@
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:text="Schedule"
-                    android:textAllCaps="false"
-                    android:textColor="@color/text_primary"
-                    app:cornerRadius="16dp"
-                    app:icon="@drawable/ic_calendar"
-                    app:iconGravity="textStart"
-                    app:iconPadding="10dp"
-                    app:strokeColor="@color/divider" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <!-- Active Schedule Display -->
+            <LinearLayout
+                android:id="@+id/cardCurrentSchedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_card_white_large"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Active Schedule"
+                    android:textColor="@color/orange_primary"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_card_white_large1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_clock"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/tvActiveScheduleTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="06:00 PM - 11:00 PM"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvActiveScheduleDays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:alpha="0.8"
+                    android:text="M, T, W, T, F"
+                    android:textColor="@color/orange_primary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnUsageReport"
