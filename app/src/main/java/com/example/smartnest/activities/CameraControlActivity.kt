@@ -68,6 +68,18 @@ class CameraControlActivity : BaseDeviceControlActivity() {
             openReport()
         }
 
+        findViewById<android.view.View>(R.id.btnOn).setOnClickListener {
+            getDeviceRef()?.let { ref ->
+                com.example.smartnest.util.UsageTracker.turnOn(ref, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid)
+            }
+        }
+
+        findViewById<android.view.View>(R.id.btnOff).setOnClickListener {
+            getDeviceRef()?.let { ref ->
+                com.example.smartnest.util.UsageTracker.turnOff(ref, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid)
+            }
+        }
+
         getDeviceRef()?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val s = snapshot.child("status").getValue(String::class.java) ?: "ON"

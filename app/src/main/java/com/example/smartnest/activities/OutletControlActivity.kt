@@ -27,10 +27,14 @@ class OutletControlActivity : BaseDeviceControlActivity() {
         }
 
         findViewById<TextView>(R.id.btnOn).setOnClickListener {
-            getDeviceRef()?.child("status")?.setValue("ON")
+            getDeviceRef()?.let { ref ->
+                com.example.smartnest.util.UsageTracker.turnOn(ref, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid)
+            }
         }
         findViewById<TextView>(R.id.btnOff).setOnClickListener {
-            getDeviceRef()?.child("status")?.setValue("OFF")
+            getDeviceRef()?.let { ref ->
+                com.example.smartnest.util.UsageTracker.turnOff(ref, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid)
+            }
         }
         findViewById<TextView>(R.id.btnSchedule).setOnClickListener { openSchedule() }
 
