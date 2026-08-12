@@ -272,70 +272,95 @@
             </LinearLayout>
 
             <!-- ── ACTIONS ── -->
-            <LinearLayout
+            <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+                android:columnCount="2">
 
+                <!-- ON Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnOn"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="0dp"
                     android:layout_height="58dp"
+                    android:layout_columnWeight="1"
                     android:layout_marginEnd="6dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/orange_primary"
-                    android:fontFamily="sans-serif-bold"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:text="ON"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
                     app:cornerRadius="16dp"
+                    android:text="ON"
+                    android:fontFamily="sans-serif-bold"
                     app:icon="@drawable/ic_power"
                     app:iconGravity="textStart"
-                    app:iconPadding="10dp" />
+                    app:iconPadding="10dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:backgroundTint="@color/orange_primary"
+                    android:textColor="#FFFFFF"
+                    android:textAllCaps="false" />
 
+                <!-- OFF Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnOff"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="58dp"
+                    android:layout_columnWeight="1"
                     android:layout_marginStart="6dp"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif-bold"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:text="OFF"
-                    android:textAllCaps="false"
-                    android:textColor="@color/orange_primary"
                     app:cornerRadius="16dp"
+                    android:text="OFF"
+                    android:fontFamily="sans-serif-bold"
                     app:icon="@drawable/ic_power"
                     app:iconGravity="textStart"
                     app:iconPadding="10dp"
-                    app:strokeColor="@color/orange_primary" />
-            </LinearLayout>
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    app:strokeColor="@color/orange_primary"
+                    android:textColor="@color/orange_primary"
+                    android:textAllCaps="false" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSchedule"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="58dp"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="12dp"
-                android:fontFamily="sans-serif-medium"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="Schedule"
-                android:textAllCaps="false"
-                android:textColor="@color/text_primary"
-                app:cornerRadius="16dp"
-                app:icon="@drawable/ic_calendar"
-                app:iconGravity="textStart"
-                app:iconPadding="10dp"
-                app:strokeColor="@color/divider" />
+                <!-- Schedule Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSchedule"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="58dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="6dp"
+                    app:cornerRadius="16dp"
+                    android:text="Schedule"
+                    android:fontFamily="sans-serif-medium"
+                    app:icon="@drawable/ic_calendar"
+                    app:iconGravity="textStart"
+                    app:iconPadding="10dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    app:strokeColor="@color/divider"
+                    android:textColor="@color/text_primary"
+                    android:textAllCaps="false" />
+
+                <!-- Usage Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnUsageReport"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="58dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="6dp"
+                    app:cornerRadius="16dp"
+                    android:text="Reports"
+                    android:fontFamily="sans-serif-medium"
+                    app:icon="@drawable/ic_reports"
+                    app:iconGravity="textStart"
+                    app:iconPadding="10dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    app:strokeColor="@color/divider"
+                    android:textColor="@color/text_primary"
+                    android:textAllCaps="false" />
+            </GridLayout>
 
         </LinearLayout>
     </ScrollView>

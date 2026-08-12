@@ -65,6 +65,8 @@
         <activity android:name=".activities.CameraControlActivity" android:exported="false" />
         <activity android:name=".activities.LiveViewActivity" android:exported="false" />
         <activity android:name=".activities.FloorPlanActivity" android:exported="false" />
+        <activity android:name=".activities.ReportsActivity" android:exported="false" />
+        <activity android:name=".activities.AlertsActivity" android:exported="false" />
     </application>
 
 </manifest>

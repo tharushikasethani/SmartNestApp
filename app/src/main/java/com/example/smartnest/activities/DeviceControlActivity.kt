@@ -7,6 +7,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import com.example.smartnest.DeviceImageMapper
 import com.example.smartnest.R
+import com.example.smartnest.util.UsageTracker
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -69,6 +70,14 @@ class DeviceControlActivity : BaseDeviceControlActivity() {
             deviceRef?.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val currentStatus = snapshot.child("status").getValue(String::class.java) ?: "OFF"
+                    val lastOnTimestamp = snapshot.child("last_on_timestamp").getValue(Long::class.java)
+
+                    // Passive tracking check
+                    UsageTracker.checkAndRecordZombieUsage(
+                        deviceRef, currentStatus, lastOnTimestamp,
+                        deviceId!!, deviceName, deviceType, auth.currentUser!!.uid
+                    )
+
                     updateUIState(currentStatus == "ON")
                     
                     if (isLight) {
@@ -94,14 +103,18 @@ class DeviceControlActivity : BaseDeviceControlActivity() {
         })
 
         findViewById<android.view.View>(R.id.btnOn)?.setOnClickListener {
-            deviceRef?.child("status")?.setValue("ON")
+            UsageTracker.turnOn(deviceRef!!, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid)
         }
         findViewById<android.view.View>(R.id.btnOff)?.setOnClickListener {
-            deviceRef?.child("status")?.setValue("OFF")
+            UsageTracker.turnOff(deviceRef!!, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid)
         }
 
         findViewById<android.view.View>(R.id.btnSchedule)?.setOnClickListener {
             openSchedule()
+        }
+
+        findViewById<android.view.View>(R.id.btnUsageReport)?.setOnClickListener {
+            openReport()
         }
 
         loadState()

@@ -848,7 +848,8 @@ function devicePositionsInRoom(room, deviceEntries) {
     const dbRef = ref(window.db);
 
     onValue(dbRef, (snapshot) => {
-      const extracted = extractUserRecord(snapshot.val());
+      const val = snapshot.val();
+      const extracted = extractUserRecord(val);
       if (!extracted) {
         renderStatusScreen(
           "No SmartNest data found",
@@ -858,8 +859,79 @@ function devicePositionsInRoom(room, deviceEntries) {
         return;
       }
       firebaseBasePath = extracted.basePath;
+
+      // --- BACKEND SAFETY CUTOFF SIMULATION ---
+      performSafetyCutoffCheck(val);
+
       convertFirebaseData(extracted.record);
     });
+  }
+
+  /**
+   * BACKEND SIMULATION: Checks all hazard appliances and turns them off if they exceed max runtime.
+   * In a real app, this would be a Firebase Cloud Function (Scheduled or Triggered).
+   */
+  function performSafetyCutoffCheck(allData) {
+    // We need to find users/USER_ID/homes/.../devices
+    // Since we want to be "server-side", we should ideally iterate all users.
+    // For this simulation, we'll focus on the data structure we have.
+
+    const usersNode = allData.users || { [USER_ID]: allData };
+
+    for (const [uid, userData] of Object.entries(usersNode)) {
+      if (!userData.homes) continue;
+
+      for (const [homeId, home] of Object.entries(userData.homes)) {
+        if (!home.floors) continue;
+
+        for (const [floorId, floor] of Object.entries(home.floors)) {
+          if (!floor.rooms) continue;
+
+          for (const [roomId, room] of Object.entries(floor.rooms)) {
+            if (!room.devices) continue;
+
+            for (const [deviceId, device] of Object.entries(room.devices)) {
+              // Only check hazard appliances that are ON
+              if ((device.deviceType === "iron" || device.deviceType === "hazard_appliance") &&
+                  device.status === "ON" &&
+                  device.last_on_timestamp) {
+
+                const maxMinutes = device.maxRuntimeMinutes || 30;
+                const maxSeconds = maxMinutes * 60;
+                const now = Date.now();
+                const elapsedSeconds = (now - device.last_on_timestamp) / 1000;
+
+                if (elapsedSeconds >= maxSeconds) {
+                  console.warn(`🚨 SAFETY CUTOFF: Device ${device.deviceName} (ID: ${deviceId}) exceeded max runtime of ${maxMinutes}m.`);
+
+                  // 1. Turn OFF the device
+                  // We leave last_on_timestamp so the App can record the usage duration passively
+                  const devicePath = buildFirebasePath("users", uid, "homes", homeId, "floors", floorId, "rooms", roomId, "devices", deviceId);
+                  update(ref(window.db, devicePath), {
+                    status: "OFF",
+                    timerActive: false,
+                    remainingSeconds: 0,
+                    safety_cutoff_occurred: now
+                  });
+
+                  // 2. Create a safety alert
+                  const alertId = `alert_${now}`;
+                  const alertPath = buildFirebasePath("users", uid, "alerts", alertId);
+                  update(ref(window.db, alertPath), {
+                    type: "SAFETY_CUTOFF",
+                    deviceId: deviceId,
+                    deviceName: device.deviceName || "Hazard Appliance",
+                    message: `${device.deviceName || "Hazard Appliance"} was automatically turned OFF because the maximum ON duration (${maxMinutes} min) was exceeded.`,
+                    timestamp: now,
+                    read: false
+                  });
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   function convertFirebaseData(data) {
