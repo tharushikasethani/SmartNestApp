@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F2">
+    android:background="@android:color/transparent">
 
     <!-- Main onboarding image -->
     <ImageView
@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg_onboarding_overlay12345"
-        android:contentDescription="Smart home" />
+        android:src="@drawable/bg_onboarding_overlay123456"
+        android:contentDescription="Smart home background" />
 
     <!-- Dark gradient overlay -->
     <View
@@ -25,110 +25,106 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingStart="28dp"
-        android:paddingEnd="28dp"
-        android:paddingTop="72dp"
-        android:paddingBottom="34dp">
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
+        android:paddingTop="90dp"
+        android:paddingBottom="72dp">
 
-        <!-- Heading -->
-        <TextView
+        <!-- Smarter Home Living Text -->
+        <LinearLayout
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:lineSpacingExtra="2dp"
-            android:text="Control Your&#10;Home, Anytime,&#10;Anywhere."
-            android:textColor="#FFFFFF"
-            android:textSize="27sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <!-- Space for image -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="Control Your &#10;Home Anytime,&#10;Anywhere"
+                android:textColor="#FFFFFF"
+                android:textSize="47sp"
+                android:textStyle="bold"
+                android:includeFontPadding="false" />
+        </LinearLayout>
+
+        <!-- Spacer -->
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <!-- Page indicators -->
+        <!-- Get Started Pill Button -->
         <LinearLayout
-            android:id="@+id/pageIndicators"
-            android:layout_width="wrap_content"
-            android:layout_height="8dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <!-- Active indicator -->
-            <View
-                android:layout_width="24dp"
-                android:layout_height="5dp"
-                android:layout_marginEnd="3dp"
-                android:background="@drawable/bg_indicator_active" />
-
-            <!-- Indicator -->
-            <View
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:layout_marginEnd="3dp"
-                android:background="@drawable/bg_indicator" />
-
-            <!-- Indicator -->
-            <View
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:background="@drawable/bg_indicator" />
-
-        </LinearLayout>
-
-        <!-- Bottom navigation -->
-        <LinearLayout
-            android:id="@+id/bottomNavigation"
+            android:id="@+id/btnGetStartedContainer"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="14dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="28dp"
             android:background="@drawable/bg_onboarding_bottom"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingStart="4dp"
-            android:paddingEnd="8dp">
+            android:paddingStart="8dp"
+            android:paddingEnd="24dp"
+            android:clickable="true"
+            android:focusable="true">
 
-            <!-- Orange home button -->
+            <!-- Orange circle with icon -->
             <FrameLayout
-                android:id="@+id/btnHome"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
                 android:background="@drawable/bg_onboarding_home"
-                android:elevation="4dp"
-                android:clickable="true"
-                android:focusable="true">
+                android:elevation="2dp">
 
                 <ImageView
-                    android:layout_width="21dp"
-                    android:layout_height="21dp"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/logo"
+                    android:src="@drawable/ic_lock1"
                     app:tint="#FFFFFF"
-                    android:contentDescription="Home" />
-
+                    android:contentDescription="Lock icon" />
             </FrameLayout>
 
-            <!-- Get Started -->
+            <!-- Text -->
             <TextView
                 android:id="@+id/btnGetStarted"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:fontFamily="sans-serif-medium"
                 android:text="Get Started"
                 android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:clickable="true"
-                android:focusable="true" />
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium" />
 
-            <!-- Next arrow -->
+            <!-- Enhanced arrows on right -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
 
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="#40FFFFFF" />
 
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="-10dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="#80FFFFFF" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="-10dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="#FFFFFF" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

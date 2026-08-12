@@ -74,7 +74,23 @@ class DashboardActivity : AppCompatActivity() {
 
         // Button click handlers
         findViewById<FrameLayout>(R.id.btnMenu).setOnClickListener {
-            // TODO: open a drawer or settings menu
+            val popupView = layoutInflater.inflate(R.layout.layout_popup_logout, null)
+            val popupWindow = android.widget.PopupWindow(
+                popupView,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+            )
+
+            popupView.findViewById<android.widget.Button>(R.id.btnLogoutPopup).setOnClickListener {
+                auth.signOut()
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+                popupWindow.dismiss()
+            }
+
+            // Show popup anchored to the menu button
+            popupWindow.showAsDropDown(it, -80, 10)
         }
 
         findViewById<FrameLayout>(R.id.cardHome).setOnClickListener {

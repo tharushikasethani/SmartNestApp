@@ -40,21 +40,12 @@
             android:background="@drawable/bg_glass_dark">
 
             <!-- App Logo Badge -->
-            <FrameLayout
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+            <ImageView
+                android:layout_width="118dp"
+                android:layout_height="118dp"
                 android:layout_marginTop="72dp"
-                android:background="@drawable/bg_icon_circle_orange"
-                android:elevation="2dp">
-
-                <ImageView
-                    android:layout_width="34dp"
-                    android:layout_height="34dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_home"
-                    app:tint="@color/orange_primary"
-                    android:contentDescription="SmartNest Logo" />
-            </FrameLayout>
+                android:contentDescription="SmartNest Logo"
+                android:src="@drawable/ic_home1" />
 
             <!-- Welcome Title -->
             <TextView

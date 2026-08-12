@@ -88,8 +88,9 @@
                         android:layout_height="44dp"
                         android:background="@drawable/bg_icon_circle_orange"
                         android:elevation="1dp">
+
                         <ImageView
-                            android:layout_width="20dp"
+                            android:layout_width="12dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_menu"

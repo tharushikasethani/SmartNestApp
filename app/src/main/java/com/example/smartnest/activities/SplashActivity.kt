@@ -15,9 +15,9 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val tvTitle = findViewById<TextView>(R.id.tvTitle)
+        val tvTitle = findViewById<android.view.View>(R.id.tvTitle)
         val btnGetStarted = findViewById<TextView>(R.id.btnGetStarted)
-        val btnHome = findViewById<FrameLayout>(R.id.btnHome)
+        val btnContainer = findViewById<android.view.View>(R.id.btnGetStartedContainer)
 
         // Animate the title in
         val anim = AnimationUtils.loadAnimation(this, R.anim.fade_scale_in)
@@ -37,6 +37,6 @@ class SplashActivity : AppCompatActivity() {
         }
 
         btnGetStarted.setOnClickListener { proceed() }
-        btnHome.setOnClickListener { proceed() }
+        btnContainer.setOnClickListener { proceed() }
     }
 }
