@@ -30,7 +30,7 @@
         android:paddingTop="90dp"
         android:paddingBottom="72dp">
 
-        <!-- Smarter Home Living Text -->
+        <!-- Heading Text -->
         <LinearLayout
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
@@ -40,10 +40,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="sans-serif-condensed"
                 android:text="Control Your &#10;Home Anytime,&#10;Anywhere"
                 android:textColor="#FFFFFF"
-                android:textSize="47sp"
+                android:textSize="48sp"
                 android:textStyle="bold"
                 android:includeFontPadding="false" />
         </LinearLayout>
@@ -93,7 +93,7 @@
                 android:gravity="center"
                 android:text="Get Started"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-medium" />
 

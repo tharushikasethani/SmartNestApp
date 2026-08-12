@@ -39,12 +39,13 @@
             android:paddingEnd="24dp"
             android:background="@drawable/bg_glass_dark">
 
-            <!-- App Logo Badge -->
+            <!-- App Logo Badge (Transparent Image) -->
             <ImageView
-                android:layout_width="118dp"
-                android:layout_height="118dp"
-                android:layout_marginTop="72dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="64dp"
                 android:contentDescription="SmartNest Logo"
+                android:scaleType="centerInside"
                 android:src="@drawable/ic_home1" />
 
             <!-- Welcome Title -->

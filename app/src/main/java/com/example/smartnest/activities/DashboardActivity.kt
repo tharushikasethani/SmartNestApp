@@ -17,6 +17,10 @@ import com.example.smartnest.adapter.DeviceStatusAdapter
 import com.example.smartnest.model.DeviceStatus
 import com.example.smartnest.model.DeviceStatusItem
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.util.Calendar
 
 class DashboardActivity : AppCompatActivity() {
@@ -72,6 +76,9 @@ class DashboardActivity : AppCompatActivity() {
             Toast.makeText(this, "Control ${device.name}", Toast.LENGTH_SHORT).show()
         }
 
+        // Fetch Real-time stats from Database
+        fetchRealtimeStats()
+
         // Button click handlers
         findViewById<FrameLayout>(R.id.btnMenu).setOnClickListener {
             val popupView = layoutInflater.inflate(R.layout.layout_popup_logout, null)
@@ -89,8 +96,8 @@ class DashboardActivity : AppCompatActivity() {
                 popupWindow.dismiss()
             }
 
-            // Show popup anchored to the menu button
-            popupWindow.showAsDropDown(it, -80, 10)
+            // Show popup anchored to the menu button (top-right)
+            popupWindow.showAsDropDown(it, -100, 10)
         }
 
         findViewById<FrameLayout>(R.id.cardHome).setOnClickListener {
@@ -103,13 +110,12 @@ class DashboardActivity : AppCompatActivity() {
 
         // Bottom nav click handlers
         findViewById<LinearLayout>(R.id.navReports).setOnClickListener {
-            startActivity(Intent(this, ReportsActivity::class.java))
+            Toast.makeText(this, "Reports coming soon", Toast.LENGTH_SHORT).show()
         }
         findViewById<LinearLayout>(R.id.navAlerts).setOnClickListener {
-            startActivity(Intent(this, AlertsActivity::class.java))
+            Toast.makeText(this, "Alerts coming soon", Toast.LENGTH_SHORT).show()
         }
         findViewById<LinearLayout>(R.id.navSettings).setOnClickListener {
-            // TODO: startActivity(Intent(this, SettingsActivity::class.java))
             Toast.makeText(this, "Settings coming soon", Toast.LENGTH_SHORT).show()
         }
 
@@ -148,5 +154,45 @@ class DashboardActivity : AppCompatActivity() {
             }
             .setNegativeButton("Dismiss", null)
             .show()
+    }
+
+    private fun fetchRealtimeStats() {
+        val uid = auth.currentUser?.uid ?: return
+        val homesRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("homes")
+
+        homesRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var totalDevicesCount = 0
+                var onlineDevicesCount = 0
+                var offlineDevicesCount = 0
+
+                for (homeSnap in snapshot.children) {
+                    val floorsSnap = homeSnap.child("floors")
+                    for (floorSnap in floorsSnap.children) {
+                        val roomsSnap = floorSnap.child("rooms")
+                        for (roomSnap in roomsSnap.children) {
+                            val devicesSnap = roomSnap.child("devices")
+                            for (deviceSnap in devicesSnap.children) {
+                                totalDevicesCount++
+                                val status = deviceSnap.child("status").value?.toString() ?: "OFF"
+                                if (status == "ON") {
+                                    onlineDevicesCount++
+                                } else {
+                                    offlineDevicesCount++
+                                }
+                            }
+                        }
+                    }
+                }
+
+                findViewById<TextView>(R.id.tvDevicesCount).text = totalDevicesCount.toString()
+                findViewById<TextView>(R.id.tvOnlineCount).text = onlineDevicesCount.toString()
+                findViewById<TextView>(R.id.tvOfflineCount).text = offlineDevicesCount.toString()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
     }
 }
