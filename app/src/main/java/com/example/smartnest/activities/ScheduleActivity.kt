@@ -2,10 +2,12 @@ package com.example.smartnest.activities
 
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.smartnest.R
@@ -27,11 +29,12 @@ class ScheduleActivity : AppCompatActivity() {
     private lateinit var tvStart: TextView
     private lateinit var tvEnd: TextView
     private lateinit var switchEnabled: com.google.android.material.switchmaterial.SwitchMaterial
+    private lateinit var btnDelete: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Make activity edge-to-edge to remove the bottom navigation bar background
+        // Make activity edge-to-edge
         window.apply {
             clearFlags(android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             addFlags(android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -47,7 +50,7 @@ class ScheduleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_schedule)
 
         val deviceName = intent.getStringExtra("device_name") ?: "Device"
-        val deviceId = intent.getStringExtra("device_id")
+        val deviceId = intent.getStringExtra("device_id") ?: intent.getStringExtra("deviceId")
         val homeId = intent.getStringExtra("homeId")
         val floorId = intent.getStringExtra("floorId")
         val roomId = intent.getStringExtra("roomId")
@@ -59,6 +62,7 @@ class ScheduleActivity : AppCompatActivity() {
         tvStart = findViewById(R.id.tvStartTime)
         tvEnd = findViewById(R.id.tvEndTime)
         switchEnabled = findViewById(R.id.switchEnabled)
+        btnDelete = findViewById(R.id.btnDeleteSchedule)
 
         findViewById<LinearLayout>(R.id.rowStartTime).setOnClickListener {
             showTimePicker("Select Start Time") { time -> tvStart.text = time }
@@ -73,7 +77,7 @@ class ScheduleActivity : AppCompatActivity() {
             deviceRef = database.getReference("users")
                 .child(uid).child("homes").child(homeId)
                 .child("floors").child(floorId).child("rooms")
-                .child(roomId).child("devices").child(deviceId)
+                .child(roomId).child("devices").child(deviceId!!)
             
             loadSchedule()
         } else {
@@ -85,12 +89,17 @@ class ScheduleActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.btnSaveSchedule).setOnClickListener {
             saveSchedule()
         }
+
+        btnDelete.setOnClickListener {
+            deleteSchedule()
+        }
     }
 
     private fun loadSchedule() {
         deviceRef?.child("schedule")?.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
+                    btnDelete.visibility = View.VISIBLE
                     tvStart.text = snapshot.child("startTime").getValue(String::class.java) ?: "06:00 PM"
                     tvEnd.text = snapshot.child("endTime").getValue(String::class.java) ?: "11:00 PM"
                     switchEnabled.isChecked = snapshot.child("enabled").getValue(Boolean::class.java) ?: true
@@ -103,6 +112,7 @@ class ScheduleActivity : AppCompatActivity() {
                         }
                     }
                 } else {
+                    btnDelete.visibility = View.GONE
                     selectedDays.addAll(listOf(0, 1, 2, 3, 4))
                 }
                 updateDayPillsUI()
@@ -112,6 +122,20 @@ class ScheduleActivity : AppCompatActivity() {
                 updateDayPillsUI()
             }
         })
+    }
+
+    private fun deleteSchedule() {
+        AlertDialog.Builder(this)
+            .setTitle("Delete Schedule")
+            .setMessage("Are you sure you want to remove the schedule for this device?")
+            .setPositiveButton("Delete") { _, _ ->
+                deviceRef?.child("schedule")?.removeValue()?.addOnSuccessListener {
+                    Toast.makeText(this, "Schedule deleted", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun saveSchedule() {
@@ -129,7 +153,7 @@ class ScheduleActivity : AppCompatActivity() {
 
         deviceRef?.child("schedule")?.setValue(scheduleData)
             ?.addOnSuccessListener {
-                Toast.makeText(this, "Schedule saved successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Schedule saved", Toast.LENGTH_SHORT).show()
                 finish()
             }
             ?.addOnFailureListener {

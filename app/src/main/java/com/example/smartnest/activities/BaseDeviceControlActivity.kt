@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.smartnest.DeviceImageMapper
 import com.example.smartnest.IconMapper
 import com.example.smartnest.R
+import com.example.smartnest.utils.ScheduleValidator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -25,6 +26,14 @@ abstract class BaseDeviceControlActivity : AppCompatActivity() {
     protected var deviceName: String = ""
     protected var deviceType: String = ""
     protected var roomName: String = ""
+
+    private val automationHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    private val automationRunnable = object : Runnable {
+        override fun run() {
+            checkAutomation()
+            automationHandler.postDelayed(this, 30000) // Check every 30 seconds
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +52,39 @@ abstract class BaseDeviceControlActivity : AppCompatActivity() {
         }
 
         parseExtras()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        automationHandler.post(automationRunnable)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        automationHandler.removeCallbacks(automationRunnable)
+    }
+
+    private fun checkAutomation() {
+        val ref = getDeviceRef() ?: return
+        ref.child("schedule").get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists() && (snapshot.child("enabled").getValue(Boolean::class.java) ?: false)) {
+                val start = snapshot.child("startTime").getValue(String::class.java) ?: ""
+                val end = snapshot.child("endTime").getValue(String::class.java) ?: ""
+                val days = snapshot.child("days").getValue(String::class.java) ?: ""
+                
+                if (start.isNotEmpty() && end.isNotEmpty()) {
+                    val shouldBeOn = ScheduleValidator.isDeviceShouldBeOn(start, end, days)
+                    ref.child("status").get().addOnSuccessListener { statusSnap ->
+                        val currentStatus = statusSnap.getValue(String::class.java) ?: "OFF"
+                        if (shouldBeOn && currentStatus == "OFF") {
+                            ref.child("status").setValue("ON")
+                        } else if (!shouldBeOn && currentStatus == "ON") {
+                            ref.child("status").setValue("OFF")
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun parseExtras() {

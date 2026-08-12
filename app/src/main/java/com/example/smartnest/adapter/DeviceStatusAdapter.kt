@@ -48,12 +48,11 @@ class DeviceStatusAdapter(
 
     override fun onBindViewHolder(holder: DeviceViewHolder, position: Int) {
         val item = items[position]
+        val isOn = item.status == DeviceStatus.ON
 
-        val imageRes = if (item.iconRes != 0 && item.iconRes != R.drawable.ic_grid) {
-            item.iconRes
-        } else {
-            DeviceImageMapper.resolve(item.deviceType)
-        }
+        // Always resolve the image based on status to ensure ON/OFF images work
+        val imageRes = DeviceImageMapper.resolve(item.deviceType, isOn)
+        
         holder.icon.setImageResource(imageRes)
         holder.icon.colorFilter = null
 
@@ -72,7 +71,6 @@ class DeviceStatusAdapter(
             holder.dot.setBackgroundResource(item.status.dotRes)
         }
 
-        val isOn = item.status == DeviceStatus.ON
         if (holder.togglePill != null && holder.toggleDot != null) {
             holder.togglePill.setBackgroundResource(
                 if (isOn) R.drawable.bg_toggle_pill else R.drawable.bg_toggle_pill_off

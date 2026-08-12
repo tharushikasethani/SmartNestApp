@@ -91,10 +91,9 @@ class DeviceListActivity : AppCompatActivity() {
         }
         
         adapter.onToggleClick = { item, _ ->
-            val newStatus = if (item.status == DeviceStatus.ON) "OFF" else "ON"
             val uid = auth.currentUser?.uid
             if (uid != null && homeId != null && floorId != null && roomId != null) {
-                database.getReference("users")
+                val deviceRef = database.getReference("users")
                     .child(uid)
                     .child("homes")
                     .child(homeId!!)
@@ -104,8 +103,12 @@ class DeviceListActivity : AppCompatActivity() {
                     .child(roomId!!)
                     .child("devices")
                     .child(item.id)
-                    .child("status")
-                    .setValue(newStatus)
+
+                if (item.status == DeviceStatus.ON) {
+                    com.example.smartnest.util.UsageTracker.turnOff(deviceRef, item.id, item.name, item.deviceType, uid)
+                } else {
+                    com.example.smartnest.util.UsageTracker.turnOn(deviceRef, item.id, item.name, item.deviceType, uid)
+                }
             }
         }
 
@@ -144,12 +147,13 @@ class DeviceListActivity : AppCompatActivity() {
                         val type = deviceSnapshot.child("deviceType").getValue(String::class.java) ?: "light"
                         val statusStr = deviceSnapshot.child("status").getValue(String::class.java) ?: "OFF"
                         val devStatus = try { DeviceStatus.valueOf(statusStr) } catch (_: Exception) { DeviceStatus.OFF }
+                        val isOn = devStatus == DeviceStatus.ON
 
                         devicesList.add(
                             DeviceStatusItem(
                                 id = id,
                                 name = name,
-                                iconRes = DeviceImageMapper.resolve(type),
+                                iconRes = DeviceImageMapper.resolve(type,isOn),
                                 status = devStatus,
                                 deviceType = type,
                                 subtitle = roomName
