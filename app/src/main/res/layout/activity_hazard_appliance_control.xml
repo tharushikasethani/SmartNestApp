@@ -26,6 +26,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:overScrollMode="never"
         android:scrollbars="none">
 
@@ -49,96 +50,94 @@
                     android:layout_marginEnd="-40dp"
                     android:background="@drawable/bg_glass_card_light" />
 
+                <!-- Vertical Stack to avoid overlap -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
-                    android:paddingHorizontal="20dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <FrameLayout
-                        android:id="@+id/btnBack"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:background="@drawable/bg_icon_circle_orange">
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_chevron_left"
-                            app:tint="@color/orange_primary" />
-                    </FrameLayout>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="Hazard Appliance"
-                        android:textColor="@color/text_primary"
-                        android:textSize="17sp" />
-
-                    <FrameLayout
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:background="@drawable/bg_icon_circle_red">
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_hazard_warning"
-                            app:tint="#D9491F" />
-                    </FrameLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="90dp"
-                    android:gravity="center_horizontal"
+                    android:layout_marginTop="60dp"
                     android:orientation="vertical">
 
-                    <FrameLayout
-                        android:layout_width="132dp"
-                        android:layout_height="132dp"
-                        android:background="@drawable/bg_glow_ring_orange"
-                        android:elevation="4dp">
+                    <!-- Top bar (Back, Title, Icon) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@drawable/bg_card_white_large"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp">
 
                         <FrameLayout
-                            android:layout_width="108dp"
-                            android:layout_height="108dp"
-                            android:layout_gravity="center"
-                            android:background="@drawable/circle_bulb_bg">
+                            android:id="@+id/btnBack"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:background="@drawable/bg_icon_circle_orange"
+                            android:clickable="true"
+                            android:focusable="true">
+
                             <ImageView
-                                android:id="@+id/ivDeviceIcon"
-                                android:layout_width="56dp"
-                                android:layout_height="56dp"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_iron"
+                                android:contentDescription="@string/cd_back"
+                                android:src="@drawable/ic_chevron_left"
                                 app:tint="@color/orange_primary" />
                         </FrameLayout>
-                    </FrameLayout>
 
-                    <TextView
-                        android:id="@+id/tvDeviceName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:text="Iron"
-                        android:textColor="@color/text_primary"
-                        android:textSize="22sp" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="@string/hazard_appliance"
+                            android:textColor="@color/orange_primary"
+                            android:textSize="20sp" />
 
-                    <TextView
-                        android:id="@+id/tvDeviceRoom"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Room"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <!-- Device Info (Icon + Name) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="154dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingBottom="20dp">
+
+                        <ImageView
+                            android:id="@+id/ivDeviceIcon"
+                            android:layout_width="133dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/cd_device_icon"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/ic_iron"
+                            app:tint="@color/white" />
+
+                        <TextView
+                            android:id="@+id/tvDeviceName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="@string/iron"
+                            android:textColor="@color/orange_primary"
+                            android:textSize="21sp" />
+
+                        <TextView
+                            android:id="@+id/tvDeviceRoom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/room"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="14sp"
+                            android:alpha="0.8" />
+
+                    </LinearLayout>
                 </LinearLayout>
             </FrameLayout>
 
@@ -150,14 +149,14 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="-24dp"
                 android:background="@drawable/bg_banner_red"
-                android:drawableStart="@drawable/ic_warning_small"
+                app:drawableStartCompat="@drawable/ic_warning_small"
                 android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="14dp"
                 android:elevation="14dp"
                 android:fontFamily="sans-serif-bold"
-                android:text="ACTIVE — Auto shutoff in progress"
+                android:text="@string/active_auto_shutoff"
                 android:textColor="#FFFFFF"
                 android:textSize="13sp"
                 app:drawableTint="#FFFFFF"
@@ -173,7 +172,7 @@
                 android:background="@drawable/bg_card_white_large"
                 android:elevation="12dp"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="18dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -188,6 +187,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
+                            android:contentDescription="@string/cd_power"
                             android:src="@drawable/ic_power"
                             app:tint="@color/orange_primary" />
                     </FrameLayout>
@@ -195,26 +195,30 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="14dp"
                         android:layout_weight="1"
-                        android:text="Status"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
-                        android:fontFamily="sans-serif-medium" />
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/status"
+                        android:textColor="@color/orange_primary"
+                        android:textSize="14sp" />
+
                     <TextView
                         android:id="@+id/tvStatusValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-bold"
-                        android:text="OFF"
+                        android:text="@string/off"
                         android:textColor="#FF3B30"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:background="@drawable/bg_white_card"/>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginVertical="16dp"
+                    android:layout_marginVertical="14dp"
                     android:background="@color/divider" />
 
                 <LinearLayout
@@ -230,6 +234,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
+                            android:contentDescription="@string/cd_timer"
                             android:src="@drawable/ic_clock"
                             app:tint="@color/orange_primary" />
                     </FrameLayout>
@@ -237,35 +242,39 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="14dp"
                         android:layout_weight="1"
-                        android:text="Auto shutoff in"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
-                        android:fontFamily="sans-serif-medium" />
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/auto_shutoff_in"
+                        android:textColor="@color/orange_primary"
+                        android:textSize="14sp" />
+
                     <TextView
                         android:id="@+id/tvTimerValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-bold"
-                        android:text="00:00"
-                        android:textColor="#FF3B30"
-                        android:textSize="16sp" />
+                        android:text="@string/timer_default"
+                        android:textColor="#B71C1C"
+                        android:textSize="14sp"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:background="@drawable/bg_white_card"/>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginVertical="16dp"
+                    android:layout_marginVertical="14dp"
                     android:background="@color/divider" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Max runtime"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="13sp"
-                    android:fontFamily="sans-serif-medium" />
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/max_runtime"
+                    android:textColor="@color/orange_primary"
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -288,8 +297,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:fontFamily="sans-serif-bold"
-                        android:text="30 min"
-                        android:textColor="@color/text_primary"
+                        android:text="@string/min_30"
+                        android:textColor="@color/orange_primary"
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -299,69 +308,115 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="20dp"
-                android:columnCount="2">
+                android:layout_marginTop="28dp"
+                android:columnCount="2"
+                android:rowCount="2">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnOn"
-                    style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="0dp"
-                    android:layout_height="58dp"
+                    android:layout_height="54dp"
                     android:layout_columnWeight="1"
-                    android:layout_marginEnd="6dp"
-                    app:backgroundTint="@color/orange_primary"
-                    android:fontFamily="sans-serif-bold"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:text="ON"
-                    android:textAllCaps="false"
-                    android:textColor="#FFFFFF"
-                    app:cornerRadius="16dp"
-                    app:icon="@drawable/ic_power"
-                    app:iconGravity="textStart"
-                    app:iconPadding="10dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnOff"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="58dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_columnWeight="1"
-                    android:fontFamily="sans-serif-bold"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:text="OFF"
-                    android:textAllCaps="false"
-                    android:textColor="@color/orange_primary"
-                    app:cornerRadius="16dp"
-                    app:icon="@drawable/ic_power"
-                    app:iconGravity="textStart"
-                    app:iconPadding="10dp"
-                    app:strokeColor="@color/orange_primary" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSchedule"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="58dp"
-                    android:layout_columnWeight="1"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="6dp"
+                    android:layout_marginEnd="5dp"
+                    android:backgroundTint="#4CAF50"
                     android:fontFamily="sans-serif-medium"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
-                    android:text="Schedule"
+                    android:text="@string/on"
+                    android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_power"
+                    app:iconGravity="textStart"
+                    app:iconPadding="7dp"
+                    app:iconTint="#FFFFFF"
+                    app:rippleColor="#33FFFFFF" />
 
-            </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnOff"
+                    android:layout_width="0dp"
+                    android:layout_height="54dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="5dp"
+                    android:backgroundTint="#FFCDD2"
+                    android:fontFamily="sans-serif-medium"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/off"
+                    android:textAllCaps="false"
+                    android:textColor="#E53935"
+                    android:textSize="15sp"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_power"
+                    app:iconGravity="textStart"
+                    app:iconPadding="7dp"
+                    app:iconTint="#E53935"
+                    app:rippleColor="#22E53935"
+                    app:strokeColor="#E53935"
+                    app:strokeWidth="1.5dp" />
+
+                <LinearLayout
+                    android:id="@+id/btnSchedule"
+                    android:layout_width="0dp"
+                    android:layout_height="54dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/bg_button_primary"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@string/schedule"
+                        android:src="@drawable/ic_calendar" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/schedule"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btnUsageReport"
+                    android:layout_width="0dp"
+                    android:layout_height="54dp"
+                    android:layout_columnWeight="1"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_button_primary"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@string/reports"
+                        android:src="@drawable/ic_reports" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/reports"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </GridLayout>
 
             <!-- Active Schedule Display -->
             <LinearLayout
                 android:id="@+id/cardCurrentSchedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_card_white_large"
                 android:elevation="4dp"
@@ -374,7 +429,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Active Schedule"
+                    android:text="@string/active_schedule"
                     android:textColor="@color/orange_primary"
                     android:textSize="14sp" />
 
@@ -386,13 +441,12 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="12dp">
-
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_clock"
-                        app:tint="@color/white" />
-
+                        app:tint="@color/white"
+                        android:contentDescription="@string/cd_time" />
                     <TextView
                         android:id="@+id/tvActiveScheduleTime"
                         android:layout_width="0dp"
@@ -400,7 +454,7 @@
                         android:layout_marginStart="12dp"
                         android:layout_weight="1"
                         android:fontFamily="sans-serif-bold"
-                        android:text="06:00 PM - 11:00 PM"
+                        android:text="@string/schedule_time_default"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -411,32 +465,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:alpha="0.8"
-                    android:text="M, T, W, T, F"
+                    android:text="@string/schedule_days_default"
                     android:textColor="@color/orange_primary"
                     android:textSize="12sp" />
             </LinearLayout>
-
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnUsageReport"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="58dp"
-                    android:layout_columnWeight="1"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="6dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:text="Reports"
-                    android:textAllCaps="false"
-                    android:textColor="@color/text_primary"
-                    app:cornerRadius="16dp"
-                    app:icon="@drawable/ic_reports"
-                    app:iconGravity="textStart"
-                    app:iconPadding="10dp"
-                    app:strokeColor="@color/divider" />
-            </GridLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -445,7 +477,7 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif"
                 android:lineSpacingExtra="3dp"
-                android:text="This device will automatically turn off when the timer expires. For reliable off-device enforcement, deploy a Firebase Cloud Function or WorkManager task."
+                android:text="@string/hazard_info"
                 android:textColor="@color/text_secondary"
                 android:textSize="11sp"
                 android:alpha="0.7" />

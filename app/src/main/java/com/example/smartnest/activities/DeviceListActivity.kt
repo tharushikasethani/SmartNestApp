@@ -61,15 +61,16 @@ class DeviceListActivity : AppCompatActivity() {
         val rv = findViewById<RecyclerView>(R.id.rvList)
         rv.layoutManager = GridLayoutManager(this, 2)
         adapter = DeviceStatusAdapter(devicesList) { device ->
-            val targetClass = when (device.deviceType) {
+            val type = device.deviceType.lowercase().trim()
+            val targetClass = when (type) {
                 "light", "lamp", "blinds", "tv", "ceiling_fan", "speaker", "refrigerator",
                 "kitchen_oven", "washing_machine", "bathroom_heater", "temperature_sensor" ->
                     DeviceControlActivity::class.java
-                "outlet", "smart_plug" ->
+                "outlet", "plug" ->
                     OutletControlActivity::class.java
-                "multi_switch" ->
+                "multi_switch","smart_plug" ->
                     MultiSwitchControlActivity::class.java
-                "hazard_appliance", "iron" ->
+                "hazard_appliance", "iron", "heater", "oven" ->
                     HazardApplianceControlActivity::class.java
                 "camera", "deck_camera" ->
                     CameraControlActivity::class.java

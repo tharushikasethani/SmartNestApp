@@ -75,9 +75,18 @@ class MultiSwitchControlActivity : BaseDeviceControlActivity() {
 
             val row = layoutInflater.inflate(R.layout.item_switch_row, container, false)
             row.findViewById<TextView>(R.id.tvSwitchLabel).text = label
+            val tvStatus = row.findViewById<TextView>(R.id.tvStatusValue)
             val toggle = row.findViewById<SwitchCompat>(R.id.switchToggle)
+            
+            fun updateRowUI(checked: Boolean) {
+                tvStatus.text = if (checked) "ON" else "OFF"
+                tvStatus.setTextColor(if (checked) 0xFF34C759.toInt() else 0xFF8E8E93.toInt())
+            }
+
+            updateRowUI(isOn)
             toggle.isChecked = isOn
             toggle.setOnCheckedChangeListener { _, checked ->
+                updateRowUI(checked)
                 val ref = getDeviceRef() ?: return@setOnCheckedChangeListener
                 ref.child("switches").child(key).child("isOn").setValue(checked)
                 

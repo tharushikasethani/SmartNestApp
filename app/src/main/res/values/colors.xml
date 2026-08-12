@@ -15,8 +15,9 @@
 
     <!-- Orange gradient stops -->
     <color name="orange_start">#FF8A50</color>
-    <color name="orange_mid">#F0532D</color>
+    <color name="orange_mid">#F7B476</color>
     <color name="orange_end">#E0350F</color>
+    <color name="orange_new">#F7B476</color>
 
     <!-- Backgrounds -->
     <color name="bg_screen">#F8F9FD</color>

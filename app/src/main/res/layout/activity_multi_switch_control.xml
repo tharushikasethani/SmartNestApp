@@ -22,7 +22,9 @@
             <!-- Top Header -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_white_large"
+                android:padding="10dp">
 
                 <FrameLayout
                     android:id="@+id/btnBack"
@@ -51,7 +53,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-black"
                         android:text="Switches"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/orange_primary"
                         android:textSize="26sp" />
 
                     <TextView
@@ -59,19 +61,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Room"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/orange_primary"
                         android:textSize="13sp" />
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_grid"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:tint="@color/text_primary" />
             </RelativeLayout>
 
             <!-- Device Info Card -->
@@ -90,18 +83,14 @@
                     android:orientation="vertical"
                     android:padding="32dp">
 
-                    <FrameLayout
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:background="@drawable/bg_icon_white_circle">
-                        <ImageView
-                            android:id="@+id/ivDeviceIcon"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_switch_multi"
-                            app:tint="@color/orange_primary" />
-                    </FrameLayout>
+                    <ImageView
+                        android:id="@+id/ivDeviceIcon"
+                        android:layout_width="141dp"
+                        android:layout_height="94dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_switch_multi"
+                        app:tint="@color/orange_primary" />
+
 
                     <TextView
                         android:id="@+id/tvSwitchCount"
@@ -131,7 +120,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp" />
+                    android:padding="16dp"
+                    android:background="@color/white"/>
 
             </androidx.cardview.widget.CardView>
 
@@ -142,22 +132,32 @@
                 android:layout_marginTop="24dp"
                 android:orientation="vertical">
 
-                <com.google.android.material.button.MaterialButton
+                <LinearLayout
                     android:id="@+id/btnUsageReport"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:text="View Usage Report"
-                    android:textAllCaps="false"
-                    android:textColor="@color/text_primary"
-                    android:textSize="17sp"
-                    android:fontFamily="sans-serif-bold"
-                    app:cornerRadius="32dp"
-                    app:strokeColor="@color/divider"
-                    app:icon="@drawable/ic_reports"
-                    app:iconGravity="textStart"
-                    app:iconPadding="16dp"
-                    app:iconTint="@color/text_secondary" />
+                    android:layout_height="54dp"
+                    android:background="@drawable/bg_button_primary"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="@string/reports"
+                        android:src="@drawable/ic_reports" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="View Usage Report"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

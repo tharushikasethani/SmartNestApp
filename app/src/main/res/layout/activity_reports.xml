@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_screen">
+    android:background="@drawable/bg_glass_light">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -22,7 +22,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_white_large1"
+                android:padding="10dp">
 
                 <FrameLayout
                     android:id="@+id/btnBack"
@@ -34,7 +36,7 @@
                         android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_back"
-                        app:tint="@color/orange_mid" />
+                        app:tint="@color/white" />
                 </FrameLayout>
 
                 <TextView
@@ -44,7 +46,7 @@
                     android:layout_centerInParent="true"
                     android:fontFamily="sans-serif-black"
                     android:text="Usage Reports"
-                    android:textColor="@color/text_primary"
+                    android:textColor="@color/orange_primary"
                     android:textSize="22sp" />
             </RelativeLayout>
 
@@ -64,7 +66,9 @@
                     android:layout_height="wrap_content"
                     android:text="Today"
                     android:checked="true"
-                    app:chipBackgroundColor="@color/bg_card"
+                    app:chipBackgroundColor="@color/chip_bg_selector"
+                    android:textColor="@color/chip_text_selector"
+                    app:chipStrokeWidth="0dp"
                     app:checkedIconVisible="false" />
 
                 <com.google.android.material.chip.Chip
@@ -73,7 +77,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Last 7 Days"
-                    app:chipBackgroundColor="@color/bg_card"
+                    app:chipBackgroundColor="@color/chip_bg_selector"
+                    android:textColor="@color/chip_text_selector"
+                    app:chipStrokeWidth="0dp"
                     app:checkedIconVisible="false" />
 
             </com.google.android.material.chip.ChipGroup>
@@ -125,7 +131,7 @@
                             android:layout_marginTop="4dp"
                             android:fontFamily="sans-serif-black"
                             android:text="0h 0m"
-                            android:textColor="@color/orange_mid"
+                            android:textColor="@color/orange_new"
                             android:textSize="20sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -171,7 +177,7 @@
                 android:layout_marginTop="32dp"
                 android:fontFamily="sans-serif-bold"
                 android:text="Usage Visualization"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/orange_primary"
                 android:textSize="18sp" />
 
             <androidx.cardview.widget.CardView
@@ -196,7 +202,7 @@
                 android:layout_marginTop="32dp"
                 android:fontFamily="sans-serif-bold"
                 android:text="Usage by Device"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/orange_primary"
                 android:textSize="18sp" />
 
             <androidx.recyclerview.widget.RecyclerView

@@ -46,7 +46,7 @@ object DeviceImageMapper {
             key.contains("plug") ||
                     key.contains("outlet") ||
                     key.contains("smart_plug") ->
-                R.drawable.ic_plug
+                R.drawable.multi_plug2
 
             // TV
             key.contains("tv") ->

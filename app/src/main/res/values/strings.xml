@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">SmartNest</string>
+    <string name="hazard_appliance">Device Control</string>
+    <string name="iron">Iron</string>
+    <string name="room">Room</string>
+    <string name="active_auto_shutoff">ACTIVE — Auto shutoff in progress</string>
+    <string name="status">Status</string>
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
+    <string name="auto_shutoff_in">Auto shutoff in</string>
+    <string name="timer_default">00:00</string>
+    <string name="max_runtime">Max runtime</string>
+    <string name="min_30">30 min</string>
+    <string name="schedule">Schedule</string>
+    <string name="active_schedule">Active Schedule</string>
+    <string name="schedule_time_default">06:00 PM - 11:00 PM</string>
+    <string name="schedule_days_default">M, T, W, T, F</string>
+    <string name="reports">Reports</string>
+    <string name="hazard_info">This device will automatically turn off when the timer expires. For reliable off-device enforcement, deploy a Firebase Cloud Function or WorkManager task.</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_hazard_warning">Hazard warning</string>
+    <string name="cd_device_icon">Device icon</string>
+    <string name="cd_power">Power</string>
+    <string name="cd_timer">Timer</string>
+    <string name="cd_time">Time</string>
+    <string name="device_control">Device Control</string>
+    <string name="brightness">Brightness</string>
+    <string name="power_usage">Power</string>
+    <string name="todays_usage">Today\'s Usage</string>
+    <string name="power_default">15 W</string>
+    <string name="usage_default">3.6 kWh • 4h 30m</string>
 </resources>

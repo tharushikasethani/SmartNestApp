@@ -60,13 +60,15 @@ class DeviceControlActivity : BaseDeviceControlActivity() {
             currentStatus = status
             tvStatus?.text = status.text
             tvStatus?.setTextColor(ContextCompat.getColor(this, status.textColorRes))
-            
+
             // Handle visual feedback/animations based on status
             val isOn = status == DeviceStatus.ON
+
+            // ADD THIS LINE: Update the icon image based on the new ON/OFF state
+            ivIcon?.setImageResource(DeviceImageMapper.resolve(deviceType, isOn))
+
             if (isOn && isFan) {
                 ivIcon?.startAnimation(fanRotateAnim)
-            } else if (isOn && isLight) {
-                ivIcon?.startAnimation(blinkAnim)
             } else {
                 ivIcon?.clearAnimation()
                 ivIcon?.alpha = 1.0f

@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#F2F2F3"
     android:scrollbars="none">
 
@@ -12,24 +13,28 @@
         android:paddingStart="20dp"
         android:paddingTop="20dp"
         android:paddingEnd="20dp"
-        android:paddingBottom="24dp">
+        android:paddingBottom="24dp"
+        android:layout_marginTop="30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@drawable/bg_card_white_large"
+            android:padding="10dp">
 
             <FrameLayout
                 android:id="@+id/btnBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_circle_white">
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_icon_circle_orange">
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_chevron_left" />
+                    android:src="@drawable/ic_back"
+                    app:tint="@color/orange_primary" />
             </FrameLayout>
 
             <TextView
@@ -39,7 +44,7 @@
                 android:gravity="center"
                 android:fontFamily="sans-serif-medium"
                 android:text="Camera View"
-                android:textColor="#1A1A1A"
+                android:textColor="@color/orange_primary"
                 android:textSize="17sp" />
 
             <View android:layout_width="40dp" android:layout_height="40dp" />
@@ -51,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="sans-serif-medium"
-            android:text="Camera"
+            android:text="CCTV"
             android:textColor="#1A1A1A"
             android:textSize="19sp" />
 
@@ -62,20 +67,29 @@
             android:fontFamily="sans-serif-medium"
             android:text="ON"
             android:textColor="#34C759"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:paddingHorizontal="12dp"/>
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="220dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/bg_card_white">
+            android:background="#000000">
 
             <ImageView
                 android:id="@+id/ivSnapshot"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_camera" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/living_room"
+                android:alpha="0.9" />
+
+            <!-- Overlay for camera feel -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_image_overlay" />
 
         </FrameLayout>
 
@@ -88,12 +102,70 @@
             android:textColor="#8B8B8D"
             android:textSize="12sp" />
 
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="28dp"
+            android:columnCount="2"
+            android:rowCount="2">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOn"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:layout_columnWeight="1"
+                android:layout_marginEnd="5dp"
+                android:backgroundTint="#4CAF50"
+                android:fontFamily="sans-serif-medium"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/on"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_power"
+                app:iconGravity="textStart"
+                app:iconPadding="7dp"
+                app:iconTint="#FFFFFF"
+                app:rippleColor="#33FFFFFF" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOff"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                android:layout_columnWeight="1"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="#FFCDD2"
+                android:fontFamily="sans-serif-medium"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/off"
+                android:textAllCaps="false"
+                android:textColor="#E53935"
+                android:textSize="15sp"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_power"
+                app:iconGravity="textStart"
+                app:iconPadding="7dp"
+                app:iconTint="#E53935"
+                app:rippleColor="#22E53935"
+                app:strokeColor="#E53935"
+                app:strokeWidth="1.5dp" />
+
+
+        </GridLayout>
+
+
+
+
         <TextView
             android:id="@+id/btnRefresh"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/bg_pill_orange_solid"
+            android:background="@drawable/bg_button_primary"
             android:gravity="center"
             android:fontFamily="sans-serif-medium"
             android:text="Refresh Snapshot"
@@ -105,11 +177,11 @@
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bg_pill_outline_gray"
+            android:background="@drawable/bg_button_primary"
             android:gravity="center"
             android:fontFamily="sans-serif-medium"
             android:text="Live View"
-            android:textColor="#1A1A1A"
+            android:textColor="@color/orange_primary"
             android:textSize="15sp" />
 
         <TextView
@@ -117,11 +189,11 @@
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bg_pill_outline_gray"
+            android:background="@drawable/bg_button_primary"
             android:gravity="center"
             android:fontFamily="sans-serif-medium"
             android:text="View Usage Report"
-            android:textColor="#1A1A1A"
+            android:textColor="@color/orange_primary"
             android:textSize="15sp" />
 
     </LinearLayout>
