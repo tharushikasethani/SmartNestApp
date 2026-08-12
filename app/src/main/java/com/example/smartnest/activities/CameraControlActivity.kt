@@ -55,6 +55,10 @@ class CameraControlActivity : BaseDeviceControlActivity() {
             startActivity(intent)
         }
 
+        findViewById<TextView>(R.id.btnUsageReport).setOnClickListener {
+            openReport()
+        }
+
         getDeviceRef()?.child("status")?.get()?.addOnSuccessListener {
             val s = it.getValue(String::class.java) ?: "ON"
             tvStatus.text = s

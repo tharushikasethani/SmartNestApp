@@ -10,6 +10,7 @@ import com.example.smartnest.DeviceImageMapper
 import com.example.smartnest.R
 import com.example.smartnest.model.DeviceStatus
 import com.example.smartnest.utils.ScheduleValidator
+import com.example.smartnest.util.UsageTracker
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -136,14 +137,18 @@ class DeviceControlActivity : BaseDeviceControlActivity() {
         })
 
         findViewById<android.view.View>(R.id.btnOn)?.setOnClickListener {
-            deviceRef?.child("status")?.setValue("ON")
+            UsageTracker.turnOn(deviceRef!!, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid)
         }
         findViewById<android.view.View>(R.id.btnOff)?.setOnClickListener {
-            deviceRef?.child("status")?.setValue("OFF")
+            UsageTracker.turnOff(deviceRef!!, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid)
         }
 
         findViewById<android.view.View>(R.id.btnSchedule)?.setOnClickListener {
             openSchedule()
+        }
+
+        findViewById<android.view.View>(R.id.btnUsageReport)?.setOnClickListener {
+            openReport()
         }
 
         loadState()

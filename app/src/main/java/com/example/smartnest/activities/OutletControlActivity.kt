@@ -9,6 +9,11 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
+import com.example.smartnest.util.UsageTracker
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+
 class OutletControlActivity : BaseDeviceControlActivity() {
 
     private var currentStatus: DeviceStatus = DeviceStatus.OFF

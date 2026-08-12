@@ -61,6 +61,7 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
         findViewById<android.view.View>(R.id.btnOn).setOnClickListener { updateState(true) }
         findViewById<android.view.View>(R.id.btnOff).setOnClickListener { updateState(false) }
         findViewById<android.view.View>(R.id.btnSchedule).setOnClickListener { openSchedule() }
+        findViewById<android.view.View>(R.id.btnUsageReport).setOnClickListener { openReport() }
 
         observeDeviceData()
     }

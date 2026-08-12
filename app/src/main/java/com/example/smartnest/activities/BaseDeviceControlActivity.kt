@@ -91,4 +91,12 @@ abstract class BaseDeviceControlActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
+
+    protected fun openReport() {
+        val intent = Intent(this, ReportsActivity::class.java).apply {
+            putExtra("deviceName", deviceName)
+            putExtra("deviceId", deviceId ?: "")
+        }
+        startActivity(intent)
+    }
 }
