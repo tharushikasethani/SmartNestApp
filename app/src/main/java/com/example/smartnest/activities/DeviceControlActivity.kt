@@ -1,6 +1,8 @@
 package com.example.smartnest.activities
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.SeekBar
@@ -18,6 +20,45 @@ import com.google.firebase.database.ValueEventListener
 class DeviceControlActivity : BaseDeviceControlActivity() {
 
     private var currentStatus: DeviceStatus = DeviceStatus.OFF
+    
+    private var activeStartTime: String = ""
+    private var activeEndTime: String = ""
+    private var activeDays: String = ""
+    private var tvScheduleCountdown: TextView? = null
+
+    private val countdownHandler = Handler(Looper.getMainLooper())
+    private val countdownRunnable = object : Runnable {
+        override fun run() {
+            updateCountdownUI()
+            countdownHandler.postDelayed(this, 1000)
+        }
+    }
+
+    private fun updateCountdownUI() {
+        if (activeStartTime.isEmpty() || activeEndTime.isEmpty()) {
+            tvScheduleCountdown?.visibility = android.view.View.GONE
+            return
+        }
+
+        val remaining = ScheduleValidator.getRemainingSeconds(activeStartTime, activeEndTime, activeDays)
+        if (remaining > 0) {
+            val h = remaining / 3600
+            val m = (remaining % 3600) / 60
+            val s = remaining % 60
+            tvScheduleCountdown?.visibility = android.view.View.VISIBLE
+            tvScheduleCountdown?.text = String.format("Ends in: %02d:%02d:%02d", h, m, s)
+        } else {
+            tvScheduleCountdown?.visibility = android.view.View.GONE
+            
+            // AUTOMATION: If time is up and device is still ON, turn it OFF
+            if (currentStatus == DeviceStatus.ON) {
+                val shouldBeOn = ScheduleValidator.isDeviceShouldBeOn(activeStartTime, activeEndTime, activeDays)
+                if (!shouldBeOn) {
+                    UsageTracker.turnOff(getDeviceRef()!!, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid)
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +84,7 @@ class DeviceControlActivity : BaseDeviceControlActivity() {
         val cardSchedule = findViewById<android.view.View>(R.id.cardCurrentSchedule)
         val tvScheduleTime = findViewById<TextView>(R.id.tvActiveScheduleTime)
         val tvScheduleDays = findViewById<TextView>(R.id.tvActiveScheduleDays)
+        tvScheduleCountdown = findViewById<TextView>(R.id.tvScheduleCountdown)
 
         val isLight = deviceType.lowercase().contains("light") || deviceType.lowercase().contains("lamp")
         val isFan = deviceType.lowercase().contains("fan")
@@ -67,6 +109,8 @@ class DeviceControlActivity : BaseDeviceControlActivity() {
 
             if (isOn && isFan) {
                 ivIcon?.startAnimation(fanRotateAnim)
+            } else if (isOn && isLight) {
+                ivIcon?.startAnimation(blinkAnim)
             } else {
                 ivIcon?.clearAnimation()
                 ivIcon?.alpha = 1.0f
@@ -84,7 +128,7 @@ class DeviceControlActivity : BaseDeviceControlActivity() {
                     if (isLight) {
                         val brightness = snapshot.child("brightness").getValue(Int::class.java) ?: 75
                         seekBar?.progress = brightness
-                        tvBrightness?.text = "$brightness%"
+                        tvBrightness?.text = String.format("%d%%", brightness)
                     }
 
                     // Handle Schedule Display
@@ -94,9 +138,13 @@ class DeviceControlActivity : BaseDeviceControlActivity() {
                         val end = schedule.child("endTime").getValue(String::class.java) ?: ""
                         val daysRaw = schedule.child("days").getValue(String::class.java) ?: ""
                         
+                        activeStartTime = start
+                        activeEndTime = end
+                        activeDays = daysRaw
+
                         if (start.isNotEmpty() && end.isNotEmpty()) {
                             cardSchedule?.visibility = android.view.View.VISIBLE
-                            tvScheduleTime?.text = "$start - $end"
+                            tvScheduleTime?.text = String.format("%s - %s", start, end)
                             
                             val dayLabels = listOf("M", "T", "W", "T", "F", "S", "S")
                             val daysText = daysRaw.split(",")
@@ -107,18 +155,20 @@ class DeviceControlActivity : BaseDeviceControlActivity() {
                             
                             tvScheduleDays?.text = if (daysText.isNotEmpty()) daysText else "Once"
 
-                            // AUTOMATION: Check if device should be forced ON/OFF
+                            // AUTOMATION: Check if device should be forced ON
                             val shouldBeOn = ScheduleValidator.isDeviceShouldBeOn(start, end, daysRaw)
-                            
                             if (shouldBeOn && currentStatus == DeviceStatus.OFF) {
-                                deviceRef.child("status").setValue("ON")
+                                UsageTracker.turnOn(deviceRef!!, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid)
                             }
                         } else {
                             cardSchedule?.visibility = android.view.View.GONE
+                            activeStartTime = ""
                         }
                     } else {
                         cardSchedule?.visibility = android.view.View.GONE
+                        activeStartTime = ""
                     }
+                    updateCountdownUI()
                 }
                 override fun onCancelled(error: DatabaseError) {}
             })
@@ -128,7 +178,7 @@ class DeviceControlActivity : BaseDeviceControlActivity() {
 
         seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(bar: SeekBar?, progress: Int, fromUser: Boolean) {
-                tvBrightness?.text = "$progress%"
+                tvBrightness?.text = String.format("%d%%", progress)
             }
             override fun onStartTrackingTouch(bar: SeekBar?) {}
             override fun onStopTrackingTouch(bar: SeekBar?) {
@@ -152,5 +202,15 @@ class DeviceControlActivity : BaseDeviceControlActivity() {
         }
 
         loadState()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        countdownHandler.post(countdownRunnable)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        countdownHandler.removeCallbacks(countdownRunnable)
     }
 }

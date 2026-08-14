@@ -59,4 +59,34 @@ object ScheduleValidator {
             return false
         }
     }
+
+    /**
+     * Returns remaining seconds until the current schedule ends.
+     * Returns -1 if no schedule is active right now.
+     */
+    fun getRemainingSeconds(startTimeStr: String, endTimeStr: String, daysStr: String): Long {
+        if (!isDeviceShouldBeOn(startTimeStr, endTimeStr, daysStr)) return -1
+
+        try {
+            val endD = timeFormat.parse(endTimeStr) ?: return -1
+            val now = Calendar.getInstance()
+            
+            val calE = Calendar.getInstance().apply {
+                time = endD
+                set(Calendar.YEAR, now.get(Calendar.YEAR))
+                set(Calendar.DAY_OF_YEAR, now.get(Calendar.DAY_OF_YEAR))
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+
+            // Handle overnight crossing
+            if (calE.timeInMillis <= now.timeInMillis) {
+                calE.add(Calendar.DAY_OF_YEAR, 1)
+            }
+
+            return (calE.timeInMillis - now.timeInMillis) / 1000
+        } catch (e: Exception) {
+            return -1
+        }
+    }
 }

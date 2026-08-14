@@ -3,6 +3,7 @@ package com.example.smartnest.activities
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.graphics.Color
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -125,7 +126,7 @@ class ScheduleActivity : AppCompatActivity() {
     }
 
     private fun deleteSchedule() {
-        AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this)
             .setTitle("Delete Schedule")
             .setMessage("Are you sure you want to remove the schedule for this device?")
             .setPositiveButton("Delete") { _, _ ->
@@ -135,7 +136,17 @@ class ScheduleActivity : AppCompatActivity() {
                 }
             }
             .setNegativeButton("Cancel", null)
-            .show()
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(Color.parseColor("#C62828"))
+
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(Color.parseColor("#757575"))
+        }
+
+        dialog.show()
     }
 
     private fun saveSchedule() {

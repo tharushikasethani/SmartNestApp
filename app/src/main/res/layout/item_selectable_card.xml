@@ -8,10 +8,11 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="24dp"
     app:cardElevation="0dp"
-    app:cardBackgroundColor="#F8F9FD"
+    app:cardBackgroundColor="#FFFFFF"
     app:strokeWidth="0dp">
 
     <LinearLayout
+        android:id="@+id/innerContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

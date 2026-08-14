@@ -38,13 +38,19 @@ class SelectableGridAdapter(
 
         val isSelected = position == selectedIndex
         if (isSelected) {
-            holder.card.setCardBackgroundColor(holder.itemView.context.getColor(R.color.orange_light))
-            holder.card.strokeColor = holder.itemView.context.getColor(R.color.orange_primary)
-            holder.card.strokeWidth = 4 // thicker border for selected
-        } else {
-            holder.card.setCardBackgroundColor(Color.WHITE)
-            holder.card.strokeColor = Color.parseColor("#ECECEC")
+            // Active color (Orange)
+            holder.card.setCardBackgroundColor(holder.itemView.context.getColor(R.color.orange_new))
+            holder.icon.setColorFilter(Color.WHITE)
+            holder.label.setTextColor(holder.itemView.context.getColor(R.color.orange_new))
             holder.card.strokeWidth = 2
+            holder.card.strokeColor = Color.parseColor("#ECECEC")
+        } else {
+            // Normal color (White background)
+            holder.card.setCardBackgroundColor(Color.WHITE)
+            holder.icon.setColorFilter(holder.itemView.context.getColor(R.color.orange_primary))
+            holder.label.setTextColor(holder.itemView.context.getColor(R.color.orange_primary))
+            holder.card.strokeWidth = 0
+
         }
 
         holder.itemView.setOnClickListener {

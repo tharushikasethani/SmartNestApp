@@ -2,6 +2,8 @@ package com.example.smartnest.activities
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
@@ -27,9 +29,49 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
     private lateinit var tvRuntimeLabel: TextView
     private lateinit var seekBar: SeekBar
     private lateinit var warningBanner: TextView
+    
     private var cardSchedule: View? = null
     private var tvScheduleTime: TextView? = null
     private var tvScheduleDays: TextView? = null
+    private var tvScheduleCountdown: TextView? = null
+    
+    private var activeStartTime: String = ""
+    private var activeEndTime: String = ""
+    private var activeDays: String = ""
+
+    private val scheduleCountdownHandler = Handler(Looper.getMainLooper())
+    private val scheduleCountdownRunnable = object : Runnable {
+        override fun run() {
+            updateScheduleCountdownUI()
+            scheduleCountdownHandler.postDelayed(this, 1000)
+        }
+    }
+
+    private fun updateScheduleCountdownUI() {
+        if (activeStartTime.isEmpty() || activeEndTime.isEmpty()) {
+            tvScheduleCountdown?.visibility = View.GONE
+            return
+        }
+
+        val remaining = ScheduleValidator.getRemainingSeconds(activeStartTime, activeEndTime, activeDays)
+        if (remaining > 0) {
+            val h = remaining / 3600
+            val m = (remaining % 3600) / 60
+            val s = remaining % 60
+            tvScheduleCountdown?.visibility = View.VISIBLE
+            tvScheduleCountdown?.text = String.format("Ends in: %02d:%02d:%02d", h, m, s)
+        } else {
+            tvScheduleCountdown?.visibility = View.GONE
+            
+            // AUTOMATION: Turn off when schedule period ends
+            if (currentStatus == DeviceStatus.ON) {
+                val shouldBeOn = ScheduleValidator.isDeviceShouldBeOn(activeStartTime, activeEndTime, activeDays)
+                if (!shouldBeOn) {
+                    forceOff(false) // Turn off iron normally at end of schedule
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +87,12 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
         cardSchedule = findViewById(R.id.cardCurrentSchedule)
         tvScheduleTime = findViewById(R.id.tvActiveScheduleTime)
         tvScheduleDays = findViewById(R.id.tvActiveScheduleDays)
+        tvScheduleCountdown = findViewById(R.id.tvScheduleCountdown)
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(bar: SeekBar?, progress: Int, fromUser: Boolean) {
                 val mins = if (progress < 1) 1 else progress
-                tvRuntimeLabel.text = "$mins min"
+                tvRuntimeLabel.text = String.format("%d min", mins)
                 maxRuntimeMinutes = mins
                 if (fromUser) {
                     getDeviceRef()?.child("maxRuntimeMinutes")?.setValue(maxRuntimeMinutes)
@@ -73,27 +116,36 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
         tvTimer.text = String.format("%02d:%02d", min, sec)
     }
 
+    private fun startTimerInDb(seconds: Int) {
+        val ref = getDeviceRef()
+        ref?.child("timerActive")?.setValue(true)
+        ref?.child("remainingSeconds")?.setValue(seconds)
+        ref?.child("maxRuntimeMinutes")?.setValue(maxRuntimeMinutes)
+    }
+
+    private fun stopTimerInDb() {
+        val ref = getDeviceRef()
+        ref?.child("timerActive")?.setValue(false)
+        ref?.child("remainingSeconds")?.setValue(0)
+    }
+
     private fun forceOff(isAutoShutoff: Boolean = false) {
-        // Stop Local UI Timer
+        // Update Local State
+        currentStatus = DeviceStatus.OFF
+        tvStatus.text = "OFF"
+        tvStatus.setTextColor(ContextCompat.getColor(this, R.color.status_off_gray))
+        
+        // Stop UI
         countDownTimer?.cancel()
         countDownTimer = null
         remainingSeconds = 0
         updateTimerDisplay()
         warningBanner.visibility = View.GONE
 
-        // Update UI State
-        currentStatus = DeviceStatus.OFF
-        tvStatus.text = "OFF"
-        tvStatus.setTextColor(ContextCompat.getColor(this, R.color.status_off_gray))
-        
-        // Update Database
+        // Update DB
         val ref = getDeviceRef()
-        ref?.child("status")?.setValue("OFF")
-        ref?.child("timerActive")?.setValue(false)
-        ref?.child("remainingSeconds")?.setValue(0)
-        
-        // Track Usage
         com.example.smartnest.util.UsageTracker.turnOff(ref!!, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid)
+        stopTimerInDb()
 
         if (isAutoShutoff) {
             showSafetyAlert()
@@ -104,13 +156,14 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
         if (isFinishing) return
         
         AlertDialog.Builder(this)
-            .setTitle("SAFETY NOTIFICATION")
-            .setMessage("The $deviceName has been automatically turned OFF after reaching its maximum safe runtime of $maxRuntimeMinutes minutes.")
+            .setTitle("SAFETY ALERT")
+            .setMessage("Hazardous appliance ($deviceName) has been automatically SHUT OFF to prevent fire hazard after reaching $maxRuntimeMinutes minutes of use.")
             .setPositiveButton("I UNDERSTAND", null)
             .setIcon(android.R.drawable.ic_dialog_alert)
+            .setCancelable(false)
             .show()
         
-        Toast.makeText(this, "Safety Shutoff Triggered", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "CRITICAL: Hazard appliance auto-shutoff!", Toast.LENGTH_LONG).show()
     }
 
     private fun runCountDown(seconds: Int) {
@@ -131,7 +184,7 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
                 }
             }
             override fun onFinish() {
-                forceOff(true) // This is where the alert is triggered
+                forceOff(true)
             }
         }.start()
         
@@ -140,28 +193,24 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
 
     private fun updateState(on: Boolean) {
         if (on && currentStatus != DeviceStatus.ON) {
-            val builder = AlertDialog.Builder(this)
+            val builder = androidx.appcompat.app.AlertDialog.Builder(this)
             builder.setTitle("Confirm Enable")
-            builder.setMessage("This $deviceName is a high-heat appliance. It will automatically shut off after $maxRuntimeMinutes minutes. Proceed?")
+            builder.setMessage("CAUTION: This device ($deviceName) is a fire risk. It will automatically shut off after $maxRuntimeMinutes minutes. Do you want to proceed?")
             builder.setPositiveButton("Enable") { _, _ ->
+                currentStatus = DeviceStatus.ON
                 val totalSeconds = maxRuntimeMinutes * 60
                 val ref = getDeviceRef()
-                
-                ref?.child("status")?.setValue("ON")
-                ref?.child("timerActive")?.setValue(true)
-                ref?.child("remainingSeconds")?.setValue(totalSeconds)
-                
                 com.example.smartnest.util.UsageTracker.turnOn(ref!!, deviceId!!, deviceName, deviceType, auth.currentUser!!.uid)
-                
+                startTimerInDb(totalSeconds)
                 runCountDown(totalSeconds)
             }
             builder.setNegativeButton("Cancel", null)
             val dialog = builder.create()
             dialog.show()
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(0xFFF0532D.toInt())
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(0xFF8A8A8E.toInt())
+            
+            dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(0xFFF0532D.toInt())
         } else if (!on && currentStatus == DeviceStatus.ON) {
-            forceOff(false) // Manual turn off - no alert
+            forceOff(false)
         }
     }
 
@@ -173,7 +222,6 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
                 val statusStr = snapshot.child("status").getValue(String::class.java) ?: "OFF"
                 val newStatus = try { DeviceStatus.valueOf(statusStr) } catch (_: Exception) { DeviceStatus.OFF }
                 
-                val statusChanged = newStatus != currentStatus
                 currentStatus = newStatus
                 
                 tvStatus.text = currentStatus.text
@@ -184,34 +232,25 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
                 if (!seekBar.isPressed) {
                     maxRuntimeMinutes = dbMaxMins
                     seekBar.progress = maxRuntimeMinutes
-                    tvRuntimeLabel.text = "$maxRuntimeMinutes min"
+                    tvRuntimeLabel.text = String.format("%d min", maxRuntimeMinutes)
                 }
 
                 val dbTimerActive = snapshot.child("timerActive").getValue(Boolean::class.java) ?: false
                 val dbRemaining = snapshot.child("remainingSeconds").getValue(Int::class.java) ?: 0
 
-                if (currentStatus == DeviceStatus.ON) {
-                    // If turned ON (e.g. by schedule) but no timer is in DB, start one
-                    if (!dbTimerActive) {
-                        val totalSeconds = maxRuntimeMinutes * 60
-                        val ref = getDeviceRef()
-                        ref?.child("timerActive")?.setValue(true)
-                        ref?.child("remainingSeconds")?.setValue(totalSeconds)
-                        return // Let the next loop handle runCountDown
-                    }
-
+                if (currentStatus == DeviceStatus.ON && dbTimerActive) {
                     warningBanner.visibility = View.VISIBLE
-                    // Start local timer if not running or significantly desynced
-                    if (countDownTimer == null || Math.abs(remainingSeconds - dbRemaining) > 10) {
+                    if (countDownTimer == null || Math.abs(remainingSeconds - dbRemaining) > 20) {
                         runCountDown(dbRemaining)
                     }
                 } else {
-                    // If OFF, ensure timer is killed
-                    countDownTimer?.cancel()
-                    countDownTimer = null
-                    remainingSeconds = 0
-                    updateTimerDisplay()
-                    warningBanner.visibility = View.GONE
+                    if (currentStatus == DeviceStatus.OFF) {
+                        countDownTimer?.cancel()
+                        countDownTimer = null
+                        remainingSeconds = 0
+                        updateTimerDisplay()
+                        warningBanner.visibility = View.GONE
+                    }
                 }
 
                 // Handle Schedule Info UI
@@ -220,10 +259,14 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
                     val start = schedule.child("startTime").getValue(String::class.java) ?: ""
                     val end = schedule.child("endTime").getValue(String::class.java) ?: ""
                     val daysRaw = schedule.child("days").getValue(String::class.java) ?: ""
+                    
+                    activeStartTime = start
+                    activeEndTime = end
+                    activeDays = daysRaw
 
                     if (start.isNotEmpty() && end.isNotEmpty()) {
                         cardSchedule?.visibility = View.VISIBLE
-                        tvScheduleTime?.text = "$start - $end"
+                        tvScheduleTime?.text = String.format("%s - %s", start, end)
 
                         val dayLabels = listOf("M", "T", "W", "T", "F", "S", "S")
                         val daysText = daysRaw.split(",").filter { it.isNotEmpty() }
@@ -232,7 +275,7 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
 
                         tvScheduleDays?.text = if (daysText.isNotEmpty()) daysText else "Once"
 
-                        // Automation: Force ON if schedule says so
+                        // Automation
                         val shouldBeOn = ScheduleValidator.isDeviceShouldBeOn(start, end, daysRaw)
                         if (shouldBeOn && currentStatus == DeviceStatus.OFF) {
                             getDeviceRef()?.child("status")?.setValue("ON")
@@ -240,15 +283,28 @@ class HazardApplianceControlActivity : BaseDeviceControlActivity() {
                     }
                 } else {
                     cardSchedule?.visibility = View.GONE
+                    activeStartTime = ""
                 }
+                updateScheduleCountdownUI()
             }
 
             override fun onCancelled(error: DatabaseError) {}
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        scheduleCountdownHandler.post(scheduleCountdownRunnable)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        scheduleCountdownHandler.removeCallbacks(scheduleCountdownRunnable)
+    }
+
     override fun onDestroy() {
         countDownTimer?.cancel()
+        scheduleCountdownHandler.removeCallbacks(scheduleCountdownRunnable)
         super.onDestroy()
     }
 }
